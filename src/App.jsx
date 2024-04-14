@@ -75,16 +75,21 @@ function App() {
     return todo.type === "task" ? (
       //デフォルト
       <div key={todo.id}>
-        <div className='my-1 flex justify-between border border-red-300'>
-          <div className='flex justify-start border border-green-500'>
-            <input className='ml-4 mr-2 form-checkbox' type="checkbox" checked={todo.completed} onChange={() => onCheck(todo.id)} />
-            <p className='self-center pb-1 text-sm'>{todo.text}</p>
+        <div className='mx-2 my-2 flex justify-between'>
+          <div className='flex justify-start items-center'>
+            <input 
+              className='ml-2 mr-1 form-checkbox' 
+              type="checkbox" 
+              checked={todo.completed} 
+              onChange={() => onCheck(todo.id)} 
+            />
+            <p className='text-sm'>{todo.text}</p>
           </div>
-          <div className='me-5 mb-3 pt-3 border border-blue-400'>
-            <button className='rounded-full bg-green-400 p-3 text-white mr-1' onClick={() => onEdit(todo.id)}>
+          <div className='mr-3 flex items-center'>
+            <button className='rounded-full bg-green-400 p-2 text-white mr-1' onClick={() => onEdit(todo.id)}>
               <GrUpdate className='w-3 h-3' />
             </button>
-            <button className='rounded-full bg-black p-3 text-white' onClick={() => onDelete(todo.id)}>
+            <button className='rounded-full bg-black p-2 text-white' onClick={() => onDelete(todo.id)}>
               <FaRegTrashAlt className='w-3 h-3' />
             </button>
           </div>
@@ -94,9 +99,9 @@ function App() {
     ) : (
         //更新画面
         <div className='flex justify-center mt-1' key={todo.id}>
-          <input className='w-2/3 border border-gray rounded me-1 my-2 text-sm pl-1' type="text" value={editValue} onChange={onEditChange} />
-          <button className="text-sm text-white self-center rounded bg-red-400 py-3  my-2 px-3" onClick={() => onUpdate(todo.id)} >
-            <GrUpdate />
+          <input className='w-2/3 border border-gray rounded me-1 my-2 text-xs pl-1' type="text" value={editValue} onChange={onEditChange} />
+          <button className="text-xs text-white self-center rounded-md bg-red-400 py-1 my-2 px-2" onClick={() => onUpdate(todo.id)} >
+            update
           </button>
         </div>
       );
@@ -108,7 +113,7 @@ function App() {
         <h1 className='font-bold text-xl ml-3'>Tasks</h1>
         <p className="text-xs text-gray-500 mr-3 self-center">You have {todos.length} tasks</p>
       </div>
-      <div className='mt-12 text-2xl container mx-auto'>
+      <div className='mt-12 text-2xl container mx-auto pb-2'>
         <div className='flex justify-center mt-5 pb-5'>
           <input className='pl-1 text-xs w-2/3 border border-gray border-1 rounded' type="text" value={value} onChange={onChange} placeholder='Add a new task' />
           <button className="text-white rounded-md bg-black px-3 ml-1 pb-1" onClick={addTodo} >+</button>
