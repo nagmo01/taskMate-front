@@ -109,43 +109,21 @@ function App() {
 
   return (
     <div className='max-w-sm bg-white mx-auto rounded-md shadow-lg mt-10'>
-      <div className='flex justify-between pt-3 border-4 border-blue-400'>
+      <div className='flex justify-between pt-3 border-4 border-blue-300'>
         <h1 className='font-bold text-xl ml-3'>Tasks</h1>
         <p className="text-xs text-gray-500 mr-3 self-center">You have {todos.length} tasks</p>
       </div>
 
-      <div className='flex justify-center pt-5 pb-5 border-4 border-green-400'>
-          <input className='pl-1 text-xs w-2/3 border border-gray border-1 rounded' type="text" value={value} onChange={onChange} placeholder='Add a new task' maxLength={20} />
-          <button className="text-white rounded-md bg-black px-3 ml-1 pb-1" onClick={addTodo} >+</button>
-        </div>
-
-
-      <div className='text-2xl container mx-auto pb-2 border-red-300 border-4'>
-        
-
-        <div className='w-full'>
-          {list}
-        </div>
-
-        {/* <div className='flex justify-around mt-12 mb-5'>
-
-          <div className='flex'>
-            <p className=''>タスクの数：</p>
-            <p>{todos.length}</p>
-          </div>
-
-          <div className='flex'>
-            <p className=''>完了済み：</p>
-            <p>{todos.filter((todo) => todo.completed === true).length}</p>
-          </div>
-
-          <div className='flex'>
-            <p className=''>未完了：</p>
-            <p>{todos.length - todos.filter((todo) => todo.completed === true).length}</p>
-          </div>
-
-        </div> */}
+      <div className='flex justify-center pt-5 pb-5 border-4 border-green-300'>
+        <input className='pl-1 text-xs w-2/3 border border-gray border-1 rounded' type="text" value={value} onChange={onChange} placeholder='Add a new task' maxLength={20} />
+        <button className="text-white rounded-md bg-black px-3 ml-1 pb-1" onClick={addTodo} >+</button>
       </div>
+
+
+      <div className='text-2xl container mx-auto pb-2 border-4 border-red-300'>
+          {list}
+      </div>
+
     </div>
   )
 }
