@@ -109,15 +109,19 @@ function App() {
 
   return (
     <div className='max-w-sm bg-white mx-auto rounded-md shadow-lg mt-10'>
-      <div className='flex justify-between pt-3'>
+      <div className='flex justify-between pt-3 border-4 border-blue-400'>
         <h1 className='font-bold text-xl ml-3'>Tasks</h1>
         <p className="text-xs text-gray-500 mr-3 self-center">You have {todos.length} tasks</p>
       </div>
-      <div className='mt-12 text-2xl container mx-auto pb-2'>
-        <div className='flex justify-center mt-5 pb-5'>
-          <input className='pl-1 text-xs w-2/3 border border-gray border-1 rounded' type="text" value={value} onChange={onChange} placeholder='Add a new task' />
+
+      <div className='flex justify-center pt-5 pb-5 border-4 border-green-400'>
+          <input className='pl-1 text-xs w-2/3 border border-gray border-1 rounded' type="text" value={value} onChange={onChange} placeholder='Add a new task' maxLength={20} />
           <button className="text-white rounded-md bg-black px-3 ml-1 pb-1" onClick={addTodo} >+</button>
         </div>
+
+
+      <div className='text-2xl container mx-auto pb-2 border-red-300 border-4'>
+        
 
         <div className='w-full'>
           {list}
