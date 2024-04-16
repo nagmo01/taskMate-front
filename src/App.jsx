@@ -1,5 +1,6 @@
-import './App.css'
-import { useState } from "react"
+import './App.css';
+import { useState } from "react";
+import Typical from "react-typical";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { FaPen } from "react-icons/fa";
 
