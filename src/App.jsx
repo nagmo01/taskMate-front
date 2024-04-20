@@ -207,7 +207,7 @@ function App() {
             </button>
           </div>
           <div className="flex-1">
-            <a className="btn btn-ghost text-xl">Todo App</a>
+            <a className="btn btn-ghost text-xl font-sans">Essential Todo</a>
           </div>
           <div className="flex-none">
             <button className="btn btn-square btn-ghost">
