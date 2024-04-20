@@ -2,10 +2,9 @@ import "./App.css";
 import { useState } from "react";
 // import { FaRegTrashAlt } from "react-icons/fa";
 // import { FaPen } from "react-icons/fa";
-import trashImage from "../public/727.jpeg"
-import writeImage from "../public/628.jpeg"
-import settingImage from "../public/681.jpeg"
-
+import trashImage from "../public/727.jpeg";
+import writeImage from "../public/628.jpeg";
+import settingImage from "../public/681.jpeg";
 
 let count = 0;
 
@@ -116,7 +115,7 @@ function App() {
   const list = todos.map((todo, index) => {
     return todo.type === "task" ? (
       //デフォルト
-      <div key={todo.id} className="">
+      <div key={todo.id} className="z-10">
         {index === 0 ? (
           <h1 className="custom-border-red text-xs font-bold text-white shadow custom-bg-black ps-2 py-1 rounded-sm">
             Today
@@ -138,7 +137,7 @@ function App() {
         ) : (
           <h1></h1>
         )}
-        <div className="mx-1 my-2 flex justify-between border shadow rounded py-1">
+        <div className="mx-1 my-2 flex justify-between border shadow rounded py-1 z-10">
           <div className="flex justify-start items-center">
             <input
               className="ml-2 mr-1 radio"
@@ -150,7 +149,7 @@ function App() {
             />
             <p className="text-sm">{todo.text}</p>
           </div>
-          <div className="mr-3 flex items-center">
+          <div className="mr-3 flex items-center z-10">
             {/* <button
               className="rounded-full bg-white hover:bg-black p-2 text-black hover:text-white border border-black mr-1"
               onClick={() => onEdit(todo.id)}
@@ -279,13 +278,20 @@ function App() {
           <div className="mt-20 pt-10">
             <h3 className="text-center mb-4 font-bold font-mono">Setting</h3>
             <div className="h-96 bg-white shadow-md rounded-md">
-              <img src={settingImage} alt="ゴミ箱の画像" className="w-1/2 mx-auto pt-16 h-80" />
-              <h3 className="text-center font-bold font-mono text-md">Customize your preferences here</h3>
+              <img
+                src={settingImage}
+                alt="ゴミ箱の画像"
+                className="w-1/2 mx-auto pt-16"
+              />
+              <h3 className="text-center font-bold font-mono text-md">
+                Customize your preferences here
+              </h3>
             </div>
           </div>
         </div>
 
-        <div className="w-2/6 text-2xl container ms-10 me-20 mt-10 pb-2 mb-5 bg-white shadow-md flex-shrink rounded-md">
+        <div className="relative w-2/6 text-2xl container ms-10 me-20 mt-10 pb-2 mb-5 bg-white  shadow-md flex-shrink rounded-md">
+          <div className="absolute z-10 inset-0 w-64 h-48 m-auto bg-[url('../public/628.jpeg')] bg-cover bg-center"></div>
           <div className="flex justify-between py-3">
             <h1 className="font-bold text-3xl ml-3">Tasks</h1>
             <p className="text-sm text-gray-500 mr-3 self-center">
@@ -294,11 +300,19 @@ function App() {
           </div>
           {todos.length === 0 && (
             <>
-                      <img src={writeImage} className="w-1/2 mx-auto pt-32 mt-10" />
-                      <h3 className="text-center font-bold font-mono text-md mt-5 ms-5 me-5">Time to add your first task!</h3>
+              <h1 className="custom-border-red text-xs font-bold text-white shadow custom-bg-black ps-2 py-1 rounded-sm">
+                Today
+              </h1>
+              {/* <img src={writeImage} className="w-1/2 mx-auto pt-32 mt-10" /> */}
+              {/* <h3 className="text-center font-bold font-mono text-md mt-5 ms-5 me-5"> */}
+                {/* Time to add your first task! */}
+              {/* </h3> */}
+              <h3 className="text-center font-bold font-mono text-md mt-96 pt-10">Time to add your first task!</h3>
             </>
-        )}
+          )}
+          <div className="z-0">
           {list}
+          </div>
         </div>
       </div>
     </>
