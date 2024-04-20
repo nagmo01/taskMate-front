@@ -2,6 +2,13 @@ import "./App.css";
 import { useState } from "react";
 // import { FaRegTrashAlt } from "react-icons/fa";
 // import { FaPen } from "react-icons/fa";
+import { FiHome } from "react-icons/fi";
+import { IoMdSettings } from "react-icons/io";
+import { FaRegTrashCan } from "react-icons/fa6";
+import { CgProfile } from "react-icons/cg";
+import { RxCalendar } from "react-icons/rx";
+import { FaCheck } from "react-icons/fa6";
+import { MdDashboard } from "react-icons/md";
 import trashImage from "../public/727.jpeg";
 import writeImage from "../public/628.jpeg";
 import settingImage from "../public/681.jpeg";
@@ -58,8 +65,8 @@ function App() {
   const handleKeyDown = (e) => {
     if (
       (selectedOption === "Shift" && e.shiftKey) ||
-      (selectedOption === "Control" && e.ctrlKey) ||
-      (selectedOption === "Alt/Cmd" && e.metaKey)
+        (selectedOption === "Control" && e.ctrlKey) ||
+        (selectedOption === "Alt/Cmd" && e.metaKey)
     ) {
       if (e.key === "Enter") {
         addTodo();
@@ -121,22 +128,22 @@ function App() {
             Today
           </h1>
         ) : (
-          <h1></h1>
-        )}
+            <h1></h1>
+          )}
         {index === 6 ? (
           <h1 className="custom-border-red text-xs font-bold text-white shadow custom-bg-black ps-2 py-1 rounded-sm">
             5月
           </h1>
         ) : (
-          <h1></h1>
-        )}
+            <h1></h1>
+          )}
         {index === 10 ? (
           <h1 className="custom-border-red text-xs font-bold text-white shadow custom-bg-black ps-2 py-1 rounded-sm">
             Other
           </h1>
         ) : (
-          <h1></h1>
-        )}
+            <h1></h1>
+          )}
         <div className="mx-1 my-2 flex justify-between border shadow rounded py-1 z-10">
           <div className="flex justify-start items-center">
             <input
@@ -167,22 +174,22 @@ function App() {
         </div>
       </div>
     ) : (
-      //更新画面
-      <div className="flex justify-center mt-1" key={todo.id}>
-        <input
-          className="w-2/3 border border-gray rounded me-1 my-2 text-xs pl-1"
-          type="text"
-          value={editValue}
-          onChange={onEditChange}
-        />
-        <button
-          className="text-xs text-white self-center rounded-md bg-red-400 py-1 my-2 px-2"
-          onClick={() => onUpdate(todo.id)}
-        >
-          Enter
-        </button>
-      </div>
-    );
+        //更新画面
+        <div className="flex justify-center mt-1" key={todo.id}>
+          <input
+            className="w-2/3 border border-gray rounded me-1 my-2 text-xs pl-1"
+            type="text"
+            value={editValue}
+            onChange={onEditChange}
+          />
+          <button
+            className="text-xs text-white self-center rounded-md bg-red-400 py-1 my-2 px-2"
+            onClick={() => onUpdate(todo.id)}
+          >
+            Enter
+          </button>
+        </div>
+      );
   });
 
   return (
@@ -230,16 +237,24 @@ function App() {
       </header>
 
       <div className="mx-auto mt-5 rounded-md flex h-screen">
-        <div className="w-1/6 w-70 ms-5">
+        <div className="w-1/7 w-70 bg-white text-original shadow-md">
           <h3 className="text-center font-bold font-mono text-lg mt-16 mb-10 mx-20 border-b-2 border-black">
             <p className="">TodoApp</p>
           </h3>
-          <div className="flex-col text-center font-mono">
-            <div className="py-5">Home</div>
-            <div className="py-5">profile</div>
-            <div className="py-5">completed</div>
-            <div className="py-5">Trash</div>
-            <div className="py-5">Settings</div>
+          <div className="flex justify-center text-lg font-sans font-bold">
+            <div className='flex-col'>
+              
+
+              <div className="py-5 flex text-start me-3"><CgProfile className='self-center me-3' /><p className='self-center'>Account</p></div>
+              
+              <div className="py-5 flex text-start me-3"><FaCheck className='self-center me-3' /><p className='self-center'>Done</p></div>
+              <div className="py-5 flex text-start me-3"><FaRegTrashCan className='self-center me-3' /><p className='self-center'>Trash</p></div>
+              <div className="py-5 flex text-start me-3">
+                <RxCalendar className='self-center me-3' />
+                <div className='self-center'>Calendar</div>
+              </div>
+              <div className="py-5 flex text-start me-3"><IoMdSettings className='self-center me-3' /><p className='self-center'>Setting</p></div>
+            </div>
           </div>
         </div>
         <div className="w-2/6 flex-col justify-center mt-10 ms-16">
@@ -305,13 +320,13 @@ function App() {
               </h1>
               {/* <img src={writeImage} className="w-1/2 mx-auto pt-32 mt-10" /> */}
               {/* <h3 className="text-center font-bold font-mono text-md mt-5 ms-5 me-5"> */}
-                {/* Time to add your first task! */}
+              {/* Time to add your first task! */}
               {/* </h3> */}
               <h3 className="text-center font-bold font-mono text-md mt-96 pt-10">Time to add your first task!</h3>
             </>
           )}
           <div className="z-0">
-          {list}
+            {list}
           </div>
         </div>
       </div>
