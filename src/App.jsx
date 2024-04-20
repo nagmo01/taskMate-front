@@ -2,7 +2,9 @@ import "./App.css";
 import { useState } from "react";
 // import { FaRegTrashAlt } from "react-icons/fa";
 // import { FaPen } from "react-icons/fa";
-import { NoTasksImage } from "./components/writeImage";
+import trashImage from "../public/727.jpeg"
+import writeImage from "../public/628.jpeg"
+
 
 let count = 0;
 
@@ -35,8 +37,6 @@ function App() {
     );
   }
 
-
-
   const [editValue, setEditValue] = useState("");
 
   // タスクを追加する処理。（送信ボタンorEnterのどちらかで実行される）
@@ -53,7 +53,6 @@ function App() {
     setValue("");
     count += 1;
   };
-
 
   // onKeyDownで実行される。押されたキーが指定したもののとき、タスク追加処理を実行する
   const handleKeyDown = (e) => {
@@ -230,8 +229,20 @@ function App() {
         </div>
       </header>
 
-      <div className="w-4/5 mx-auto mt-5 rounded-md pt-10 flex h-screen">
-        <div className="w-full flex justify-center">
+      <div className="mx-auto mt-5 rounded-md flex h-screen">
+        <div className="w-1/6 w-70 ms-5">
+          <h3 className="text-center font-bold font-mono text-lg mt-16 mb-10 mx-20 border-b-2 border-black">
+            Sidebar
+          </h3>
+          <div className="flex-col text-center font-mono">
+            <div className="py-5">Home</div>
+            <div className="py-5">profile</div>
+            <div className="py-5">completed</div>
+            <div className="py-5">Trash</div>
+            <div className="py-5">Settings</div>
+          </div>
+        </div>
+        <div className="w-2/6 flex-col justify-center mt-10 ms-16">
           <div className="pt-32 w-full">
             <h1 className="text-center font-bold font-mono custom-black mb-5">
               Add a new task
@@ -255,27 +266,40 @@ function App() {
               </button>
             </div>
             {/* 送信キー切り替えのラジオボタン */}
-            <div>
+            {/* <div>
               <RadioButtonGroup
                 options={options}
                 selectedOption={selectedOption}
                 onChange={handleOptionChange}
               />
+            </div> */}
+          </div>
+
+          <div className="mt-20 pt-10">
+            <h3 className="text-center mb-4 font-bold font-mono">Trash</h3>
+            <div className="h-96 bg-white shadow-md rounded-md">
+              <img src={trashImage} alt="ゴミ箱の画像" className="w-1/2 mx-auto pt-16 h-80" />
+              <h3 className="text-center font-bold font-mono text-md">The bin is empty</h3>
             </div>
           </div>
         </div>
 
-        <div className="text-2xl container ms-4 pb-2 mb-5 bg-white shadow-md flex-shrink rounded-md">
+        <div className="w-2/6 text-2xl container ms-10 me-20 mt-10 pb-2 mb-5 bg-white shadow-md flex-shrink rounded-md">
           <div className="flex justify-between py-3">
             <h1 className="font-bold text-3xl ml-3">Tasks</h1>
             <p className="text-sm text-gray-500 mr-3 self-center">
               You have {todos.length} tasks
             </p>
           </div>
+          {todos.length === 0 && (
+            <>
+                      <img src={writeImage} className="w-1/2 mx-auto pt-32 mt-10" />
+                      <h3 className="text-center font-bold font-mono text-md mt-5 ms-5 me-5">Time to add your first task!</h3>
+            </>
+        )}
           {list}
         </div>
       </div>
-      <NoTasksImage />
     </>
   );
 }
