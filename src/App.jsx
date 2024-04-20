@@ -1,8 +1,8 @@
 import "./App.css";
 import { useState } from "react";
-import Typical from "react-typical";
-import { FaRegTrashAlt } from "react-icons/fa";
-import { FaPen } from "react-icons/fa";
+// import { FaRegTrashAlt } from "react-icons/fa";
+// import { FaPen } from "react-icons/fa";
+import { NoTasksImage } from "./components/writeImage";
 
 let count = 0;
 
@@ -10,8 +10,36 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [value, setValue] = useState("");
 
+  // 送信キー切り替えのラジオボタン
+  const [selectedOption, setSelectedOption] = useState("Shift");
+  const options = ["Shift", "Control", "Alt/Cmd", "Enter"];
+  const handleOptionChange = (e) => {
+    setSelectedOption(e.target.value);
+  };
+
+  function RadioButtonGroup({ options, selectedOption, onChange }) {
+    return (
+      <div>
+        {options.map((option) => (
+          <label key={option} className="mx-5">
+            <input
+              type="radio"
+              value={option}
+              checked={selectedOption === option}
+              onChange={onChange}
+            />
+            {option}
+          </label>
+        ))}
+      </div>
+    );
+  }
+
+
+
   const [editValue, setEditValue] = useState("");
 
+  // タスクを追加する処理。（送信ボタンorEnterのどちらかで実行される）
   const addTodo = () => {
     if (value == "") {
       return;
@@ -24,6 +52,20 @@ function App() {
     setTodos(newTodos);
     setValue("");
     count += 1;
+  };
+
+
+  // onKeyDownで実行される。押されたキーが指定したもののとき、タスク追加処理を実行する
+  const handleKeyDown = (e) => {
+    if (
+      (selectedOption === "Shift" && e.shiftKey) ||
+      (selectedOption === "Control" && e.ctrlKey) ||
+      (selectedOption === "Alt/Cmd" && e.metaKey)
+    ) {
+      if (e.key === "Enter") {
+        addTodo();
+      }
+    }
   };
 
   const onUpdate = (id) => {
@@ -74,26 +116,42 @@ function App() {
   const list = todos.map((todo, index) => {
     return todo.type === "task" ? (
       //デフォルト
-      <div key={todo.id}>
+      <div key={todo.id} className="">
         {index === 0 ? (
           <h1 className="custom-border-red text-xs font-bold text-white shadow custom-bg-black ps-2 py-1 rounded-sm">
-            7月
+            Today
           </h1>
         ) : (
-            <h1></h1>
-          )}
+          <h1></h1>
+        )}
+        {index === 6 ? (
+          <h1 className="custom-border-red text-xs font-bold text-white shadow custom-bg-black ps-2 py-1 rounded-sm">
+            5月
+          </h1>
+        ) : (
+          <h1></h1>
+        )}
+        {index === 10 ? (
+          <h1 className="custom-border-red text-xs font-bold text-white shadow custom-bg-black ps-2 py-1 rounded-sm">
+            Other
+          </h1>
+        ) : (
+          <h1></h1>
+        )}
         <div className="mx-1 my-2 flex justify-between border shadow rounded py-1">
           <div className="flex justify-start items-center">
             <input
-              className="ml-2 mr-1 form-checkbox"
-              type="checkbox"
+              className="ml-2 mr-1 radio"
+              name="radio-9"
+              type="radio"
               checked={todo.completed}
               onChange={() => onCheck(todo.id)}
+              disabled
             />
             <p className="text-sm">{todo.text}</p>
           </div>
           <div className="mr-3 flex items-center">
-            <button
+            {/* <button
               className="rounded-full bg-white hover:bg-black p-2 text-black hover:text-white border border-black mr-1"
               onClick={() => onEdit(todo.id)}
             >
@@ -104,68 +162,121 @@ function App() {
               onClick={() => onDelete(todo.id)}
             >
               <FaRegTrashAlt className="w-3 h-3" />
-            </button>
+            </button> */}
+            <h3 className="font-mono text-sm font-bold">3/25</h3>
           </div>
         </div>
       </div>
     ) : (
-        //更新画面
-        <div className="flex justify-center mt-1" key={todo.id}>
-          <input
-            className="w-2/3 border border-gray rounded me-1 my-2 text-xs pl-1"
-            type="text"
-            value={editValue}
-            onChange={onEditChange}
-          />
-          <button
-            className="text-xs text-white self-center rounded-md bg-red-400 py-1 my-2 px-2"
-            onClick={() => onUpdate(todo.id)}
-          >
-            Enter
-          </button>
-        </div>
-      );
+      //更新画面
+      <div className="flex justify-center mt-1" key={todo.id}>
+        <input
+          className="w-2/3 border border-gray rounded me-1 my-2 text-xs pl-1"
+          type="text"
+          value={editValue}
+          onChange={onEditChange}
+        />
+        <button
+          className="text-xs text-white self-center rounded-md bg-red-400 py-1 my-2 px-2"
+          onClick={() => onUpdate(todo.id)}
+        >
+          Enter
+        </button>
+      </div>
+    );
   });
 
   return (
-    <div className="w-4/5 mx-auto rounded-md mt-10 flex">
-
-
-      <div className="w-full flex justify-center">
-        <div className="pt-32 w-full">
-          <h1 class="text-center font-bold font-serif custom-black mb-5">Add a new task</h1>
-          <div className="flex bg-white rounded-md shadow-md justify-center pt-5 pb-5">
-            <input
-              className="pl-1 text-xs w-2/3 border border-gray border-1 rounded"
-              type="text"
-              value={value}
-              onChange={onChange}
-              placeholder="Add a new task"
-              maxLength={20}
-            />
-            <button
-              className="text-white rounded-md bg-black px-3 ml-1 pb-1"
-              onClick={addTodo}
-            >
-              +
+    <>
+      <header className="text-black bg-white shadow-md">
+        <div className="navbar px-10">
+          <div className="flex-none">
+            <button className="btn btn-square btn-ghost">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                className="inline-block w-5 h-5 stroke-current"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                ></path>
+              </svg>
+            </button>
+          </div>
+          <div className="flex-1">
+            <a className="btn btn-ghost text-xl">Todo App</a>
+          </div>
+          <div className="flex-none">
+            <button className="btn btn-square btn-ghost">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                className="inline-block w-5 h-5 stroke-current"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+                ></path>
+              </svg>
             </button>
           </div>
         </div>
-      </div>
+      </header>
 
-
-      <div className="min-h-96 text-2xl container ms-4 pb-2 bg-white shadow flex-shrink">
-        <div className="flex justify-between py-3">
-          <h1 className="font-bold text-xl ml-3">Tasks</h1>
-          <p className="text-xs text-gray-500 mr-3 self-center">
-            You have {todos.length} tasks
-          </p>
+      <div className="w-4/5 mx-auto mt-5 rounded-md pt-10 flex h-screen">
+        <div className="w-full flex justify-center">
+          <div className="pt-32 w-full">
+            <h1 className="text-center font-bold font-mono custom-black mb-5">
+              Add a new task
+            </h1>
+            <div className="flex bg-white rounded-md shadow-md justify-center pt-5 pb-5">
+              <input
+                className="pl-1 text-xs w-2/3 border border-gray border-1 rounded bg-white"
+                type="text"
+                value={value}
+                autoFocus={focus}
+                onChange={onChange}
+                placeholder={`${selectedOption} + Enter`}
+                maxLength={20}
+                onKeyDown={handleKeyDown}
+              />
+              <button
+                className="text-white rounded-md bg-black px-3 ml-1 pb-1"
+                onClick={addTodo}
+              >
+                +
+              </button>
+            </div>
+            {/* 送信キー切り替えのラジオボタン */}
+            <div>
+              <RadioButtonGroup
+                options={options}
+                selectedOption={selectedOption}
+                onChange={handleOptionChange}
+              />
+            </div>
+          </div>
         </div>
-        {list}
+
+        <div className="text-2xl container ms-4 pb-2 mb-5 bg-white shadow-md flex-shrink rounded-md">
+          <div className="flex justify-between py-3">
+            <h1 className="font-bold text-3xl ml-3">Tasks</h1>
+            <p className="text-sm text-gray-500 mr-3 self-center">
+              You have {todos.length} tasks
+            </p>
+          </div>
+          {list}
+        </div>
       </div>
-
-
-    </div>
+      <NoTasksImage />
+    </>
   );
 }
 
