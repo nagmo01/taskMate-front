@@ -4,6 +4,7 @@ import { useState } from "react";
 // import { FaPen } from "react-icons/fa";
 import trashImage from "../public/727.jpeg"
 import writeImage from "../public/628.jpeg"
+import settingImage from "../public/681.jpeg"
 
 
 let count = 0;
@@ -232,7 +233,7 @@ function App() {
       <div className="mx-auto mt-5 rounded-md flex h-screen">
         <div className="w-1/6 w-70 ms-5">
           <h3 className="text-center font-bold font-mono text-lg mt-16 mb-10 mx-20 border-b-2 border-black">
-            Sidebar
+            <p className="">TodoApp</p>
           </h3>
           <div className="flex-col text-center font-mono">
             <div className="py-5">Home</div>
@@ -276,10 +277,10 @@ function App() {
           </div>
 
           <div className="mt-20 pt-10">
-            <h3 className="text-center mb-4 font-bold font-mono">Trash</h3>
+            <h3 className="text-center mb-4 font-bold font-mono">Setting</h3>
             <div className="h-96 bg-white shadow-md rounded-md">
-              <img src={trashImage} alt="ゴミ箱の画像" className="w-1/2 mx-auto pt-16 h-80" />
-              <h3 className="text-center font-bold font-mono text-md">The bin is empty</h3>
+              <img src={settingImage} alt="ゴミ箱の画像" className="w-1/2 mx-auto pt-16 h-80" />
+              <h3 className="text-center font-bold font-mono text-md">Customize your preferences here</h3>
             </div>
           </div>
         </div>
