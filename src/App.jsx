@@ -243,10 +243,10 @@ function App() {
           </h3>
           <div className="flex justify-center text-lg font-sans font-bold">
             <div className='flex-col'>
-              
+
 
               <div className="py-5 flex text-start me-3"><CgProfile className='self-center me-3' /><p className='self-center'>Account</p></div>
-              
+
               <div className="py-5 flex text-start me-3"><FaCheck className='self-center me-3' /><p className='self-center'>Done</p></div>
               <div className="py-5 flex text-start me-3"><FaRegTrashCan className='self-center me-3' /><p className='self-center'>Trash</p></div>
               <div className="py-5 flex text-start me-3">
@@ -305,8 +305,7 @@ function App() {
           </div>
         </div>
 
-        <div className="relative w-2/6 text-2xl container ms-10 me-20 mt-10 pb-2 mb-5 bg-white  shadow-md flex-shrink rounded-md">
-          <div className="absolute z-10 inset-0 w-64 h-48 m-auto bg-[url('../public/628.jpeg')] bg-cover bg-center"></div>
+        <div className="w-2/6 text-2xl container ms-10 me-20 mt-10 pb-2 mb-5 bg-white shadow-md flex-shrink rounded-md">
           <div className="flex justify-between py-3">
             <h1 className="font-bold text-3xl ml-3">Tasks</h1>
             <p className="text-sm text-gray-500 mr-3 self-center">
@@ -318,14 +317,13 @@ function App() {
               <h1 className="custom-border-red text-xs font-bold text-white shadow custom-bg-black ps-2 py-1 rounded-sm">
                 Today
               </h1>
-              {/* <img src={writeImage} className="w-1/2 mx-auto pt-32 mt-10" /> */}
-              {/* <h3 className="text-center font-bold font-mono text-md mt-5 ms-5 me-5"> */}
-              {/* Time to add your first task! */}
-              {/* </h3> */}
-              <h3 className="text-center font-bold font-mono text-md mt-96 pt-10">Time to add your first task!</h3>
+              <img src={writeImage} className="w-1/2 mx-auto pt-32 mt-10" />
+              <h3 className="text-center font-bold font-mono text-md mt-5 ms-5 me-5">
+              Time to add your first task!
+              </h3>
             </>
           )}
-          <div className="z-0">
+          <div>
             {list}
           </div>
         </div>
