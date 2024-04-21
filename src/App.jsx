@@ -12,6 +12,8 @@ import { MdDashboard } from "react-icons/md";
 import trashImage from "../public/727.jpeg";
 import writeImage from "../public/628.jpeg";
 import settingImage from "../public/681.jpeg";
+import { FaReact } from "react-icons/fa";
+import { IconContext } from "react-icons";
 
 let count = 0;
 
@@ -236,24 +238,35 @@ function App() {
         </div>
       </header>
 
+{/* メイン */}
       <div className="mx-auto rounded-md flex h-screen">
-        <div className="w-1/7 bg-white text-original shadow-md">
-          <h3 className="text-center font-bold font-sans text-lg mt-16 mb-10 mx-14">
-            <p className="">Essential Todo</p>
+
+        {/* サイドバー */}
+        <div className="bg-white text-original shadow-md">
+          <h3 className="text-center font-bold font-sans text-lg mt-28 mb-10">
           </h3>
           <div className="flex justify-center text-lg font-sans font-bold">
-            <div className='flex-col'>
+            <div className='flex-col ms-5 me-1 pt-20 mt-1'>
 
 
-              <div className="py-5 flex text-start me-3"><CgProfile className='self-center me-3' /><p className='self-center'>Account</p></div>
-
-              <div className="py-5 flex text-start me-3"><FaCheck className='self-center me-3' /><p className='self-center'>Done</p></div>
-              <div className="py-5 flex text-start me-3"><FaRegTrashCan className='self-center me-3' /><p className='self-center'>Trash</p></div>
+              <IconContext.Provider value={{ size: '23px' }}>
+              <div className="py-5 flex text-start me-3"><CgProfile className='self-center me-3' />
+              {/* <p className='self-center'>Account</p> */}
+              </div>
+              <div className="py-5 flex text-start me-3"><FaCheck className='self-center me-3' />
+              {/* <p className='self-center'>Done</p> */}
+              </div>
+              <div className="py-5 flex text-start me-3"><FaRegTrashCan className='self-center me-3' />
+              {/* <p className='self-center'>Trash</p> */}
+              </div>
               <div className="py-5 flex text-start me-3">
                 <RxCalendar className='self-center me-3' />
-                <div className='self-center'>Calendar</div>
+                {/* <p className='self-center'>Calendar</p> */}
               </div>
-              <div className="py-5 flex text-start me-3"><IoMdSettings className='self-center me-3' /><p className='self-center'>Setting</p></div>
+              <div className="py-5 flex text-start me-3"><IoMdSettings className='self-center me-3' />
+              {/* <p className='self-center'>Setting</p> */}
+              </div>
+              </IconContext.Provider>
             </div>
           </div>
         </div>
