@@ -236,10 +236,10 @@ function App() {
         </div>
       </header>
 
-      <div className="mx-auto mt-5 rounded-md flex h-screen">
-        <div className="w-1/7 w-70 bg-white text-original shadow-md">
-          <h3 className="text-center font-bold font-mono text-lg mt-16 mb-10 mx-20 border-b-2 border-black">
-            <p className="">TodoApp</p>
+      <div className="mx-auto rounded-md flex h-screen">
+        <div className="w-1/7 bg-white text-original shadow-md">
+          <h3 className="text-center font-bold font-sans text-lg mt-16 mb-10 mx-14">
+            <p className="">Essential Todo</p>
           </h3>
           <div className="flex justify-center text-lg font-sans font-bold">
             <div className='flex-col'>
