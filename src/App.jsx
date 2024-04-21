@@ -12,6 +12,7 @@ import { MdDashboard } from "react-icons/md";
 import trashImage from "../public/727.jpeg";
 import writeImage from "../public/628.jpeg";
 import settingImage from "../public/681.jpeg";
+import contentImage from "../public/319.jpeg";
 import { FaReact } from "react-icons/fa";
 import { IconContext } from "react-icons";
 
@@ -270,7 +271,11 @@ function App() {
             </div>
           </div>
         </div>
-        <div className="w-2/6 flex-col justify-center mt-10 ms-16">
+
+        <div className="w-14"></div>
+
+        {/* フォーム＆各種メニュー */}
+        <div className="w-4/12 flex-col justify-center mt-10">
           <div className="pt-32 w-full">
             <h1 className="text-center font-bold font-mono custom-black mb-5">
               Add a new task
@@ -318,7 +323,10 @@ function App() {
           </div>
         </div>
 
-        <div className="w-2/6 text-2xl container ms-10 me-20 mt-10 pb-2 mb-5 bg-white shadow-md flex-shrink rounded-md">
+        <div className="w-14"></div>
+
+        {/* タスク一覧 */}
+        <div className="w-4/12 text-2xl container mt-10 pb-2 mb-5 bg-white shadow-md flex-shrink rounded-md">
           <div className="flex justify-between py-3">
             <h1 className="font-bold text-3xl ml-3">Tasks</h1>
             <p className="text-sm text-gray-500 mr-3 self-center">
@@ -340,6 +348,32 @@ function App() {
             {list}
           </div>
         </div>
+
+
+        <div className="w-14"></div>
+
+        {/* タスク詳細 */}
+
+        <div className="w-4/12 text-2xl container mt-24 mb-16 bg-white shadow-md flex-shrink rounded-md">
+          <div className="flex justify-center pt-10">
+            <h1 className="font-bold text-3xl text-center"></h1>
+          </div>
+              <img src={contentImage} className="w-1/2 mx-auto pt-32 mt-10" />
+              <h3 className="text-center font-bold font-mono text-md mt-5 ms-5 me-5">
+              Please select a task.
+              </h3>
+          {todos.length === 0 && (
+            <>
+              
+            </>
+          )}
+          <div>
+          </div>
+        </div>
+
+        <div className="w-14"></div>
+
+
       </div>
     </>
   );
