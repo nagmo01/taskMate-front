@@ -15,6 +15,8 @@ import settingImage from "../public/681.jpeg";
 import contentImage from "../public/319.jpeg";
 import { FaReact } from "react-icons/fa";
 import { IconContext } from "react-icons";
+import axios from "axios";
+
 
 let count = 0;
 
@@ -46,6 +48,7 @@ function App() {
       </div>
     );
   }
+
 
   const [editValue, setEditValue] = useState("");
 
@@ -297,6 +300,7 @@ function App() {
               >
                 +
               </button>
+              {ToggleSwitchButton("text-center", )}
             </div>
             {/* 送信キー切り替えのラジオボタン */}
             {/* <div>
