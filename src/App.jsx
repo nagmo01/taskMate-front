@@ -300,7 +300,6 @@ function App() {
               >
                 +
               </button>
-              {ToggleSwitchButton("text-center", )}
             </div>
             {/* 送信キー切り替えのラジオボタン */}
             {/* <div>
