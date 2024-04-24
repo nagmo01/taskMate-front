@@ -23,6 +23,8 @@ let count = 0;
 function App() {
   const [todos, setTodos] = useState([]);
   const [value, setValue] = useState("");
+  //const [bodyValue, setBodyValue] = useState("");
+  //const [dateValue, setDateValue] = useState(Time.now);
 
   // 送信キー切り替えのラジオボタン
   const [selectedOption, setSelectedOption] = useState("Shift");
@@ -61,11 +63,16 @@ function App() {
     const newTodos = [
       ...todos,
       { id: count, text: value, type: "task", completed: false },
+      //{ id: count, title: value, body: bodyValue, due_date: dateValue },
     ];
     setTodos(newTodos);
     setValue("");
+    //setBodyValue("");
+    //setDateValue(0);
     count += 1;
   };
+
+  
 
   // onKeyDownで実行される。押されたキーが指定したもののとき、タスク追加処理を実行する
   const handleKeyDown = (e) => {
