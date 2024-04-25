@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import { FaRegTrashAlt } from "react-icons/fa";
 // import { FaPen } from "react-icons/fa";
 import { FiHome } from "react-icons/fi";
@@ -18,13 +18,13 @@ import { IconContext } from "react-icons";
 import axios from "axios";
 
 
-let count = 0;
-
 function App() {
   const [todos, setTodos] = useState([]);
   const [value, setValue] = useState("");
-  //const [bodyValue, setBodyValue] = useState("");
-  //const [dateValue, setDateValue] = useState(Time.now);
+  const [bodyValue, setBodyValue] = useState("");
+  const [dateValue, setDateValue] = useState("2024-01-01-11:00");
+  // フォームの形変更
+  const [form, setForm] = useState(false);
 
   // 送信キー切り替えのラジオボタン
   const [selectedOption, setSelectedOption] = useState("Shift");
@@ -32,6 +32,17 @@ function App() {
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
   };
+
+  const fetch = async () => {
+    const res = await axios.get("http://localhost:3001/tasks")
+    setTodos(res.data)
+  }
+
+  
+
+  useEffect(() => {
+    fetch()
+  },[])
 
   function RadioButtonGroup({ options, selectedOption, onChange }) {
     return (
@@ -51,35 +62,40 @@ function App() {
     );
   }
 
-
   const [editValue, setEditValue] = useState("");
 
   // タスクを追加する処理。（送信ボタンorEnterのどちらかで実行される）
-  const addTodo = () => {
+  const addTodo = async () => {
     if (value == "") {
       return;
     }
 
-    const newTodos = [
-      ...todos,
-      { id: count, text: value, type: "task", completed: false },
-      //{ id: count, title: value, body: bodyValue, due_date: dateValue },
-    ];
-    setTodos(newTodos);
-    setValue("");
-    //setBodyValue("");
-    //setDateValue(0);
-    count += 1;
-  };
+    // const newTodos = [
+    //   ...todos,
+    //   // { id: count, text: value, type: "task", completed: false },
+    //   { id: count, title: value, body: bodyValue, due_date: dateValue },
+    // ];
+    // setTodos(newTodos);
 
-  
+    await axios.post("http://localhost:3001/tasks", {
+        title: value,
+        body: bodyValue,
+        due_date: dateValue,
+      })
+
+
+      fetch()
+    setValue("");
+    setBodyValue("");
+    //setDateValue(0);
+  };
 
   // onKeyDownで実行される。押されたキーが指定したもののとき、タスク追加処理を実行する
   const handleKeyDown = (e) => {
     if (
       (selectedOption === "Shift" && e.shiftKey) ||
-        (selectedOption === "Control" && e.ctrlKey) ||
-        (selectedOption === "Alt/Cmd" && e.metaKey)
+      (selectedOption === "Control" && e.ctrlKey) ||
+      (selectedOption === "Alt/Cmd" && e.metaKey)
     ) {
       if (e.key === "Enter") {
         addTodo();
@@ -87,87 +103,83 @@ function App() {
     }
   };
 
-  const onUpdate = (id) => {
-    setTodos(
-      todos.map((todo) => {
-        if (todo.id === id) {
-          return { ...todo, type: "task", text: editValue };
-        } else {
-          return { ...todo };
-        }
-      })
-    );
-  };
+  // const onUpdate = (id) => {
+  //   setTodos(
+  //     todos.map((todo) => {
+  //       if (todo.id === id) {
+  //         return { ...todo, type: "task", text: editValue };
+  //       } else {
+  //         return { ...todo };
+  //       }
+  //     })
+  //   );
+  // };
 
-  const onChange = (e) => {
-    setValue(e.target.value);
-  };
+  // const onEditChange = (e) => {
+  //   setEditValue(e.target.value);
+  // };
 
-  const onEditChange = (e) => {
-    setEditValue(e.target.value);
-  };
+  // const onDelete = (id) => {
+  //   setTodos(todos.filter((todo) => todo.id !== id));
+  // };
 
-  const onDelete = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
-  };
+  // const onEdit = (id) => {
+  //   setTodos(
+  //     todos.map((todo) => {
+  //       if (todo.id === id) {
+  //         setEditValue(todo.text);
+  //         return { ...todo, type: "form" };
+  //       } else {
+  //         return { ...todo, type: "task" };
+  //       }
+  //     })
+  //   );
+  // };
 
-  const onEdit = (id) => {
-    setTodos(
-      todos.map((todo) => {
-        if (todo.id === id) {
-          setEditValue(todo.text);
-          return { ...todo, type: "form" };
-        } else {
-          return { ...todo, type: "task" };
-        }
-      })
-    );
-  };
-
-  const onCheck = (id) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : { ...todo }
-      )
-    );
-  };
+  // const onCheck = (id) => {
+  //   setTodos(
+  //     todos.map((todo) =>
+  //       todo.id === id ? { ...todo, completed: !todo.completed } : { ...todo }
+  //     )
+  //   );
+  // };
 
   const list = todos.map((todo, index) => {
-    return todo.type === "task" ? (
+    return (
       //デフォルト
-      <div key={todo.id} className="z-10">
+      <div key={todo.id}>
         {index === 0 ? (
-          <h1 className="custom-border-red text-xs font-bold text-white shadow custom-bg-black ps-2 py-1 rounded-sm">
+          <h1 className="sticky top-0 custom-border-red text-xs font-bold text-white shadow custom-bg-black ps-2 py-1 rounded-sm">
             Today
           </h1>
         ) : (
-            <h1></h1>
-          )}
+          <h1></h1>
+        )}
         {index === 6 ? (
           <h1 className="custom-border-red text-xs font-bold text-white shadow custom-bg-black ps-2 py-1 rounded-sm">
             5月
           </h1>
         ) : (
-            <h1></h1>
-          )}
+          <h1></h1>
+        )}
         {index === 10 ? (
           <h1 className="custom-border-red text-xs font-bold text-white shadow custom-bg-black ps-2 py-1 rounded-sm">
             Other
           </h1>
         ) : (
-            <h1></h1>
-          )}
+          <h1></h1>
+        )}
         <div className="mx-1 my-2 flex justify-between border shadow rounded py-1 z-10">
           <div className="flex justify-start items-center">
             <input
               className="ml-2 mr-1 radio"
               name="radio-9"
               type="radio"
-              checked={todo.completed}
+              checked={0}
               onChange={() => onCheck(todo.id)}
               disabled
             />
-            <p className="text-sm">{todo.text}</p>
+            <p className="text-sm">{todo.title}</p>
           </div>
           <div className="mr-3 flex items-center z-10">
             {/* <button
@@ -186,28 +198,29 @@ function App() {
           </div>
         </div>
       </div>
-    ) : (
-        //更新画面
-        <div className="flex justify-center mt-1" key={todo.id}>
-          <input
-            className="w-2/3 border border-gray rounded me-1 my-2 text-xs pl-1"
-            type="text"
-            value={editValue}
-            onChange={onEditChange}
-          />
-          <button
-            className="text-xs text-white self-center rounded-md bg-red-400 py-1 my-2 px-2"
-            onClick={() => onUpdate(todo.id)}
-          >
-            Enter
-          </button>
-        </div>
-      );
+    );
+    // : (
+    //   //更新画面
+    //   <div className="flex justify-center mt-1" key={todo.id}>
+    //     <input
+    //       className="w-2/3 border border-gray rounded me-1 my-2 text-xs pl-1"
+    //       type="text"
+    //       value={editValue}
+    //       onChange={onEditChange}
+    //     />
+    //     <button
+    //       className="text-xs text-white self-center rounded-md bg-red-400 py-1 my-2 px-2"
+    //       onClick={() => onUpdate(todo.id)}
+    //     >
+    //       Enter
+    //     </button>
+    //   </div>
+    // );
   });
 
   return (
     <>
-      <header className="text-black bg-white shadow-md">
+      {/* <header className="text-black bg-white shadow-md">
         <div className="navbar px-10">
           <div className="flex-none">
             <button className="btn btn-square btn-ghost">
@@ -228,6 +241,7 @@ function App() {
           </div>
           <div className="flex-1">
             <a className="btn btn-ghost text-xl font-sans">Essential Todo</a>
+            <input type="checkbox" onChange={() => setForm(!form)} />
           </div>
           <div className="flex-none">
             <button className="btn btn-square btn-ghost">
@@ -247,36 +261,36 @@ function App() {
             </button>
           </div>
         </div>
-      </header>
+      </header> */}
 
-{/* メイン */}
+      {/* メイン */}
       <div className="mx-auto rounded-md flex h-screen">
-
         {/* サイドバー */}
         <div className="bg-white text-original shadow-md">
-          <h3 className="text-center font-bold font-sans text-lg mt-28 mb-10">
-          </h3>
+          <h3 className="text-center font-bold font-sans text-lg mt-28 mb-10"></h3>
           <div className="flex justify-center text-lg font-sans font-bold">
-            <div className='flex-col ms-5 me-1 pt-20 mt-1'>
-
-
-              <IconContext.Provider value={{ size: '23px' }}>
-              <div className="py-5 flex text-start me-3"><CgProfile className='self-center me-3' />
-              {/* <p className='self-center'>Account</p> */}
-              </div>
-              <div className="py-5 flex text-start me-3"><FaCheck className='self-center me-3' />
-              {/* <p className='self-center'>Done</p> */}
-              </div>
-              <div className="py-5 flex text-start me-3"><FaRegTrashCan className='self-center me-3' />
-              {/* <p className='self-center'>Trash</p> */}
-              </div>
-              <div className="py-5 flex text-start me-3">
-                <RxCalendar className='self-center me-3' />
-                {/* <p className='self-center'>Calendar</p> */}
-              </div>
-              <div className="py-5 flex text-start me-3"><IoMdSettings className='self-center me-3' />
-              {/* <p className='self-center'>Setting</p> */}
-              </div>
+            <div className="flex-col ms-5 me-1 pt-20 mt-1">
+              <IconContext.Provider value={{ size: "23px" }}>
+                <div className="py-5 flex text-start me-3">
+                  <CgProfile className="self-center me-3" />
+                  {/* <p className='self-center'>Account</p> */}
+                </div>
+                <div className="py-5 flex text-start me-3">
+                  <FaCheck className="self-center me-3" />
+                  {/* <p className='self-center'>Done</p> */}
+                </div>
+                <div className="py-5 flex text-start me-3">
+                  <FaRegTrashCan className="self-center me-3" />
+                  {/* <p className='self-center'>Trash</p> */}
+                </div>
+                <div className="py-5 flex text-start me-3">
+                  <RxCalendar className="self-center me-3" />
+                  {/* <p className='self-center'>Calendar</p> */}
+                </div>
+                <div className="py-5 flex text-start me-3">
+                  <IoMdSettings className="self-center me-3" />
+                  {/* <p className='self-center'>Setting</p> */}
+                </div>
               </IconContext.Provider>
             </div>
           </div>
@@ -286,7 +300,7 @@ function App() {
 
         {/* フォーム＆各種メニュー */}
         <div className="w-4/12 flex-col justify-center mt-10">
-          <div className="pt-32 w-full">
+          <div className="pt-10 w-full">
             <h1 className="text-center font-bold font-mono custom-black mb-5">
               Add a new task
             </h1>
@@ -295,19 +309,38 @@ function App() {
                 className="pl-1 text-xs w-2/3 border border-gray border-1 rounded bg-white"
                 type="text"
                 value={value}
-                autoFocus={focus}
-                onChange={onChange}
+                autoFocus={1}
+                onChange={(e) => setValue(e.target.value)}
                 placeholder={`${selectedOption} + Enter`}
                 maxLength={20}
                 onKeyDown={handleKeyDown}
               />
-              <button
-                className="text-white rounded-md bg-black px-3 ml-1 pb-1"
-                onClick={addTodo}
-              >
-                +
-              </button>
+              {/* {form || (
+                <button
+                  className="text-white rounded-md bg-black px-3 ml-1 pb-1"
+                  onClick={addTodo}
+                >
+                  +
+                </button>
+              )} */}
+              {/* フォームの切り替えトグル */}
+            <div className="form-control ms-5 my-1">
+                <input type="checkbox" onChange={() => setForm(!form)} className="toggle" />
             </div>
+            </div>
+            {/* スイッチによってフォームの形を変える */}
+            {form && (
+              <textarea
+                className="text-black bg-white"
+                placeholder="内容を記入してください"
+                value={bodyValue}
+                onChange={(e) => setBodyValue(e.target.value)}
+                onKeyDown={handleKeyDown}
+              />
+            )}
+
+            
+
             {/* 送信キー切り替えのラジオボタン */}
             {/* <div>
               <RadioButtonGroup
@@ -343,22 +376,20 @@ function App() {
               You have {todos.length} tasks
             </p>
           </div>
-          {todos.length === 0 && (
+          {todos.length === 0 ? (
             <>
               <h1 className="custom-border-red text-xs font-bold text-white shadow custom-bg-black ps-2 py-1 rounded-sm">
                 Today
               </h1>
               <img src={writeImage} className="w-1/2 mx-auto pt-32 mt-10" />
               <h3 className="text-center font-bold font-mono text-md mt-5 ms-5 me-5">
-              Time to add your first task!
+                Time to add your first task!
               </h3>
             </>
+          ) : (
+            <div className="scrollbar h-full overflow-y-auto">{list}</div>
           )}
-          <div>
-            {list}
-          </div>
         </div>
-
 
         <div className="w-14"></div>
 
@@ -368,22 +399,15 @@ function App() {
           <div className="flex justify-center pt-10">
             <h1 className="font-bold text-3xl text-center"></h1>
           </div>
-              <img src={contentImage} className="w-1/2 mx-auto pt-32 mt-10" />
-              <h3 className="text-center font-bold font-mono text-md mt-5 ms-5 me-5">
-              Please select a task.
-              </h3>
-          {todos.length === 0 && (
-            <>
-              
-            </>
-          )}
-          <div>
-          </div>
+          <img src={contentImage} className="w-1/2 mx-auto pt-32 mt-10" />
+          <h3 className="text-center font-bold font-mono text-md mt-5 ms-5 me-5">
+            Please select a task.
+          </h3>
+          {todos.length === 0 && <></>}
+          <div></div>
         </div>
 
         <div className="w-14"></div>
-
-
       </div>
     </>
   );
