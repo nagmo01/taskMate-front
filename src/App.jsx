@@ -16,7 +16,8 @@ import contentImage from "../public/319.jpeg";
 import { FaReact } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import axios from "axios";
-
+import { FaTrashAlt } from "react-icons/fa";
+import { DatePicker } from "@yamada-ui/calendar"
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -34,15 +35,13 @@ function App() {
   };
 
   const fetch = async () => {
-    const res = await axios.get("http://localhost:3001/tasks")
-    setTodos(res.data)
-  }
-
-  
+    const res = await axios.get("http://localhost:3001/tasks");
+    setTodos(res.data);
+  };
 
   useEffect(() => {
-    fetch()
-  },[])
+    fetch();
+  }, []);
 
   function RadioButtonGroup({ options, selectedOption, onChange }) {
     return (
@@ -78,13 +77,12 @@ function App() {
     // setTodos(newTodos);
 
     await axios.post("http://localhost:3001/tasks", {
-        title: value,
-        body: bodyValue,
-        due_date: dateValue,
-      })
+      title: value,
+      body: bodyValue,
+      due_date: dateValue,
+    });
 
-
-      fetch()
+    fetch();
     setValue("");
     setBodyValue("");
     //setDateValue(0);
@@ -119,9 +117,10 @@ function App() {
   //   setEditValue(e.target.value);
   // };
 
-  // const onDelete = (id) => {
-  //   setTodos(todos.filter((todo) => todo.id !== id));
-  // };
+  const onDelete = async (id) => {
+    await axios.delete(`http://localhost:3001/tasks/${id}`);
+    fetch();
+  };
 
   // const onEdit = (id) => {
   //   setTodos(
@@ -177,7 +176,7 @@ function App() {
               type="radio"
               checked={0}
               onChange={() => onCheck(todo.id)}
-              disabled
+              // disabled
             />
             <p className="text-sm">{todo.title}</p>
           </div>
@@ -187,13 +186,13 @@ function App() {
               onClick={() => onEdit(todo.id)}
             >
               <FaPen className="w-3 h-3" />
-            </button>
+            </button> */}
             <button
-              className="rounded-full bg-black p-2 text-white"
+              className="p-2 text-black"
               onClick={() => onDelete(todo.id)}
             >
-              <FaRegTrashAlt className="w-3 h-3" />
-            </button> */}
+              <FaTrashAlt />
+            </button>
             <h3 className="font-mono text-sm font-bold">3/25</h3>
           </div>
         </div>
@@ -300,22 +299,62 @@ function App() {
 
         {/* フォーム＆各種メニュー */}
         <div className="w-4/12 flex-col justify-center mt-10">
+          {/* フォーム入力欄 */}
           <div className="pt-10 w-full">
-            <h1 className="text-center font-bold font-mono custom-black mb-5">
-              Add a new task
-            </h1>
-            <div className="flex bg-white rounded-md shadow-md justify-center pt-5 pb-5">
-              <input
-                className="pl-1 text-xs w-2/3 border border-gray border-1 rounded bg-white"
-                type="text"
-                value={value}
-                autoFocus={1}
-                onChange={(e) => setValue(e.target.value)}
-                placeholder={`${selectedOption} + Enter`}
-                maxLength={20}
-                onKeyDown={handleKeyDown}
-              />
-              {/* {form || (
+            <div className="flex justify-center mb-5 ps-16">
+              <h1 className="text-center font-bold font-mono custom-black self-center">
+                Add a new task
+              </h1>
+              {/* フォームの切り替えトグル */}
+              <div className="form-control ms-5">
+                <input
+                  type="checkbox"
+                  onChange={() => setForm(!form)}
+                  className="toggle"
+                />
+              </div>
+            </div>
+
+            <div className="bg-white rounded-md shadow-md">
+              <div className="flex flex-col items-center justify-center duration-300 pt-5 pb-5">
+                <input
+                  className="ps-1 py-2 w-5/6 border border-gray border-1 rounded bg-white"
+                  type="text"
+                  value={value}
+                  autoFocus={1}
+                  onChange={(e) => setValue(e.target.value)}
+                  placeholder={form ? "title" : `${selectedOption} + Enter`}
+                  maxLength={30}
+                  onKeyDown={form || handleKeyDown}
+                />
+
+                <div
+                  className={`overflow-y-hidden transition-all duration-300 ${
+                    form
+                      ? "max-h-96 w-full text-center"
+                      : "max-h-0 w-full text-center"
+                  }`}
+                >
+                  <textarea
+                    className="ps-1 pt-1 h-64 w-5/6 mt-6 text-black bg-white  border rounded resize-none"
+                    placeholder="## markdown"
+                    value={bodyValue}
+                    onChange={(e) => setBodyValue(e.target.value)}
+                  />
+
+                  {/* 日時フォームと送信ボタン */}
+                  <div className="flex">
+                  {/* <DatePicker defaultValue={new Date()} /> */}
+
+                  </div>
+
+                </div>
+
+                {/* スイッチによってフォームの形を変える */}
+                {/* {form && (
+                  
+                )} */}
+                {/* {form || (
                 <button
                   className="text-white rounded-md bg-black px-3 ml-1 pb-1"
                   onClick={addTodo}
@@ -323,23 +362,8 @@ function App() {
                   +
                 </button>
               )} */}
-              {/* フォームの切り替えトグル */}
-            <div className="form-control ms-5 my-1">
-                <input type="checkbox" onChange={() => setForm(!form)} className="toggle" />
+              </div>
             </div>
-            </div>
-            {/* スイッチによってフォームの形を変える */}
-            {form && (
-              <textarea
-                className="text-black bg-white"
-                placeholder="内容を記入してください"
-                value={bodyValue}
-                onChange={(e) => setBodyValue(e.target.value)}
-                onKeyDown={handleKeyDown}
-              />
-            )}
-
-            
 
             {/* 送信キー切り替えのラジオボタン */}
             {/* <div>
@@ -351,6 +375,7 @@ function App() {
             </div> */}
           </div>
 
+          {/* 各種設定ウィンドウ */}
           <div className="mt-20 pt-10">
             <h3 className="text-center mb-4 font-bold font-mono">Setting</h3>
             <div className="h-96 bg-white shadow-md rounded-md">
@@ -369,10 +394,10 @@ function App() {
         <div className="w-14"></div>
 
         {/* タスク一覧 */}
-        <div className="w-4/12 text-2xl container mt-10 pb-2 mb-5 bg-white shadow-md flex-shrink rounded-md">
+        <div className="overflow-hidden w-4/12 text-2xl container mt-10 pb-2 mb-5 bg-white shadow-md flex-shrink rounded-md">
           <div className="flex justify-between py-3">
-            <h1 className="font-bold text-3xl ml-3">Tasks</h1>
-            <p className="text-sm text-gray-500 mr-3 self-center">
+            <h1 className="font-bold text-3xl font-sans ms-3">Tasks</h1>
+            <p className="text-sm text-gray-500 me-3 self-center">
               You have {todos.length} tasks
             </p>
           </div>
@@ -387,7 +412,7 @@ function App() {
               </h3>
             </>
           ) : (
-            <div className="scrollbar h-full overflow-y-auto">{list}</div>
+            <div className="scrollbar h-full overflow-y-auto pb-14">{list}</div>
           )}
         </div>
 
