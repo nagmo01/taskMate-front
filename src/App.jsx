@@ -335,7 +335,7 @@ function App() {
                 ) : (
                   <div className="flex  justify-center w-5/6">
                     <input
-                      className="ps-1 w-5/6 border border-gray border-1 rounded bg-white"
+                      className="ps-1 w-3/4 border border-gray border-1 rounded bg-white"
                       type="text"
                       value={value}
                       autoFocus={1}
@@ -431,7 +431,7 @@ function App() {
         <div className="w-14"></div>
 
         {/* タスク一覧 */}
-        <div className="overflow-hidden w-[500px] text-2xl container mt-10 pb-2 mb-5 bg-white shadow-md flex-shrink rounded-md">
+        <div className="overflow-hidden font-sans w-[500px] text-2xl container mt-10 pb-2 mb-5 bg-white shadow-md flex-shrink rounded-md">
           <div className="flex justify-between py-3">
             <h1 className="font-bold text-3xl font-sans ms-3">Tasks</h1>
             <p className="text-sm text-gray-500 me-3 self-center">
@@ -469,7 +469,7 @@ function App() {
           <div></div>
         </div>
 
-        <div className="w-1                )}4 mx-auto"></div>
+        <div className="w-14 mx-auto"></div>
       </div>
     </>
   );
