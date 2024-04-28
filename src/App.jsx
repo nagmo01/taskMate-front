@@ -17,7 +17,8 @@ import { FaReact } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import axios from "axios";
 import { FaTrashAlt } from "react-icons/fa";
-import { DatePicker } from "@yamada-ui/calendar"
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -36,6 +37,7 @@ function App() {
 
   const fetch = async () => {
     const res = await axios.get("http://localhost:3001/tasks");
+    console.log(res.data);
     setTodos(res.data);
   };
 
@@ -187,13 +189,13 @@ function App() {
             >
               <FaPen className="w-3 h-3" />
             </button> */}
+            <h3 className="font-mono text-sm font-bold">3/25</h3>
             <button
               className="p-2 text-black"
               onClick={() => onDelete(todo.id)}
             >
-              <FaTrashAlt />
+              <FaTrashAlt style={{ fontSize: "14px" }} />
             </button>
-            <h3 className="font-mono text-sm font-bold">3/25</h3>
           </div>
         </div>
       </div>
@@ -295,18 +297,19 @@ function App() {
           </div>
         </div>
 
-        <div className="w-14"></div>
+        <div className="w-14 mx-auto"></div>
 
         {/* フォーム＆各種メニュー */}
-        <div className="w-4/12 flex-col justify-center mt-10">
+        <div className="w-[500px] flex-col justify-center mt-10">
           {/* フォーム入力欄 */}
           <div className="pt-10 w-full">
-            <div className="flex justify-center mb-5 ps-16">
-              <h1 className="text-center font-bold font-mono custom-black self-center">
+            <div className="flex justify-around mb-5">
+              <div className=""></div>
+              <h1 className="ps-10 font-bold font-mono custom-black self-center">
                 Add a new task
               </h1>
               {/* フォームの切り替えトグル */}
-              <div className="form-control ms-5">
+              <div className="form-control">
                 <input
                   type="checkbox"
                   onChange={() => setForm(!form)}
@@ -317,7 +320,8 @@ function App() {
 
             <div className="bg-white rounded-md shadow-md">
               <div className="flex flex-col items-center justify-center duration-300 pt-5 pb-5">
-                <input
+                {form ? (
+                  <input
                   className="ps-1 py-2 w-5/6 border border-gray border-1 rounded bg-white"
                   type="text"
                   value={value}
@@ -327,6 +331,29 @@ function App() {
                   maxLength={30}
                   onKeyDown={form || handleKeyDown}
                 />
+
+                ) : (
+                  <div className="flex  justify-center w-5/6">
+                    <input
+                      className="ps-1 w-5/6 border border-gray border-1 rounded bg-white"
+                      type="text"
+                      value={value}
+                      autoFocus={1}
+                      onChange={(e) => setValue(e.target.value)}
+                      placeholder={form ? "title" : `${selectedOption} + Enter`}
+                      maxLength={30}
+                      onKeyDown={form || handleKeyDown}
+                    />
+                    <button
+                      className="text-white font-sans rounded-md bg-black px-3 ml-1"
+                      onClick={addTodo}
+                    >
+                      +
+                    </button>
+                  </div>
+
+                )}
+                
 
                 <div
                   className={`overflow-y-hidden transition-all duration-300 ${
@@ -343,25 +370,20 @@ function App() {
                   />
 
                   {/* 日時フォームと送信ボタン */}
-                  <div className="flex">
-                  {/* <DatePicker defaultValue={new Date()} /> */}
-
+                  <div className="w-5/6 mt-5 mx-auto flex justify-between text-black">
+                    <div className="border w-3/4">
+                      <DatePicker defaultValue={new Date()} />
+                    </div>
+                    <button className="rounded py-2 px-4 border text-white bg-gray-800">
+                      create
+                    </button>
                   </div>
-
                 </div>
 
                 {/* スイッチによってフォームの形を変える */}
                 {/* {form && (
                   
                 )} */}
-                {/* {form || (
-                <button
-                  className="text-white rounded-md bg-black px-3 ml-1 pb-1"
-                  onClick={addTodo}
-                >
-                  +
-                </button>
-              )} */}
               </div>
             </div>
 
@@ -378,15 +400,30 @@ function App() {
           {/* 各種設定ウィンドウ */}
           <div className="mt-20 pt-10">
             <h3 className="text-center mb-4 font-bold font-mono">Setting</h3>
-            <div className="h-96 bg-white shadow-md rounded-md">
+            {/* <div className="h-96 bg-white shadow-md rounded-md"> */}
+            <div
+              className={`bg-white shadow-md rounded-md text-center overflow-y-hidden transition-all duration-300 ${
+                form ? "h-0" : "h-96"
+              }`}
+            >
               <img
                 src={settingImage}
                 alt="ゴミ箱の画像"
-                className="w-1/2 mx-auto pt-16"
+                className="w-1/2 mx-auto"
               />
               <h3 className="text-center font-bold font-mono text-md">
                 Customize your preferences here
               </h3>
+              <h3 className="font-bold font-mono mt-10">
+                送信キー切り替えのラジオボタン
+              </h3>
+              <div className="font-bold font-mono mt-5">
+                <RadioButtonGroup
+                  options={options}
+                  selectedOption={selectedOption}
+                  onChange={handleOptionChange}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -394,7 +431,7 @@ function App() {
         <div className="w-14"></div>
 
         {/* タスク一覧 */}
-        <div className="overflow-hidden w-4/12 text-2xl container mt-10 pb-2 mb-5 bg-white shadow-md flex-shrink rounded-md">
+        <div className="overflow-hidden w-[500px] text-2xl container mt-10 pb-2 mb-5 bg-white shadow-md flex-shrink rounded-md">
           <div className="flex justify-between py-3">
             <h1 className="font-bold text-3xl font-sans ms-3">Tasks</h1>
             <p className="text-sm text-gray-500 me-3 self-center">
@@ -420,7 +457,7 @@ function App() {
 
         {/* タスク詳細 */}
 
-        <div className="w-4/12 text-2xl container mt-24 mb-16 bg-white shadow-md flex-shrink rounded-md">
+        <div className="w-[450px] text-2xl container mt-24 mb-16 bg-white shadow-md flex-shrink rounded-md">
           <div className="flex justify-center pt-10">
             <h1 className="font-bold text-3xl text-center"></h1>
           </div>
@@ -432,7 +469,7 @@ function App() {
           <div></div>
         </div>
 
-        <div className="w-14"></div>
+        <div className="w-1                )}4 mx-auto"></div>
       </div>
     </>
   );
