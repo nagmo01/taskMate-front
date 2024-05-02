@@ -19,6 +19,8 @@ import axios from "axios";
 import { FaTrashAlt } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import EditTask from "./components/EditTask";
+import TaskList from "./components/TaskList";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -27,6 +29,12 @@ function App() {
   const [dateValue, setDateValue] = useState("2024-01-01-11:00");
   // フォームの形変更
   const [form, setForm] = useState(false);
+
+  // タスクを選択すると詳細フォームを開くようにするときの状態管理
+  const [activeTask, setActiveTask] = useState(false);
+  const getActiveTask = (todos, activeTask) => {
+    return todos.find((todo) => todo.id === activeTask);
+  };
 
   // 送信キー切り替えのラジオボタン
   const [selectedOption, setSelectedOption] = useState("Shift");
@@ -37,13 +45,16 @@ function App() {
 
   const fetch = async () => {
     const res = await axios.get("http://localhost:3001/tasks");
-    console.log(res.data);
     setTodos(res.data);
   };
 
   useEffect(() => {
     fetch();
   }, []);
+
+  useEffect(() => {
+    console.log(activeTask)
+  }, [activeTask])
 
   function RadioButtonGroup({ options, selectedOption, onChange }) {
     return (
@@ -121,6 +132,9 @@ function App() {
 
   const onDelete = async (id) => {
     await axios.delete(`http://localhost:3001/tasks/${id}`);
+    if (id === activeTask) {
+      setActiveTask(false);
+    }
     fetch();
   };
 
@@ -137,89 +151,15 @@ function App() {
   //   );
   // };
 
-  // const onCheck = (id) => {
-  //   setTodos(
-  //     todos.map((todo) =>
-  //       todo.id === id ? { ...todo, completed: !todo.completed } : { ...todo }
-  //     )
-  //   );
-  // };
-
-  const list = todos.map((todo, index) => {
-    return (
-      //デフォルト
-      <div key={todo.id}>
-        {index === 0 ? (
-          <h1 className="sticky top-0 custom-border-red text-xs font-bold text-white shadow custom-bg-black ps-2 py-1 rounded-sm">
-            Today
-          </h1>
-        ) : (
-          <h1></h1>
-        )}
-        {index === 6 ? (
-          <h1 className="custom-border-red text-xs font-bold text-white shadow custom-bg-black ps-2 py-1 rounded-sm">
-            5月
-          </h1>
-        ) : (
-          <h1></h1>
-        )}
-        {index === 10 ? (
-          <h1 className="custom-border-red text-xs font-bold text-white shadow custom-bg-black ps-2 py-1 rounded-sm">
-            Other
-          </h1>
-        ) : (
-          <h1></h1>
-        )}
-        <div className="mx-1 my-2 flex justify-between border shadow rounded py-1 z-10">
-          <div className="flex justify-start items-center">
-            <input
-              className="ml-2 mr-1 radio"
-              name="radio-9"
-              type="radio"
-              checked={0}
-              onChange={() => onCheck(todo.id)}
-              // disabled
-            />
-            <p className="text-sm">{todo.title}</p>
-          </div>
-          <div className="mr-3 flex items-center z-10">
-            {/* <button
-              className="rounded-full bg-white hover:bg-black p-2 text-black hover:text-white border border-black mr-1"
-              onClick={() => onEdit(todo.id)}
-            >
-              <FaPen className="w-3 h-3" />
-            </button> */}
-            <h3 className="font-mono text-sm font-bold">3/25</h3>
-            <button
-              className="p-2 text-black"
-              onClick={() => onDelete(todo.id)}
-            >
-              <FaTrashAlt style={{ fontSize: "14px" }} />
-            </button>
-          </div>
-        </div>
-      </div>
+  const onCheck = (id) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : { ...todo }
+      )
     );
-    // : (
-    //   //更新画面
-    //   <div className="flex justify-center mt-1" key={todo.id}>
-    //     <input
-    //       className="w-2/3 border border-gray rounded me-1 my-2 text-xs pl-1"
-    //       type="text"
-    //       value={editValue}
-    //       onChange={onEditChange}
-    //     />
-    //     <button
-    //       className="text-xs text-white self-center rounded-md bg-red-400 py-1 my-2 px-2"
-    //       onClick={() => onUpdate(todo.id)}
-    //     >
-    //       Enter
-    //     </button>
-    //   </div>
-    // );
-  });
+  };
 
-  return (
+    return (
     <>
       {/* <header className="text-black bg-white shadow-md">
         <div className="navbar px-10">
@@ -265,7 +205,7 @@ function App() {
       </header> */}
 
       {/* メイン */}
-      <div className="mx-auto rounded-md flex h-screen">
+      <div className="mx-auto rounded-md flex justify-center h-screen">
         {/* サイドバー */}
         <div className="bg-white text-original shadow-md">
           <h3 className="text-center font-bold font-sans text-lg mt-28 mb-10"></h3>
@@ -322,16 +262,14 @@ function App() {
               <div className="flex flex-col items-center justify-center duration-300 pt-5 pb-5">
                 {form ? (
                   <input
-                  className="ps-1 py-2 w-5/6 border border-gray border-1 rounded bg-white"
-                  type="text"
-                  value={value}
-                  autoFocus={1}
-                  onChange={(e) => setValue(e.target.value)}
-                  placeholder={form ? "title" : `${selectedOption} + Enter`}
-                  maxLength={30}
-                  onKeyDown={form || handleKeyDown}
-                />
-
+                    className="ps-1 py-2 w-5/6 border border-gray border-1 rounded bg-white"
+                    type="text"
+                    value={value}
+                    autoFocus={1}
+                    onChange={(e) => setValue(e.target.value)}
+                    placeholder={form ? "title" : `${selectedOption} + Enter`}
+                    maxLength={30}
+                  />
                 ) : (
                   <div className="flex  justify-center w-5/6">
                     <input
@@ -342,7 +280,7 @@ function App() {
                       onChange={(e) => setValue(e.target.value)}
                       placeholder={form ? "title" : `${selectedOption} + Enter`}
                       maxLength={30}
-                      onKeyDown={form || handleKeyDown}
+                      onKeyDown={handleKeyDown}
                     />
                     <button
                       className="text-white font-sans rounded-md bg-black px-3 ml-1"
@@ -351,9 +289,7 @@ function App() {
                       +
                     </button>
                   </div>
-
                 )}
-                
 
                 <div
                   className={`overflow-y-hidden transition-all duration-300 ${
@@ -371,10 +307,13 @@ function App() {
 
                   {/* 日時フォームと送信ボタン */}
                   <div className="w-5/6 mt-5 mx-auto flex justify-between text-black">
-                    <div className="border w-3/4">
+                    <div className="border">
                       <DatePicker defaultValue={new Date()} />
                     </div>
-                    <button className="rounded py-2 px-4 border text-white bg-gray-800">
+                    <button
+                      className="rounded py-2 px-4 border text-white bg-gray-800"
+                      onClick={addTodo}
+                    >
                       create
                     </button>
                   </div>
@@ -399,7 +338,9 @@ function App() {
 
           {/* 各種設定ウィンドウ */}
           <div className="mt-20 pt-10">
+            {form || (
             <h3 className="text-center mb-4 font-bold font-mono">Setting</h3>
+            )}
             {/* <div className="h-96 bg-white shadow-md rounded-md"> */}
             <div
               className={`bg-white shadow-md rounded-md text-center overflow-y-hidden transition-all duration-300 ${
@@ -428,7 +369,7 @@ function App() {
           </div>
         </div>
 
-        <div className="w-14"></div>
+        <div className={`w-14 ${activeTask && "mx-auto"}`}></div>
 
         {/* タスク一覧 */}
         <div className="overflow-hidden font-sans w-[500px] text-2xl container mt-10 pb-2 mb-5 bg-white shadow-md flex-shrink rounded-md">
@@ -449,15 +390,17 @@ function App() {
               </h3>
             </>
           ) : (
-            <div className="scrollbar h-full overflow-y-auto pb-14">{list}</div>
+            <div className="scrollbar h-full overflow-y-auto pb-14">
+              <TaskList todos={todos} activeTask={activeTask} setActiveTask={setActiveTask} onCheck={onCheck} onDelete={onDelete} />
+            </div>
           )}
         </div>
 
-        <div className="w-14"></div>
+        <div className="w-14 mx-auto"></div>
 
         {/* タスク詳細 */}
 
-        <div className="w-[450px] text-2xl container mt-24 mb-16 bg-white shadow-md flex-shrink rounded-md">
+        {/* <div className="w-[450px] text-2xl container mt-24 mb-16 bg-white shadow-md flex-shrink rounded-md">
           <div className="flex justify-center pt-10">
             <h1 className="font-bold text-3xl text-center"></h1>
           </div>
@@ -467,9 +410,30 @@ function App() {
           </h3>
           {todos.length === 0 && <></>}
           <div></div>
+        </div> */}
+
+        <div className={`${activeTask ? 'opacity-100 w-[450px]' : 'opacity-0 w-0'} transition-opacity duration-500 text-2xl container mt-24 mb-16 bg-white shadow-md flex-shrink rounded-md`}>
+          {/* {activeTask ? (
+            <EditTask getActiveTask={getActiveTask(todos, activeTask)} setActveTask={setActiveTask} />
+          ) : (
+            <>
+              <div className="flex justify-center pt-10">
+                <h1 className="font-bold text-3xl text-center"></h1>
+              </div>
+              <img src={contentImage} className="w-1/2 mx-auto pt-32 mt-10" />
+              <h3 className="text-center font-bold font-mono text-md mt-5 ms-5 me-5">
+                Please select a task.
+              </h3>
+              {todos.length === 0 && <></>}
+              <div></div>
+            </>
+          )} */}
+          {activeTask && <EditTask todos={todos} setTodos={setTodos} setActiveTask={setActiveTask} activeTask={activeTask} />}
         </div>
 
+        { activeTask && (
         <div className="w-14 mx-auto"></div>
+        )}
       </div>
     </>
   );
