@@ -1,26 +1,12 @@
 import "./App.css";
 import { useEffect, useState } from "react";
-// import { FaRegTrashAlt } from "react-icons/fa";
-// import { FaPen } from "react-icons/fa";
-import { FiHome } from "react-icons/fi";
-import { IoMdSettings } from "react-icons/io";
-import { FaRegTrashCan } from "react-icons/fa6";
-import { CgProfile } from "react-icons/cg";
-import { RxCalendar } from "react-icons/rx";
-import { FaCheck } from "react-icons/fa6";
-import { MdDashboard } from "react-icons/md";
-import trashImage from "../public/727.jpeg";
 import writeImage from "../public/628.jpeg";
 import settingImage from "../public/681.jpeg";
-import contentImage from "../public/319.jpeg";
-import { FaReact } from "react-icons/fa";
-import { IconContext } from "react-icons";
 import axios from "axios";
-import { FaTrashAlt } from "react-icons/fa";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import EditTask from "./components/EditTask";
 import TaskList from "./components/TaskList";
+import SideBar from "./components/SideBar";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -152,37 +138,13 @@ function App() {
     <>
             {/* メイン */}
       <div className="mx-auto rounded-md flex justify-center h-screen">
-        {/* サイドバー */}
-        <div className="bg-white text-original shadow-md">
-          <h3 className="text-center font-bold font-sans text-lg mt-28 mb-10"></h3>
-          <div className="flex justify-center text-lg font-sans font-bold">
-            <div className="flex-col ms-5 me-1 pt-20 mt-1">
-              <IconContext.Provider value={{ size: "23px" }}>
-                <div className="py-5 flex text-start me-3">
-                  <CgProfile className="self-center me-3" />
-                  {/* <p className='self-center'>Account</p> */}
-                </div>
-                <div className="py-5 flex text-start me-3">
-                  <FaCheck className="self-center me-3" />
-                  {/* <p className='self-center'>Done</p> */}
-                </div>
-                <div className="py-5 flex text-start me-3">
-                  <FaRegTrashCan className="self-center me-3" />
-                  {/* <p className='self-center'>Trash</p> */}
-                </div>
-                <div className="py-5 flex text-start me-3">
-                  <RxCalendar className="self-center me-3" />
-                  {/* <p className='self-center'>Calendar</p> */}
-                </div>
-                <div className="py-5 flex text-start me-3">
-                  <IoMdSettings className="self-center me-3" />
-                  {/* <p className='self-center'>Setting</p> */}
-                </div>
-              </IconContext.Provider>
-            </div>
-          </div>
-        </div>
 
+        {/* サイドバー */}
+
+        <SideBar />
+
+
+        {/* //余白 */}
         <div className="w-14 mx-auto"></div>
 
         {/* フォーム＆各種メニュー */}
