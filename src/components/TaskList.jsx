@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 
 export default function TaskList({
@@ -8,13 +8,47 @@ export default function TaskList({
   onDelete,
   onCheck,
 }) {
+  console.log("ソートする前のTodos")
+  console.log(todos)
+  todos.sort((a, b) => {
+    const dateDiff = new Date(a.due_date) - new Date(b.due_date);
+    if (dateDiff !== 0 ) {
+      return dateDiff;
+    }
+
+    if (a.due_time === null && b.due_time === null) {
+      if (a.created_at < b.created_at) return 1;
+      if (a.created_at > b.created_at) return -1;
+    }
+
+    if (a.due_time === null) {
+      return -1;
+    }
+
+    if (b.due_time === null ) {
+      return 1;
+    }
+
+    // return new Date(`2000-01-01 ${b.due_time}`) - new Date(`2000-01-01 ${a.due_time}`);
+    if (a.due_time > b.due_time) return 1;
+    if (a.due_time < b.due_time) return -1;
+
+  });
+
+  console.log("ソートしたあとのTodos")
+  console.log(todos)
+
   const today = new Date().toISOString().split("T")[0];
   const oneWeekLater = new Date(Date.now() + 604800000)
     .toISOString()
     .split("T")[0];
 
+  console.log(todos);
+
   const groupedTasks = todos.reduce((groups, task) => {
     const { due_date } = task;
+
+    if (!groups["Late"]) groups["Late"] = [];
 
     // 当日を含む直近1週間のタスクを日別に分ける
     if (due_date >= today && due_date < oneWeekLater) {
@@ -22,43 +56,60 @@ export default function TaskList({
       if (!groups[key]) groups[key] = [];
       groups[key].push(task);
     }
-    // 今後の期日が設定されているタスクは 'future tasks' に格納
-    else if (due_date >= oneWeekLater) {
-      if (!groups["future tasks"]) groups["future tasks"] = [];
-      groups["future tasks"].push(task);
+    // 期日なしタスクは'Anytime'に格納
+    else if (due_date === "2200-12-31") {
+      if (!groups["Anytime"]) groups["Anytime"] = [];
+      groups["Anytime"].push(task);
     }
-    // 前日以下の期日が設定されているタスクは 'past tasks' に格納
+
+    // 今後の期日が設定されているタスクは 'Upcoming' に格納
+    else if (due_date >= oneWeekLater) {
+      if (!groups["Upcoming"]) groups["Upcoming"] = [];
+      groups["Upcoming"].push(task);
+    }
+
+    // 前日以下の期日が設定されているタスクは 'Late' に格納
     else {
-      if (!groups["past tasks"]) groups["past tasks"] = [];
-      groups["past tasks"].push(task);
+      if (!groups["Late"]) groups["Late"] = [];
+      groups["Late"].push(task);
     }
 
     return groups;
   }, {});
 
   console.log(groupedTasks);
-  console.log(today)
+  console.log(today);
+
+  const targetRef = useRef(null);
+  useEffect(() => {
+    if (targetRef.current) {
+      targetRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
 
   return (
     <>
       {Object.entries(groupedTasks).map(([key, tasks]) => (
         <div key={key}>
-          { today === key ? (
-          <h3 className="bg-original text-white font-sans text-xs font-bold ps-2 py-1 rounded-sm">
-            Today
-          </h3>
+          {today === key ? (
+            <h3
+              ref={targetRef}
+              className="bg-original text-white font-sans text-xs font-bold ps-2 py-1 rounded-sm"
+            >
+              Today
+            </h3>
           ) : (
             <h3 className="bg-original text-white font-sans text-xs font-bold ps-2 py-1 rounded-sm">
-            {key}
-          </h3>
+              {key}
+            </h3>
           )}
-          
+
           {tasks.map((todo) => (
             // <p key={todo.id}>{todo.title}</p>
             <div
               key={todo.id}
               className={`mx-1 my-2 flex justify-between border shadow rounded ${
-                activeTask === todo.id ? "bg-neutral-700 text-white" : ""
+                activeTask === todo.id ? "bg-sub text-white" : ""
               }`}
             >
               <div
@@ -73,34 +124,37 @@ export default function TaskList({
               </div>
               <div className="me-3 flex items-center">
                 {/* <h3 className="font-mono text-sm font-bold">{todo.due_date}</h3> */}
+
                 <div>
-                  {todo.title.length >= 8 ? (
+                  {todo.due_date === today ? (
+                    // todayのタスク
                     <>
-                      <h3 className="font-mono text-xs font-bold">
-                        {new Date(todo.due_date).toLocaleDateString("en-US", {
-                          month: "2-digit",
-                          day: "2-digit",
-                        })}
-                      </h3>
-                      <h3 className="font-mono text-xs font-bold">
-                        {new Date(todo.due_date).toLocaleTimeString("ja-JP", {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                          hourCycle: "h24",
-                        })}
-                      </h3>
+                      {todo.due_time && (
+                        <h3 className="font-mono text-sm font-bold">
+                          {todo.due_time
+                            .split("T")[1]
+                            ?.split(":")
+                            .slice(0, 2)
+                            .join(":")}
+                        </h3>
+                      )}
                     </>
                   ) : (
-                    <h3 className="font-mono text-sm font-bold">
-                      {new Date(todo.due_date).toLocaleDateString("en-US", {
-                        month: "2-digit",
-                        day: "2-digit",
-                      })}
-                    </h3>
+                    // today以外のタスク
+                    <>
+                      {todo.due_date && (
+                        <h3 className="font-mono text-sm font-bold">
+                          {new Date(todo.due_date).toLocaleDateString("ja-JP", {
+                            month: "2-digit",
+                            day: "2-digit",
+                          })}
+                        </h3>
+                      )}
+                    </>
                   )}
                 </div>
                 <button
-                  className="p-2 text-original"
+                  className="py-2 ps-3 text-original"
                   onClick={() => onDelete(todo.id)}
                 >
                   <FaTrashAlt style={{ fontSize: "14px" }} />

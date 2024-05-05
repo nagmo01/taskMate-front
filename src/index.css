@@ -11,9 +11,13 @@ body {
 
 
 .scrollbar::-webkit-scrollbar {
-  width:7px;
+  width:6px;
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
   background: #e4e4e4; /* ハンドルの色 */
+}
+
+.scrollbar {
+  height: 91.5%;
 }

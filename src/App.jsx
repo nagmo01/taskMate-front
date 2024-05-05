@@ -26,7 +26,19 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [value, setValue] = useState("");
   const [bodyValue, setBodyValue] = useState("");
-  const [dateValue, setDateValue] = useState("2024-01-01-11:00");
+  const today = new Date().toISOString().split("T")[0];
+  const [dateValue, setDateValue] = useState(today);
+  const [timeValue, setTimeValue] = useState();
+  const [anyTime, setAnyTime] = useState(false);
+
+  const handleDateChange = (e) => {
+    setDateValue(e.target.value);
+  };
+
+  const handleTimeChange = (e) => {
+    setTimeValue(e.target.value);
+  };
+
   // フォームの形変更
   const [form, setForm] = useState(false);
 
@@ -53,8 +65,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log(activeTask)
-  }, [activeTask])
+    console.log(activeTask);
+  }, [activeTask]);
 
   function RadioButtonGroup({ options, selectedOption, onChange }) {
     return (
@@ -92,12 +104,16 @@ function App() {
     await axios.post("http://localhost:3001/tasks", {
       title: value,
       body: bodyValue,
-      due_date: dateValue,
+      due_date: anyTime ? "2200-12-31" : dateValue,
+      due_time: anyTime ? "" : timeValue,
     });
 
     fetch();
     setValue("");
     setBodyValue("");
+    setDateValue(today);
+    setTimeValue("");
+    // setAnyTime(false);
     //setDateValue(0);
   };
 
@@ -159,7 +175,7 @@ function App() {
     );
   };
 
-    return (
+  return (
     <>
       {/* <header className="text-black bg-white shadow-md">
         <div className="navbar px-10">
@@ -259,10 +275,10 @@ function App() {
             </div>
 
             <div className="bg-white rounded-md shadow-md">
-              <div className="flex flex-col items-center justify-center duration-300 pt-5 pb-5">
+              <div className="flex flex-col items-center justify-center duration-300 py-5">
                 {form ? (
                   <input
-                    className="ps-1 py-2 w-5/6 border border-gray border-1 rounded bg-white"
+                    className="outline-inherit ps-1 py-2 mt-3 mb-2 w-5/6 border border-gray border-1 rounded bg-white"
                     type="text"
                     value={value}
                     autoFocus={1}
@@ -273,7 +289,7 @@ function App() {
                 ) : (
                   <div className="flex  justify-center w-5/6">
                     <input
-                      className="ps-1 w-3/4 border border-gray border-1 rounded bg-white"
+                      className="outline-inherit ps-1 w-3/4 border border-gray border-1 rounded bg-white"
                       type="text"
                       value={value}
                       autoFocus={1}
@@ -294,29 +310,54 @@ function App() {
                 <div
                   className={`overflow-y-hidden transition-all duration-300 ${
                     form
-                      ? "max-h-96 w-full text-center"
+                      ? "min-h-96 w-full text-center"
                       : "max-h-0 w-full text-center"
                   }`}
                 >
                   <textarea
-                    className="ps-1 pt-1 h-64 w-5/6 mt-6 text-black bg-white  border rounded resize-none"
+                    className="outline-inherit ps-1 pt-1 h-64 w-5/6 mt-6 text-black bg-white  border rounded resize-none"
                     placeholder="## markdown"
                     value={bodyValue}
                     onChange={(e) => setBodyValue(e.target.value)}
                   />
 
                   {/* 日時フォームと送信ボタン */}
-                  <div className="w-5/6 mt-5 mx-auto flex justify-between text-black">
-                    <div className="border">
-                      <DatePicker defaultValue={new Date()} />
+                  <div className="w-5/6 mx-auto mt-5">
+                    <div className="form-control">
+                      <label className="label cursor-pointer">
+                        <span className="label-text">Date ON/OFF</span>
+                        <input type="checkbox" className="toggle" onChange={() => setAnyTime(!anyTime)} />
+                      </label>
                     </div>
-                    <button
-                      className="rounded py-2 px-4 border text-white bg-gray-800"
-                      onClick={addTodo}
-                    >
-                      create
-                    </button>
                   </div>
+                  <div className="w-5/6 mt-5 mx-auto flex justify-between text-black">
+                    <label htmlFor="date-input">Date</label>
+                    <input
+                      id="date-input"
+                      className={`${anyTime ? "text-gray-300" : ""}`}
+                      type="date"
+                      value={dateValue}
+                      onChange={handleDateChange}
+                      disabled={anyTime ? true : false}
+                    />
+                  </div>
+                  <div className="w-5/6 my-5 mx-auto flex justify-between text-black">
+                    <label htmlFor="time-input">Time</label>
+                    <input
+                      id="time-input"
+                      className={`${anyTime ? "text-gray-300" : ""}`}
+                      type="time"
+                      value={timeValue}
+                      onChange={handleTimeChange}
+                      disabled={anyTime ? true : false}
+                    />
+                  </div>
+                  <button
+                    className="rounded w-5/6 py-2 px-4 mt-5 text-white bg-original"
+                    onClick={addTodo}
+                  >
+                    create
+                  </button>
                 </div>
 
                 {/* スイッチによってフォームの形を変える */}
@@ -339,7 +380,7 @@ function App() {
           {/* 各種設定ウィンドウ */}
           <div className="mt-20 pt-10">
             {form || (
-            <h3 className="text-center mb-4 font-bold font-mono">Setting</h3>
+              <h3 className="text-center mb-4 font-bold font-mono">Setting</h3>
             )}
             {/* <div className="h-96 bg-white shadow-md rounded-md"> */}
             <div
@@ -372,7 +413,7 @@ function App() {
         <div className={`w-14 ${activeTask && "mx-auto"}`}></div>
 
         {/* タスク一覧 */}
-        <div className="overflow-hidden font-sans w-[500px] text-2xl container mt-10 pb-2 mb-5 bg-white shadow-md flex-shrink rounded-md">
+        <div className="font-sans w-[500px] text-2xl container mt-10 pb-2 mb-5 bg-white shadow-md rounded-md">
           <div className="flex justify-between py-3">
             <h1 className="font-bold text-3xl font-sans ms-3">Tasks</h1>
             <p className="text-sm text-gray-500 me-3 self-center">
@@ -390,8 +431,14 @@ function App() {
               </h3>
             </>
           ) : (
-            <div className="scrollbar h-full overflow-y-auto pb-14">
-              <TaskList todos={todos} activeTask={activeTask} setActiveTask={setActiveTask} onCheck={onCheck} onDelete={onDelete} />
+            <div className="scrollbar overflow-y-auto">
+              <TaskList
+                todos={todos}
+                activeTask={activeTask}
+                setActiveTask={setActiveTask}
+                onCheck={onCheck}
+                onDelete={onDelete}
+              />
             </div>
           )}
         </div>
@@ -412,7 +459,11 @@ function App() {
           <div></div>
         </div> */}
 
-        <div className={`${activeTask ? 'opacity-100 w-[450px]' : 'opacity-0 w-0'} transition-opacity duration-500 text-2xl container mt-24 mb-16 bg-white shadow-md flex-shrink rounded-md`}>
+        <div
+          className={`${
+            activeTask ? "opacity-100 w-[450px]" : "opacity-0 w-0"
+          } transition-opacity duration-500 text-2xl container mt-24 mb-16 bg-white shadow-md flex-shrink rounded-md`}
+        >
           {/* {activeTask ? (
             <EditTask getActiveTask={getActiveTask(todos, activeTask)} setActveTask={setActiveTask} />
           ) : (
@@ -428,12 +479,17 @@ function App() {
               <div></div>
             </>
           )} */}
-          {activeTask && <EditTask todos={todos} setTodos={setTodos} setActiveTask={setActiveTask} activeTask={activeTask} />}
+          {activeTask && (
+            <EditTask
+              todos={todos}
+              setTodos={setTodos}
+              setActiveTask={setActiveTask}
+              activeTask={activeTask}
+            />
+          )}
         </div>
 
-        { activeTask && (
-        <div className="w-14 mx-auto"></div>
-        )}
+        {activeTask && <div className="w-14 mx-auto"></div>}
       </div>
     </>
   );

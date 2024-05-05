@@ -8,6 +8,7 @@ export default {
     extend: {
       backgroundColor: {
         'original': "#333",
+        'sub': "#FF6138",
       }
     },
   },
