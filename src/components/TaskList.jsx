@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { FaTrashAlt } from "react-icons/fa";
+import writeImage from "../../public/628.jpeg";
 
 export default function TaskList({
   todos,
@@ -8,8 +9,8 @@ export default function TaskList({
   onDelete,
   onCheck,
 }) {
-  console.log("ソートする前のTodos");
-  console.log(todos);
+
+  // タスク一覧を時系列順に並び変えておく
   todos.sort((a, b) => {
     const dateDiff = new Date(a.due_date) - new Date(b.due_date);
     if (dateDiff !== 0) {
@@ -40,8 +41,8 @@ export default function TaskList({
     .toISOString()
     .split("T")[0];
 
-  console.log(todos);
 
+  // タスク一覧が入った連想配列todosをそれぞれ日付ごとにkey:[{}, {}]って形の連想配列にする
   const groupedTasks = todos.reduce((groups, task) => {
     const { due_date } = task;
 
@@ -74,15 +75,16 @@ export default function TaskList({
     return groups;
   }, {});
 
-  console.log(groupedTasks);
-  console.log(today);
 
+  // Todayを読み込み時にスクロールするようにする
   const targetRef = useRef(null);
   useEffect(() => {
     if (targetRef.current) {
       targetRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, []);
+
+
 
   return (
     <>
@@ -184,72 +186,21 @@ export default function TaskList({
                     </>
                   )}
 
-                  {/* : (
-                    // today以外のタスク
-                    <>
-                      {todo.due_date && (
-                        <h3 className="font-mono text-sm font-bold">
-                          {new Date(todo.due_date).toLocaleDateString("ja-JP", {
-                            month: "2-digit",
-                            day: "2-digit",
-                          })}
-                        </h3>
-                      )}
-                    </>
-                  )} */}
                 </div>
+
                 <button
                   className="py-2 ps-3 text-original"
                   onClick={() => onDelete(todo.id)}
                 >
                   <FaTrashAlt style={{ fontSize: "14px" }} />
                 </button>
+
               </div>
             </div>
           ))}
         </div>
       ))}
 
-      {/* {todos.map((todo, index) => (
-        <div key={todo.id}>
-          <div
-            className={`mx-1 my-2 flex justify-between border shadow rounded ${
-              activeTask === todo.id ? "bg-neutral-700 text-white" : ""
-            }`}
-          >
-            <div
-              className="flex justify-start items-center w-full cursor-default"
-              onClick={() => setActiveTask(todo.id)}
-            >
-              <input
-                className={`ml-2 mr-1 radio ${
-                  activeTask === todo.id ? "border-white" : "border-gray"
-                }`}
-                name="radio-9"
-                type="radio"
-                checked={false}
-                onChange={() => onCheck(todo.id)}
-                disabled
-              />
-              <p className="text-sm">{todo.title}</p>
-            </div>
-            <div className="mr-3 flex items-center z-10">
-              <h3 className="font-mono text-sm font-bold">3/25</h3>
-              <button
-                className="p-2 text-black"
-                onClick={() => onDelete(todo.id)}
-              >
-                <FaTrashAlt
-                  style={{
-                    fontSize: "14px",
-                    color: activeTask === todo.id ? "white" : "inherit",
-                  }}
-                />
-              </button>
-            </div>
-          </div>
-        </div>
-      ))} */}
     </>
   );
 }

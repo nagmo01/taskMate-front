@@ -130,21 +130,6 @@ function App() {
     }
   };
 
-  // const onUpdate = (id) => {
-  //   setTodos(
-  //     todos.map((todo) => {
-  //       if (todo.id === id) {
-  //         return { ...todo, type: "task", text: editValue };
-  //       } else {
-  //         return { ...todo };
-  //       }
-  //     })
-  //   );
-  // };
-
-  // const onEditChange = (e) => {
-  //   setEditValue(e.target.value);
-  // };
 
   const onDelete = async (id) => {
     await axios.delete(`http://localhost:3001/tasks/${id}`);
@@ -154,18 +139,6 @@ function App() {
     fetch();
   };
 
-  // const onEdit = (id) => {
-  //   setTodos(
-  //     todos.map((todo) => {
-  //       if (todo.id === id) {
-  //         setEditValue(todo.text);
-  //         return { ...todo, type: "form" };
-  //       } else {
-  //         return { ...todo, type: "task" };
-  //       }
-  //     })
-  //   );
-  // };
 
   const onCheck = (id) => {
     setTodos(
@@ -177,50 +150,7 @@ function App() {
 
   return (
     <>
-      {/* <header className="text-black bg-white shadow-md">
-        <div className="navbar px-10">
-          <div className="flex-none">
-            <button className="btn btn-square btn-ghost">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                className="inline-block w-5 h-5 stroke-current"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                ></path>
-              </svg>
-            </button>
-          </div>
-          <div className="flex-1">
-            <a className="btn btn-ghost text-xl font-sans">Essential Todo</a>
-            <input type="checkbox" onChange={() => setForm(!form)} />
-          </div>
-          <div className="flex-none">
-            <button className="btn btn-square btn-ghost">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                className="inline-block w-5 h-5 stroke-current"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-                ></path>
-              </svg>
-            </button>
-          </div>
-        </div>
-      </header> */}
-
-      {/* メイン */}
+            {/* メイン */}
       <div className="mx-auto rounded-md flex justify-center h-screen">
         {/* サイドバー */}
         <div className="bg-white text-original shadow-md">
@@ -360,21 +290,9 @@ function App() {
                   </button>
                 </div>
 
-                {/* スイッチによってフォームの形を変える */}
-                {/* {form && (
-                  
-                )} */}
               </div>
             </div>
 
-            {/* 送信キー切り替えのラジオボタン */}
-            {/* <div>
-              <RadioButtonGroup
-                options={options}
-                selectedOption={selectedOption}
-                onChange={handleOptionChange}
-              />
-            </div> */}
           </div>
 
           {/* 各種設定ウィンドウ */}
@@ -382,7 +300,7 @@ function App() {
             {form || (
               <h3 className="text-center mb-4 font-bold font-mono">Setting</h3>
             )}
-            {/* <div className="h-96 bg-white shadow-md rounded-md"> */}
+
             <div
               className={`bg-white shadow-md rounded-md text-center overflow-y-hidden transition-all duration-300 ${
                 form ? "h-0" : "h-96"
@@ -447,38 +365,12 @@ function App() {
 
         {/* タスク詳細 */}
 
-        {/* <div className="w-[450px] text-2xl container mt-24 mb-16 bg-white shadow-md flex-shrink rounded-md">
-          <div className="flex justify-center pt-10">
-            <h1 className="font-bold text-3xl text-center"></h1>
-          </div>
-          <img src={contentImage} className="w-1/2 mx-auto pt-32 mt-10" />
-          <h3 className="text-center font-bold font-mono text-md mt-5 ms-5 me-5">
-            Please select a task.
-          </h3>
-          {todos.length === 0 && <></>}
-          <div></div>
-        </div> */}
 
         <div
           className={`${
             activeTask ? "opacity-100 w-[450px]" : "opacity-0 w-0"
           } transition-opacity duration-500 text-2xl container mt-24 mb-16 bg-white shadow-md flex-shrink rounded-md`}
         >
-          {/* {activeTask ? (
-            <EditTask getActiveTask={getActiveTask(todos, activeTask)} setActveTask={setActiveTask} />
-          ) : (
-            <>
-              <div className="flex justify-center pt-10">
-                <h1 className="font-bold text-3xl text-center"></h1>
-              </div>
-              <img src={contentImage} className="w-1/2 mx-auto pt-32 mt-10" />
-              <h3 className="text-center font-bold font-mono text-md mt-5 ms-5 me-5">
-                Please select a task.
-              </h3>
-              {todos.length === 0 && <></>}
-              <div></div>
-            </>
-          )} */}
           {activeTask && (
             <EditTask
               todos={todos}
