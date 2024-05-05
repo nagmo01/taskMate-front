@@ -8,11 +8,11 @@ export default function TaskList({
   onDelete,
   onCheck,
 }) {
-  console.log("ソートする前のTodos")
-  console.log(todos)
+  console.log("ソートする前のTodos");
+  console.log(todos);
   todos.sort((a, b) => {
     const dateDiff = new Date(a.due_date) - new Date(b.due_date);
-    if (dateDiff !== 0 ) {
+    if (dateDiff !== 0) {
       return dateDiff;
     }
 
@@ -25,18 +25,15 @@ export default function TaskList({
       return -1;
     }
 
-    if (b.due_time === null ) {
+    if (b.due_time === null) {
       return 1;
     }
 
     // return new Date(`2000-01-01 ${b.due_time}`) - new Date(`2000-01-01 ${a.due_time}`);
     if (a.due_time > b.due_time) return 1;
     if (a.due_time < b.due_time) return -1;
-
   });
 
-  console.log("ソートしたあとのTodos")
-  console.log(todos)
 
   const today = new Date().toISOString().split("T")[0];
   const oneWeekLater = new Date(Date.now() + 604800000)
@@ -126,7 +123,7 @@ export default function TaskList({
                 {/* <h3 className="font-mono text-sm font-bold">{todo.due_date}</h3> */}
 
                 <div>
-                  {todo.due_date === today ? (
+                  {todo.due_date === today && (
                     // todayのタスク
                     <>
                       {todo.due_time && (
@@ -139,7 +136,55 @@ export default function TaskList({
                         </h3>
                       )}
                     </>
-                  ) : (
+                  )}
+
+                  {todo.due_date === "2200-12-31" && (
+                    // anytimeのタスク
+                    <>
+                      <h3 className="font-mono text-sm font-bold"></h3>
+                    </>
+                  )}
+
+                  {todo.due_date < today && (
+                    // Lateのタスク
+                    <>
+                        <h3 className="font-mono text-sm font-bold">
+                          {new Date(todo.due_date).toLocaleDateString("ja-JP", {
+                            month: "2-digit",
+                            day: "2-digit",
+                          })}
+                        </h3>
+                    </>
+                  )}
+
+                  {(todo.due_date > today ) && (todo.due_date <= oneWeekLater ) && (
+                    // 今日以降で1週間以内のタスク
+                    <>
+                    {todo.due_time && (
+                      <h3 className="font-mono text-sm font-bold">
+                      {todo.due_time
+                        .split("T")[1]
+                        ?.split(":")
+                        .slice(0, 2)
+                        .join(":")}
+                    </h3>
+                    )}
+                    </>
+                  )}
+
+                  {(todo.due_date > oneWeekLater) && (todo.due_date !== "2200-12-31" ) && (
+                    // 1週間以上先のタスク
+                    <>
+                    <h3 className="font-mono text-sm font-bold">
+                          {new Date(todo.due_date).toLocaleDateString("ja-JP", {
+                            month: "2-digit",
+                            day: "2-digit",
+                          })}
+                        </h3>
+                    </>
+                  )}
+
+                  {/* : (
                     // today以外のタスク
                     <>
                       {todo.due_date && (
@@ -151,7 +196,7 @@ export default function TaskList({
                         </h3>
                       )}
                     </>
-                  )}
+                  )} */}
                 </div>
                 <button
                   className="py-2 ps-3 text-original"
