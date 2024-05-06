@@ -61,6 +61,10 @@ export default function EditTask({
     setActiveTask(false);
   }
 
+  const handleUpdate = () => {
+    updateTask(activeTask, task)
+  }
+
   
 
   return (
@@ -123,7 +127,7 @@ export default function EditTask({
         </button>
         <button
           className="rounded shadow-md p-2 text-sm ms-2 me-5 bg-sub text-white font-mono"
-          onClick={handleClose}
+          onClick={handleUpdate}
         >
           update
         </button>
