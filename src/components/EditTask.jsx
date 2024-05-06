@@ -98,7 +98,8 @@ export default function EditTask({
             onChange={bodyHandleChange}
             autoFocus
             onBlur={handleBlur}
-            className="resize-none w-full outline-none scrollbar h-[500px] overflow-y-auto text-left text-lg px-2 mt-5 mb-5 whitespace-pre-wrap"
+            style={{ height: '500px' }} 
+            className="resize-none w-full outline-none text-left text-lg px-2 mt-5 mb-5"
           >
             {task.body}
           </textarea>
@@ -106,21 +107,22 @@ export default function EditTask({
       ) : (
         <div
           onClick={() => setIsBodyClick(true)}
-          className="w-full scrollbar h-[500px] overflow-y-auto text-left text-lg px-2 mt-5 mb-5 whitespace-pre-wrap"
+          className="w-full text-left text-lg px-2 mt-5 mb-5 whitespace-pre-wrap"
+          style={{ height: '500px' }} 
         >
           {task.body}
         </div>
       )}
 
-      <div className="flex justify-center">
+      <div className="flex justify-end">
         <button
-          className="rounded-md p-1 text-sm bg-original text-white font-mono"
+          className="rounded p-2 text-sm bg-original text-white font-mono"
           onClick={handleClose}
         >
           close
         </button>
         <button
-          className="ms-3 rounded-md p-1 text-sm bg-original text-white font-mono"
+          className="rounded shadow-md p-2 text-sm ms-2 me-5 bg-sub text-white font-mono"
           onClick={handleClose}
         >
           update
