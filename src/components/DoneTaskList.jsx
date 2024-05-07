@@ -25,7 +25,7 @@ export default function DoneTaskList({ todos, onDelete, onReturn, setDone }) {
           ×
         </button>
       </div>
-      <div className="border-2 border-original mt-2 mb-2"></div>
+      <div className="border-2 border-gray-400 mt-2 mb-2"></div>
 
       <div className="scrollbar overflow-scroll">
       {sortedTasks.map((todo) => (

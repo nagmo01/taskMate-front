@@ -103,7 +103,7 @@ export default function EditTask({
             autoFocus
             onBlur={handleBlur}
             style={{ height: '500px' }} 
-            className="resize-none w-full outline-none text-left text-lg px-2 mt-5 mb-8"
+            className="resize-none w-full outline-none text-left text-lg px-3 mt-7 mb-8"
           >
             {task.body}
           </textarea>
@@ -111,14 +111,14 @@ export default function EditTask({
       ) : (
         <div
           onClick={() => setIsBodyClick(true)}
-          className="w-full text-left text-lg px-2 mt-5 mb-10 whitespace-pre-wrap"
+          className="w-full text-left text-lg px-3 mt-7 mb-10 whitespace-pre-wrap"
           style={{ height: '500px' }} 
         >
           {task.body}
         </div>
       )}
 
-      <div className="flex justify-end">
+      {/* <div className="flex justify-end">
         <button
           className="rounded p-2 text-sm bg-original text-white font-mono"
           onClick={handleClose}
@@ -131,10 +131,8 @@ export default function EditTask({
         >
           update
         </button>
+      </div> */}
 
-        
-
-      </div>
     </div>
   );
 }

@@ -112,7 +112,7 @@ export default function TaskList({
             <div
               key={todo.id}
               className={`mx-1 my-2 flex justify-between border shadow rounded ${
-                activeTask === todo.id ? "bg-sub text-white" : ""
+                activeTask === todo.id ? "border border-original bg-zinc-50" : ""
               }`}
             >
               <div
@@ -121,7 +121,10 @@ export default function TaskList({
               >
                 <button
                   className="ms-2 me-1 rounded-full border border-gray-300 p-2 cursor-pointer"
-                  onClick={() => onCheck(todo.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  onCheck(todo.id)
+                }}
                 />
                 <p className="text-sm">{todo.title}</p>
               </div>

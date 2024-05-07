@@ -371,9 +371,17 @@ function App() {
         <div
           className={`${
             activeTask && (done ===false ) ? "opacity-100 w-[550px]" : "opacity-0 w-0"
-          } transition-opacity duration-1000 text-2xl container mt-10 mb-5 bg-white shadow-md flex-shrink rounded-md`}
+          } transition-opacity duration-1000 text-2xl container px-2 mt-10 mb-5 bg-white shadow-md flex-shrink rounded-md`}
         >
-          <h1 className="font-bold text-3xl font-sans ps-1 pt-3 pb-3 bg-sub text-white">View</h1>
+          <div className="flex justify-end pt-1">
+          <button
+          className="me-3 self-center font-sans text-gray-400 text-4xl font-normal"
+          onClick={() => setActiveTask(false)}
+        >
+          ×
+        </button>
+        </div>
+          {/* <h1 className="font-bold text-3xl font-sans ps-1 pt-4 pb-5 border-b-4 border-original">View</h1> */}
           {activeTask && (
             <EditTask
               todos={todos}
