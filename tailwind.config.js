@@ -9,6 +9,10 @@ export default {
       backgroundColor: {
         'original': "#333",
         'sub': "#FF6138",
+      },
+      borderColor: {
+        'original': "#333",
+        'sub': "#FF6138",
       }
     },
   },

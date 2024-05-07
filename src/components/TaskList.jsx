@@ -1,17 +1,21 @@
 import React, { useEffect, useRef } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import writeImage from "../../public/628.jpeg";
+import { FaCheck } from "react-icons/fa6";
 
 export default function TaskList({
-  todos,
+  pendingTasks,
   activeTask,
   setActiveTask,
   onDelete,
   onCheck,
+  done,
 }) {
 
+
+
   // タスク一覧を時系列順に並び変えておく
-  todos.sort((a, b) => {
+  pendingTasks.sort((a, b) => {
     const dateDiff = new Date(a.due_date) - new Date(b.due_date);
     if (dateDiff !== 0) {
       return dateDiff;
@@ -43,10 +47,10 @@ export default function TaskList({
 
 
   // タスク一覧が入った連想配列todosをそれぞれ日付ごとにkey:[{}, {}]って形の連想配列にする
-  const groupedTasks = todos.reduce((groups, task) => {
+  const groupedTasks = pendingTasks.reduce((groups, task) => {
     const { due_date } = task;
 
-    if (!groups["Late"]) groups["Late"] = [];
+    // if (!groups["Late"]) groups["Late"] = [];
 
     // 当日を含む直近1週間のタスクを日別に分ける
     if (due_date >= today && due_date < oneWeekLater) {
@@ -113,11 +117,11 @@ export default function TaskList({
             >
               <div
                 className="flex justify-start items-center w-full cursor-default"
-                onClick={() => setActiveTask(todo.id)}
+                onClick={() => (done || setActiveTask(todo.id))}
               >
                 <button
                   className="ms-2 me-1 rounded-full border border-gray-300 p-2 cursor-pointer"
-                  onChange={() => onCheck(todo.id)}
+                  onClick={() => onCheck(todo.id)}
                 />
                 <p className="text-sm">{todo.title}</p>
               </div>
@@ -188,6 +192,13 @@ export default function TaskList({
 
                 </div>
 
+                {/* <button
+                  className="py-2 ps-3 text-original"
+                  onClick={() => onCheck(todo.id)}
+                >
+                  <FaCheck style={{ fontSize: "14px" }} />
+                </button> */}
+
                 <button
                   className="py-2 ps-3 text-original"
                   onClick={() => onDelete(todo.id)}
@@ -196,6 +207,9 @@ export default function TaskList({
                 </button>
 
               </div>
+
+
+              
             </div>
           ))}
         </div>

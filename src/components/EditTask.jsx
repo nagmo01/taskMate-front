@@ -68,7 +68,7 @@ export default function EditTask({
   
 
   return (
-    <div className="my-5">
+    <div className="pt-3">
       {isInputClick ? (
         <form
           onSubmit={(e) => {
@@ -83,12 +83,12 @@ export default function EditTask({
             onChange={inputHandleChange}
             autoFocus
             onBlur={handleBlur}
-            className="ps-3 w-full font-sans font-bold border-none outline-none"
+            className="ps-3 py-3 w-full font-sans font-bold border-none outline-none"
           />
         </form>
       ) : (
         <div
-          className="ps-3 w-full font-sans font-bold border-none outline-none"
+          className="ps-3 py-3 w-full font-sans font-bold border-none outline-none"
           onClick={() => setIsInputClick(true)}
         >
           {task.title}
@@ -103,7 +103,7 @@ export default function EditTask({
             autoFocus
             onBlur={handleBlur}
             style={{ height: '500px' }} 
-            className="resize-none w-full outline-none text-left text-lg px-2 mt-5 mb-5"
+            className="resize-none w-full outline-none text-left text-lg px-2 mt-5 mb-8"
           >
             {task.body}
           </textarea>
@@ -111,7 +111,7 @@ export default function EditTask({
       ) : (
         <div
           onClick={() => setIsBodyClick(true)}
-          className="w-full text-left text-lg px-2 mt-5 mb-5 whitespace-pre-wrap"
+          className="w-full text-left text-lg px-2 mt-5 mb-10 whitespace-pre-wrap"
           style={{ height: '500px' }} 
         >
           {task.body}

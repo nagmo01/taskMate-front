@@ -7,6 +7,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import EditTask from "./components/EditTask";
 import TaskList from "./components/TaskList";
 import SideBar from "./components/SideBar";
+import DoneTaskList from "./components/DoneTaskList";
+import { DiW3C } from "react-icons/di";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -16,6 +18,11 @@ function App() {
   const [dateValue, setDateValue] = useState(today);
   const [timeValue, setTimeValue] = useState();
   const [anyTime, setAnyTime] = useState(false);
+  const [done, setDone] = useState(false);
+
+
+  // 未完了タスクを取得
+  const pendingTasks = todos.filter((task) => task.done_date === null)
 
   const handleDateChange = (e) => {
     setDateValue(e.target.value);
@@ -92,6 +99,7 @@ function App() {
       body: bodyValue,
       due_date: anyTime ? "2200-12-31" : dateValue,
       due_time: anyTime ? "" : timeValue,
+      done_date: "",
     });
 
     fetch();
@@ -126,13 +134,26 @@ function App() {
   };
 
 
-  const onCheck = (id) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : { ...todo }
-      )
-    );
+  const onCheck = async (id) => {
+    await axios.put(`http://localhost:3001/tasks/${id}`, {
+      done_date: new Date(),
+    })
+    fetch()
   };
+  
+  const onReturn = async (id) => {
+    await axios.put(`http://localhost:3001/tasks/${id}`, {
+      done_date: '',
+    })
+    fetch()
+  }; 
+
+
+  const handleDone = () => {
+    setActiveTask(false)
+    setDone(!done)
+  }
+
 
   return (
     <>
@@ -271,6 +292,12 @@ function App() {
                         form ? "h-0" : "h-96"
                       }`}
                     >
+
+                      {/* 完了済みタスク一覧の表示切り替え */}
+                      <div>
+                        <button className="p-2 bg-blue-200 shadow rounded" onClick={handleDone}>done</button>
+                      </div>
+
                       <img
                         src={settingImage}
                         alt="ゴミ箱の画像"
@@ -289,23 +316,25 @@ function App() {
                           onChange={handleOptionChange}
                         />
                       </div>
+                      
+
                     </div>
                   </div>
                 </div>
         ) }
 
 
-        <div className={`w-20 ${activeTask && "mx-auto"}`}></div>
+        <div className={`w-16 ${activeTask && "mx-auto"}`}></div>
 
         {/* タスク一覧 */}
         <div className="font-sans w-[550px] text-2xl container mt-10 pb-2 mb-5 bg-white shadow-md rounded-md">
           <div className="flex justify-between py-3">
             <h1 className="font-bold text-3xl font-sans ms-3">Tasks</h1>
             <p className="text-sm text-gray-500 me-3 self-center">
-              You have {todos.length} tasks
+              You have {pendingTasks.length} tasks
             </p>
           </div>
-          {todos.length === 0 ? (
+          {pendingTasks.length === 0 ? (
             <>
               <h1 className="custom-border-red text-xs font-bold text-white shadow custom-bg-black ps-2 py-1 rounded-sm">
                 Today
@@ -318,25 +347,33 @@ function App() {
           ) : (
             <div className="scrollbar overflow-y-auto">
               <TaskList
-                todos={todos}
+                pendingTasks={pendingTasks}
                 activeTask={activeTask}
                 setActiveTask={setActiveTask}
                 onCheck={onCheck}
                 onDelete={onDelete}
+                done={done}
               />
             </div>
           )}
         </div>
 
-        { activeTask ? (<div className="w-20"></div>) : (<div className="w-14 mx-auto"></div>)}
+        { activeTask ? (<div className="w-16"></div>) : (<div className="w-16 mx-auto"></div>)}
 
-        {/* タスク詳細 */}
+        {done ? (
+          <>
+                    <DoneTaskList todos={todos} onDelete={onDelete} onReturn={onReturn} setDone={setDone} />
+          <div className="w-14"></div>
+          </>
+        ) : (
+
+        // タスク詳細
         <div
           className={`${
-            activeTask ? "opacity-100 w-[550px]" : "opacity-0 w-0"
-          } transition-opacity duration-1000 text-2xl container mt-28 mb-5 bg-white shadow-md flex-shrink rounded-md`}
+            activeTask && (done ===false ) ? "opacity-100 w-[550px]" : "opacity-0 w-0"
+          } transition-opacity duration-1000 text-2xl container mt-10 mb-5 bg-white shadow-md flex-shrink rounded-md`}
         >
-          <h1 className="font-bold text-3xl font-sans ps-1 pt-2 bg-sub text-white">View</h1>
+          <h1 className="font-bold text-3xl font-sans ps-1 pt-3 pb-3 bg-sub text-white">View</h1>
           {activeTask && (
             <EditTask
               todos={todos}
@@ -346,6 +383,9 @@ function App() {
             />
           )}
         </div>
+
+)}
+
 
         {activeTask && <div className="w-14 mx-auto"></div>}
       </div>
