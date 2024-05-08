@@ -4,6 +4,7 @@ import { TiArrowBackOutline } from "react-icons/ti";
 import { IoReturnDownBack } from "react-icons/io5";
 import { FaTrashAlt } from "react-icons/fa";
 import { TbArrowBackUp } from "react-icons/tb";
+import writeImage from "../../public/628.jpeg";
 
 export default function DoneTaskList({ todos, onDelete, onReturn, setDone }) {
   const doneTasks = todos.filter((todo) => todo.done_date !== null);
@@ -27,7 +28,19 @@ export default function DoneTaskList({ todos, onDelete, onReturn, setDone }) {
       </div>
       <div className="border-2 border-gray-400 mt-2 mb-2"></div>
 
-      <div className="scrollbar overflow-scroll">
+      {sortedTasks.length === 0 ? (
+        <>
+        <img
+        src={writeImage}
+        className="w-7/12 mx-auto pt-40 mt-10"
+        />
+        <h3 className="text-center font-bold font-mono text-xl mt-5 ms-5 me-5">
+        No completed tasks yet!
+        </h3>
+        </>
+        
+      ) : (
+        <div className="scrollbar overflow-scroll">
       {sortedTasks.map((todo) => (
         <React.Fragment key={todo.id}>
           <div className="mx-1 my-2 flex justify-between border shadow rounded">
@@ -51,6 +64,8 @@ export default function DoneTaskList({ todos, onDelete, onReturn, setDone }) {
         </React.Fragment>
       ))}
       </div>
+      )}
+
     </div>
   );
 }
