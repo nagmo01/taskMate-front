@@ -150,7 +150,7 @@ function App() {
       <div className="mx-auto rounded-md flex justify-center h-screen">
         {/* サイドバー */}
 
-        <SideBar />
+        <SideBar done={done} setDone={setDone} />
 
         {/* //余白 */}
         {activeTask ? <div></div> : <div className="w-14 mx-auto"></div>}
