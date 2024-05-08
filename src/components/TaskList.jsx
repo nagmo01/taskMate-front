@@ -60,14 +60,14 @@ export default function TaskList({
     }
     // 期日なしタスクは'Anytime'に格納
     else if (due_date === "2200-12-31") {
-      if (!groups["Anytime"]) groups["Anytime"] = [];
-      groups["Anytime"].push(task);
+      if (!groups["Free"]) groups["Free"] = [];
+      groups["Free"].push(task);
     }
 
     // 今後の期日が設定されているタスクは 'Upcoming' に格納
     else if (due_date >= oneWeekLater) {
-      if (!groups["Upcoming"]) groups["Upcoming"] = [];
-      groups["Upcoming"].push(task);
+      if (!groups["Other"]) groups["Other"] = [];
+      groups["Other"].push(task);
     }
 
     // 前日以下の期日が設定されているタスクは 'Late' に格納
