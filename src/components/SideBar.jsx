@@ -7,31 +7,35 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { IoMdSettings } from "react-icons/io";
 
 
-export default function SideBar() {
+export default function SideBar( { done, setDone } ) {
+
   return (
     <div className="bg-white text-original shadow-md">
       <h3 className="text-center font-bold font-sans text-lg mt-28 mb-10"></h3>
       <div className="flex justify-center text-lg font-sans font-bold">
-        <div className="flex-col ms-5 me-1 pt-20 mt-1">
+        <div className="flex-col pt-20 mt-1 px-1">
           <IconContext.Provider value={{ size: "23px" }}>
-            <div className="py-5 flex text-start me-3">
-              <CgProfile className="self-center me-3" />
+            <div className={`hover:bg-original hover:text-white py-5 flex justify-center px-5 rounded-md mb-1`}>
+              <CgProfile className="self-center" />
               {/* <p className='self-center'>Account</p> */}
             </div>
-            <div className="py-5 flex text-start me-3">
-              <FaCheck className="self-center me-3" />
+            <div
+             className={`${done && "bg-original text-white"} hover:bg-original hover:text-white py-5 flex justify-center rounded-md mb-1`}
+             onClick={() => setDone(!done)}
+             >
+              <FaCheck className="self-center" />
               {/* <p className='self-center'>Done</p> */}
             </div>
-            <div className="py-5 flex text-start me-3">
-              <FaRegTrashCan className="self-center me-3" />
+            <div className="hover:bg-original hover:text-white  py-5 flex justify-center rounded-md mb-1">
+              <FaRegTrashCan className="self-center" />
               {/* <p className='self-center'>Trash</p> */}
             </div>
-            <div className="py-5 flex text-start me-3">
-              <RxCalendar className="self-center me-3" />
+            <div className="hover:bg-original hover:text-white  py-5 flex justify-center rounded-md mb-1">
+              <RxCalendar className="self-center" />
               {/* <p className='self-center'>Calendar</p> */}
             </div>
-            <div className="py-5 flex text-start me-3">
-              <IoMdSettings className="self-center me-3" />
+            <div className="hover:bg-original hover:text-white py-5 flex justify-center rounded-md mb-1">
+              <IoMdSettings className="self-center" />
               {/* <p className='self-center'>Setting</p> */}
             </div>
           </IconContext.Provider>
@@ -40,3 +44,5 @@ export default function SideBar() {
     </div>
   );
 }
+
+
