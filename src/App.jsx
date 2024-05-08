@@ -8,7 +8,6 @@ import EditTask from "./components/EditTask";
 import TaskList from "./components/TaskList";
 import SideBar from "./components/SideBar";
 import DoneTaskList from "./components/DoneTaskList";
-import { DiW3C } from "react-icons/di";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -17,8 +16,15 @@ function App() {
   const today = new Date().toISOString().split("T")[0];
   const [dateValue, setDateValue] = useState(today);
   const [timeValue, setTimeValue] = useState();
-  const [anyTime, setAnyTime] = useState(false);
   const [done, setDone] = useState(false);
+
+  // DateのON/OFF
+  const anyTimeValue = JSON.parse(localStorage.getItem("anytime"));
+  const [anyTime, setAnyTime] = useState(anyTimeValue);
+
+  // フォームの形変更
+  const formValue = JSON.parse(localStorage.getItem("form"));
+  const [form, setForm] = useState(formValue);
 
   // 未完了タスクを取得
   const pendingTasks = todos.filter((task) => task.done_date === null);
@@ -31,20 +37,20 @@ function App() {
     setTimeValue(e.target.value);
   };
 
-  // フォームの形変更
-  const [form, setForm] = useState(false);
-
   // タスクを選択すると詳細フォームを開くようにするときの状態管理
   const [activeTask, setActiveTask] = useState(false);
-  const getActiveTask = (todos, activeTask) => {
-    return todos.find((todo) => todo.id === activeTask);
-  };
 
   // 送信キー切り替えのラジオボタン
-  const [selectedOption, setSelectedOption] = useState("Shift");
+  const submitKeyValue = localStorage.getItem("submitKey")
+  const [selectedOption, setSelectedOption] = useState(submitKeyValue);
   const options = ["Shift", "Control", "Alt/Cmd", "Enter"];
   const handleOptionChange = (e) => {
-    setSelectedOption(e.target.value);
+    const newSubmitKey = e.target.value
+    localStorage.setItem("submitKey", newSubmitKey)
+    const storedSubmitKey = localStorage.getItem("submitKey")
+    setSelectedOption(storedSubmitKey);
+    console.log("送信キー切り替えのlocalStorage");
+    console.log(storedSubmitKey);
   };
 
   const fetch = async () => {
@@ -53,6 +59,9 @@ function App() {
   };
 
   useEffect(() => {
+    if (!submitKeyValue){
+      setSelectedOption("Shift")
+    }
     fetch();
   }, []);
 
@@ -139,9 +148,24 @@ function App() {
     fetch();
   };
 
-  const handleDone = () => {
-    setActiveTask(false);
-    setDone(!done);
+  //form切り替え
+  const handleForm = () => {
+    const newFormValue = !form;
+    localStorage.setItem("form", JSON.parse(newFormValue));
+    const storedValue = JSON.parse(localStorage.getItem("form"));
+    setForm(storedValue);
+    console.log("フォーム切り替えのlocalStorage");
+    console.log(storedValue);
+  };
+
+  //Date切り替え
+  const handleDate = () => {
+    const newDateValue = !anyTime;
+    localStorage.setItem("anytime", JSON.parse(newDateValue));
+    const storedDateValue = JSON.parse(localStorage.getItem("anytime"));
+    setAnyTime(storedDateValue);
+    console.log("日時トグル切り替えのlocalStorage");
+    console.log(storedDateValue);
   };
 
   return (
@@ -171,7 +195,8 @@ function App() {
                 <div className="form-control">
                   <input
                     type="checkbox"
-                    onChange={() => setForm(!form)}
+                    onChange={() => setForm(handleForm)}
+                    checked={form}
                     className="toggle"
                   />
                 </div>
@@ -234,7 +259,8 @@ function App() {
                           <input
                             type="checkbox"
                             className="toggle"
-                            onChange={() => setAnyTime(!anyTime)}
+                            onChange={handleDate}
+                            checked={!anyTime}
                           />
                         </label>
                       </div>
@@ -285,16 +311,6 @@ function App() {
                   form ? "h-0" : "h-96"
                 }`}
               >
-                {/* 完了済みタスク一覧の表示切り替え */}
-                <div>
-                  <button
-                    className="p-2 bg-blue-200 shadow rounded"
-                    onClick={handleDone}
-                  >
-                    done
-                  </button>
-                </div>
-
                 <img
                   src={settingImage}
                   alt="ゴミ箱の画像"
