@@ -72,7 +72,7 @@ function App() {
       const accessToken = localStorage.getItem("access-token")
       const client = localStorage.getItem("client")
       
-      setStatus("logged_in")
+      setStatus("account")
 
       console.log("localStorage.uid")
       console.log(uid)
@@ -97,6 +97,16 @@ function App() {
     localStorage.setItem('client', '')
     setStatus("session")
   }
+
+  // ログイン済みならアカウントページ、未ログインならログインページ
+  const handleAccount = () => {
+    if(localStorage.getItem('uid')){
+      setStatus("account")
+    } else {
+      setStatus("session")
+    }
+  }
+
 
 
 
@@ -147,7 +157,7 @@ function App() {
     fetch();
     const uid = localStorage.getItem('uid')
     if (uid) {
-      setStatus("logged_in")
+      setStatus("account")
     }
   }, []);
 
@@ -239,7 +249,7 @@ function App() {
       <div className="mx-auto rounded-md flex justify-center h-screen">
         {/* サイドバー */}
 
-        <SideBar done={done} setDone={setDone} status={status} handleLogout={handleLogout} />
+        <SideBar done={done} setDone={setDone} status={status} handleAccount={handleAccount} setStatus={setStatus} />
 
         {/* //余白 */}
         {activeTask ? <div></div> : <div className="w-14 mx-auto"></div>}
@@ -373,14 +383,17 @@ function App() {
             <div className={`${form ? "" : "pt-32"}`}>
               {form || (
                 <h3 className="text-center pb-4 font-bold font-mono">
-                  {status === "logged_in" && (
-                    <p>Menu</p>
-                  )}
                   {status === "session" && (
                     <p>Login</p>
                   )}
                   {status === "registration" && (
                     <p>Registration</p>
+                  )}
+                  {status === "setting" && (
+                    <p>Setting</p>
+                  )}
+                  {status === "account" && (
+                    <p>Account</p>
                   )}
                 </h3>
               )}
@@ -402,13 +415,9 @@ function App() {
                   送信キー切り替えのラジオボタン
                 </h3> */}
 
-                {status === "logged_in" && (
-                  <>
-                  <div className="flex justify-around  py-10 border-4">
-                    <h3>Account</h3>
-                    <h3>{localStorage.getItem('uid')}</h3>
-                  </div>
-                  <div className="py-10 flex justify-around border-4 font-mono">
+
+                {status === "setting" && (
+                  <div className="py-40 flex justify-around font-sans font-bold">
                   <h3>SubmitKey</h3>
                   <select
                     value={selectedOption}
@@ -422,8 +431,16 @@ function App() {
                     ))}
                   </select>
                 </div>
-                </>
                 )}
+                {status === "account" && (
+                  <div className="flex-col py-20">
+                    <h3 className="py-10 font-bold font-sans">{localStorage.getItem('uid')}</h3>
+                    <button
+                    onClick={handleLogout}
+                    className="py-1 w-5/6 font-sans font-bold text-original">Logout</button>
+                  </div>
+                )}
+
                 {status === "session" && (
                   <div className="flex flex-col pt-7">
                   {/* <div className="flex">
@@ -464,7 +481,6 @@ function App() {
                   <input
                     type="email"
                     className="outline-black rounded ps-1 py-1 mt-2 mb-5 border w-5/6 mx-auto"
-                    value={loginPassword}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email"
@@ -490,7 +506,7 @@ function App() {
                     className="py-1 my-5 font-sans font-bold rounded w-5/6 mx-auto bg-original text-white"
                     onClick={handleSignUp}
                   >
-                    signup
+                    Create
                   </button>
 
                   <button
