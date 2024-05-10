@@ -43,10 +43,11 @@ export default function SideBar({ done, setDone, status, handleLogout }) {
               {/* <p className='self-center'>Setting</p> */}
             </div>
             <div
-            onClick={handleLogout}
             className="hover:bg-original hover:text-white py-5 flex justify-center rounded-md mb-1">
-              {status ? (
-                <RiLogoutBoxLine className="self-center" />
+              {status === "logged_in" ? (
+                <RiLogoutBoxLine className="self-center"
+                onClick={handleLogout}
+                />
               ) : (
                 <RiLoginBoxLine className="self-center" />
               )}
