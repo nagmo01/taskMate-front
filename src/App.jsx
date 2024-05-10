@@ -18,6 +18,76 @@ function App() {
   const [timeValue, setTimeValue] = useState();
   const [done, setDone] = useState(false);
 
+  //サインアップ関連
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  //ログイン関連
+  const [status, setStatus] = useState(false);
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [loginPasswordConfirmation, setLoginPasswordConfirmation] = useState("");
+
+
+  //サインアップ
+  const handleSignUp = async () => {
+    try {
+      const response = await axios.post("http://localhost:3001/auth", {
+        email: email,
+        password: password,
+        password_confirmation: passwordConfirmation,
+        confirm_success_url: "http://localhost:5173/",
+      });
+
+      setEmail("");
+      setPassword("");
+      setPasswordConfirmation("");
+
+      console.log("response");
+      console.log(response);
+      console.log("response.data");
+      console.log(response.data);
+      alert("Registration successful!");
+
+    } catch (error) {
+      alert(error.response.data.errors.full_messages.join(", "));
+    }
+  };
+
+  //ログイン
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post("http://localhost:3001/auth/sign_in", {
+        email: loginEmail,
+        password: loginPassword,
+      });
+      setLoginEmail("");
+      setLoginPassword("");
+      setLoginPasswordConfirmation("");
+
+      localStorage.setItem("uid", response.headers.uid)
+      localStorage.setItem("access-token", response.headers['access-token'])
+      localStorage.setItem("client", response.headers.client)
+      const uid = localStorage.getItem("uid")
+      const accessToken = localStorage.getItem("access-token")
+      const client = localStorage.getItem("client")
+
+      console.log("localStorage.uid")
+      console.log(uid)
+      console.log("localStorage.access-token")
+      console.log(accessToken)
+      console.log("localStorage.client")
+      console.log(client)
+      console.log("response");
+      console.log(response);
+      console.log("response.data");
+      console.log(response.data);
+      alert("Login successful!");
+    } catch (error) {
+      alert(error.response.data.errors.full_messages.json(", "));
+    }
+  };
+
   // DateのON/OFF
   const anyTimeValue = JSON.parse(localStorage.getItem("anytime"));
   const [anyTime, setAnyTime] = useState(anyTimeValue);
@@ -41,13 +111,13 @@ function App() {
   const [activeTask, setActiveTask] = useState(false);
 
   // 送信キー切り替えのラジオボタン
-  const submitKeyValue = localStorage.getItem("submitKey")
+  const submitKeyValue = localStorage.getItem("submitKey");
   const [selectedOption, setSelectedOption] = useState(submitKeyValue);
-  const options = ["Shift", "Control", "Alt/Cmd", "Enter"];
+  const options = ["Shift", "Control", "Alt/Cmd"];
   const handleOptionChange = (e) => {
-    const newSubmitKey = e.target.value
-    localStorage.setItem("submitKey", newSubmitKey)
-    const storedSubmitKey = localStorage.getItem("submitKey")
+    const newSubmitKey = e.target.value;
+    localStorage.setItem("submitKey", newSubmitKey);
+    const storedSubmitKey = localStorage.getItem("submitKey");
     setSelectedOption(storedSubmitKey);
     console.log("送信キー切り替えのlocalStorage");
     console.log(storedSubmitKey);
@@ -59,10 +129,14 @@ function App() {
   };
 
   useEffect(() => {
-    if (!submitKeyValue){
-      setSelectedOption("Shift")
+    if (!submitKeyValue) {
+      setSelectedOption("Shift");
     }
     fetch();
+    const uid = localStorage.getItem('uid')
+    if (uid) {
+      setStatus(true)
+    }
   }, []);
 
   useEffect(() => {
@@ -174,7 +248,7 @@ function App() {
       <div className="mx-auto rounded-md flex justify-center h-screen">
         {/* サイドバー */}
 
-        <SideBar done={done} setDone={setDone} />
+        <SideBar done={done} setDone={setDone} status={status} />
 
         {/* //余白 */}
         {activeTask ? <div></div> : <div className="w-14 mx-auto"></div>}
@@ -203,7 +277,11 @@ function App() {
               </div>
 
               <div className="bg-white rounded-md shadow-md">
-                <div className={`flex flex-col items-center justify-center duration-300 pt-6 ${form ? "pb-6" : "pb-5"}`}>
+                <div
+                  className={`flex flex-col items-center justify-center duration-300 pt-6 ${
+                    form ? "pb-6" : "pb-5"
+                  }`}
+                >
                   {form ? (
                     <input
                       className="outline-inherit ps-1 mt-5 py-2 w-5/6 border border-gray border-1 rounded bg-white"
@@ -245,14 +323,13 @@ function App() {
                     }`}
                   >
                     <div className="pt-4">
-                    <textarea
-                      className="outline-inherit ps-1 pt-1 h-64 w-5/6 text-black bg-white  border rounded resize-none"
-                      placeholder="## markdown"
-                      value={bodyValue}
-                      onChange={(e) => setBodyValue(e.target.value)}
-                    />
+                      <textarea
+                        className="outline-inherit ps-1 pt-1 h-64 w-5/6 text-black bg-white  border rounded resize-none"
+                        placeholder="## markdown"
+                        value={bodyValue}
+                        onChange={(e) => setBodyValue(e.target.value)}
+                      />
                     </div>
-                    
 
                     {/* 日時フォームと送信ボタン */}
                     <div className="w-5/6 mx-auto pt-7">
@@ -302,7 +379,7 @@ function App() {
             </div>
 
             {/* 各種設定ウィンドウ */}
-            <div className={`${form ? "" : "pt-32" }`}>
+            <div className={`${form ? "" : "pt-32"}`}>
               {form || (
                 <h3 className="text-center pb-4 font-bold font-mono">
                   Setting
@@ -314,23 +391,113 @@ function App() {
                   form ? "h-0" : "h-96"
                 }`}
               >
-                <img
+                {/* <img
                   src={settingImage}
                   alt="ゴミ箱の画像"
                   className="w-1/2 mx-auto"
                 />
                 <h3 className="text-center font-bold font-mono text-md">
                   Customize your preferences here
-                </h3>
-                <h3 className="font-bold font-mono pt-10">
+                </h3> */}
+                {/* <h3 className="font-bold font-mono pt-10">
                   送信キー切り替えのラジオボタン
-                </h3>
-                <div className="font-bold font-mono pt-5">
-                  <RadioButtonGroup
+                </h3> */}
+
+                {status ? (
+                  <div>
+                    <h3>ログイン中</h3>
+                    <h3>{localStorage.getItem('uid')}</h3>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex flex-col border-4 border-blue-300">
+                      <h3>サインアップ</h3>
+                      <input
+                        type="email"
+                        className="bg-gray-200"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Email"
+                      />
+                      <input
+                        type="password"
+                        className="bg-green-200"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Password"
+                      />
+                      <input
+                        type="password"
+                        className="bg-red-200"
+                        value={passwordConfirmation}
+                        onChange={(e) =>
+                          setPasswordConfirmation(e.target.value)
+                        }
+                        placeholder="Password Confirmation"
+                      />
+                      <button
+                        type="submit"
+                        className="bg-purple-200"
+                        onClick={handleSignUp}
+                      >
+                        signup
+                      </button>
+                    </div>
+                    <div className="flex flex-col border-4 border-yellow-500">
+                      <h3>ログイン</h3>
+                      <input
+                        type="email"
+                        className="bg-gray-200"
+                        value={loginEmail}
+                        onChange={(e) => setLoginEmail(e.target.value)}
+                        placeholder="Email"
+                      />
+                      <input
+                        type="password"
+                        className="bg-green-200"
+                        value={loginPassword}
+                        onChange={(e) => setLoginPassword(e.target.value)}
+                        placeholder="Password"
+                      />
+                      <input
+                        type="password"
+                        className="bg-red-200"
+                        value={loginPasswordConfirmation}
+                        onChange={(e) =>
+                          setLoginPasswordConfirmation(e.target.value)
+                        }
+                        placeholder="Password Confirmation"
+                      />
+                      <button
+                        type="submit"
+                        className="bg-purple-200"
+                        onClick={handleLogin}
+                      >
+                        login
+                      </button>
+                    </div>
+                  </>
+                )}
+
+                <div className="py-10 flex justify-around border-4 font-bold font-mono">
+                  <h3>SubmitKey</h3>
+                  <select
+                    value={selectedOption}
+                    onChange={handleOptionChange}
+                    className="form-select text-sm px-4 rounded"
+                  >
+                    {options.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+
+                  {/* <RadioButtonGroup
                     options={options}
                     selectedOption={selectedOption}
                     onChange={handleOptionChange}
-                  />
+                  /> */}
                 </div>
               </div>
             </div>
