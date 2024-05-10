@@ -143,24 +143,6 @@ function App() {
     console.log(activeTask);
   }, [activeTask]);
 
-  function RadioButtonGroup({ options, selectedOption, onChange }) {
-    return (
-      <div>
-        {options.map((option) => (
-          <label key={option} className="mx-5">
-            <input
-              type="radio"
-              value={option}
-              checked={selectedOption === option}
-              onChange={onChange}
-            />
-            {option}
-          </label>
-        ))}
-      </div>
-    );
-  }
-
   // タスクを追加する処理。（送信ボタンorEnterのどちらかで実行される）
   const addTodo = async () => {
     if (value == "") {
@@ -382,7 +364,7 @@ function App() {
             <div className={`${form ? "" : "pt-32"}`}>
               {form || (
                 <h3 className="text-center pb-4 font-bold font-mono">
-                  Setting
+                  Menu
                 </h3>
               )}
 
@@ -404,8 +386,8 @@ function App() {
                 </h3> */}
 
                 {status ? (
-                  <div>
-                    <h3>ログイン中</h3>
+                  <div className="flex justify-around  py-10 border-4 border-green-200">
+                    <h3>Account</h3>
                     <h3>{localStorage.getItem('uid')}</h3>
                   </div>
                 ) : (
@@ -479,7 +461,7 @@ function App() {
                   </>
                 )}
 
-                <div className="py-10 flex justify-around border-4 font-bold font-mono">
+                <div className="py-10 flex justify-around border-4 font-mono">
                   <h3>SubmitKey</h3>
                   <select
                     value={selectedOption}
@@ -493,11 +475,6 @@ function App() {
                     ))}
                   </select>
 
-                  {/* <RadioButtonGroup
-                    options={options}
-                    selectedOption={selectedOption}
-                    onChange={handleOptionChange}
-                  /> */}
                 </div>
               </div>
             </div>
