@@ -331,10 +331,11 @@ function App() {
                     </div>
 
                     {/* 日時フォームと送信ボタン */}
-                    <div className="w-5/6 mx-auto pt-7">
+                    <div className="w-5/6 mx-auto flex justify-between pt-7">
+                      <div className="self-center">Date ON/OFF</div>
                       <div className="form-control">
                         <label className="label cursor-pointer">
-                          <span className="label-text">Date ON/OFF</span>
+                          {/* <span className="label-text">Date ON/OFF</span> */}
                           <input
                             type="checkbox"
                             className="toggle"
