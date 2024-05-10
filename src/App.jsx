@@ -252,14 +252,12 @@ function App() {
         <SideBar done={done} setDone={setDone} status={status} handleAccount={handleAccount} setStatus={setStatus} />
 
         {/* //余白 */}
-        {activeTask ? <div></div> : <div className="w-14 mx-auto"></div>}
+        {activeTask ? <div className="w-14"></div> : <div className="w-14 mx-auto"></div>}
 
         {/* フォーム＆各種メニュー */}
-        {activeTask ? (
-          <div></div>
-        ) : (
           <div className="w-[550px] flex-col justify-center pt-10">
             {/* フォーム入力欄 */}
+            {localStorage.getItem('uid') && (
             <div className="pt-10 w-full">
               <div className="flex justify-around pb-5">
                 <div className=""></div>
@@ -378,6 +376,7 @@ function App() {
                 </div>
               </div>
             </div>
+            )}
 
             {/* 各種設定ウィンドウ */}
             <div className={`${form ? "" : "pt-32"}`}>
@@ -521,11 +520,11 @@ function App() {
               </div>
             </div>
           </div>
-        )}
 
         <div className={`w-16 ${activeTask && "mx-auto"}`}></div>
 
         {/* タスク一覧 */}
+        {localStorage.getItem('uid') && (
         <div className="font-sans w-[550px] text-2xl container mt-10 pb-2 mb-5 bg-white shadow-md rounded-md">
           <div className="flex justify-between py-3">
             {localStorage.getItem('uid') ? (
@@ -560,6 +559,7 @@ function App() {
             </div>
           )}
         </div>
+        )}
 
         {activeTask ? (
           <div className="w-16"></div>

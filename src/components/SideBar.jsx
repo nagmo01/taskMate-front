@@ -9,6 +9,12 @@ import { RiLoginBoxLine } from "react-icons/ri";
 import { RiLogoutBoxLine } from "react-icons/ri";
 
 export default function SideBar({ done, setDone, status, setStatus, handleAccount }) {
+
+  const handleCompleteList = () => {
+    if(localStorage.getItem('uid')){
+      setDone(!done)
+    }
+  }
   return (
     <div className="bg-white text-original shadow-md">
       <h3 className="text-center font-bold font-sans text-lg pt-28 pb-10"></h3>
@@ -27,18 +33,16 @@ export default function SideBar({ done, setDone, status, setStatus, handleAccoun
               className={`${
                 done && "bg-original text-white"
               } hover:bg-original hover:text-white py-5 flex justify-center rounded-md mb-1`}
-              onClick={() => setDone(!done)}
+              onClick={handleCompleteList}
             >
               <FaCheck className="self-center" />
               {/* <p className='self-center'>Done</p> */}
             </div>
             <div className="hover:bg-original hover:text-white  py-5 flex justify-center rounded-md mb-1">
               <FaRegTrashCan className="self-center" />
-              {/* <p className='self-center'>Trash</p> */}
             </div>
             <div className="hover:bg-original hover:text-white  py-5 flex justify-center rounded-md mb-1">
               <RxCalendar className="self-center" />
-              {/* <p className='self-center'>Calendar</p> */}
             </div>
             <div
             onClick={() => setStatus("setting")}
