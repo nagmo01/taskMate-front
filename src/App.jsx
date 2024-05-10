@@ -26,7 +26,6 @@ function App() {
   const [status, setStatus] = useState(false);
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-  const [loginPasswordConfirmation, setLoginPasswordConfirmation] = useState("");
 
 
   //サインアップ
@@ -63,7 +62,6 @@ function App() {
       });
       setLoginEmail("");
       setLoginPassword("");
-      setLoginPasswordConfirmation("");
 
       localStorage.setItem("uid", response.headers.uid)
       localStorage.setItem("access-token", response.headers['access-token'])
@@ -71,6 +69,8 @@ function App() {
       const uid = localStorage.getItem("uid")
       const accessToken = localStorage.getItem("access-token")
       const client = localStorage.getItem("client")
+      
+      setStatus(true)
 
       console.log("localStorage.uid")
       console.log(uid)
@@ -87,6 +87,16 @@ function App() {
       alert(error.response.data.errors.full_messages.json(", "));
     }
   };
+
+  // ログアウト
+  const handleLogout = () => {
+    localStorage.setItem('uid', '')
+    localStorage.setItem('access-token', '')
+    localStorage.setItem('client', '')
+    setStatus(false)
+  }
+
+
 
   // DateのON/OFF
   const anyTimeValue = JSON.parse(localStorage.getItem("anytime"));
@@ -230,7 +240,7 @@ function App() {
       <div className="mx-auto rounded-md flex justify-center h-screen">
         {/* サイドバー */}
 
-        <SideBar done={done} setDone={setDone} status={status} />
+        <SideBar done={done} setDone={setDone} status={status} handleLogout={handleLogout} />
 
         {/* //余白 */}
         {activeTask ? <div></div> : <div className="w-14 mx-auto"></div>}
@@ -440,15 +450,6 @@ function App() {
                         value={loginPassword}
                         onChange={(e) => setLoginPassword(e.target.value)}
                         placeholder="Password"
-                      />
-                      <input
-                        type="password"
-                        className="bg-red-200"
-                        value={loginPasswordConfirmation}
-                        onChange={(e) =>
-                          setLoginPasswordConfirmation(e.target.value)
-                        }
-                        placeholder="Password Confirmation"
                       />
                       <button
                         type="submit"
