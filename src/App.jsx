@@ -62,9 +62,6 @@ function App() {
       localStorage.setItem("uid", response.headers.uid);
       localStorage.setItem("access-token", response.headers["access-token"]);
       localStorage.setItem("client", response.headers.client);
-      const uid = localStorage.getItem("uid");
-      const accessToken = localStorage.getItem("access-token");
-      const client = localStorage.getItem("client");
 
       setStatus("account");
       fetch();
@@ -81,6 +78,8 @@ function App() {
     localStorage.setItem("access-token", "");
     localStorage.setItem("client", "");
     setStatus("session");
+    setActiveTask(false);
+    setDone(false);
   };
 
   // ログイン済みならアカウントページ、未ログインならログインページ
