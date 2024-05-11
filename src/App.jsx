@@ -27,7 +27,6 @@ function App() {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
-
   //サインアップ
   const handleSignUp = async () => {
     try {
@@ -42,14 +41,13 @@ function App() {
       setPassword("");
       setPasswordConfirmation("");
 
-      setStatus("session")
+      setStatus("session");
 
       console.log("response");
       console.log(response);
       console.log("response.data");
       console.log(response.data);
       alert("Registration successful!");
-
     } catch (error) {
       alert(error.response.data.errors.full_messages.join(", "));
     }
@@ -65,22 +63,22 @@ function App() {
       setLoginEmail("");
       setLoginPassword("");
 
-      localStorage.setItem("uid", response.headers.uid)
-      localStorage.setItem("access-token", response.headers['access-token'])
-      localStorage.setItem("client", response.headers.client)
-      const uid = localStorage.getItem("uid")
-      const accessToken = localStorage.getItem("access-token")
-      const client = localStorage.getItem("client")
-      
-      setStatus("account")
+      localStorage.setItem("uid", response.headers.uid);
+      localStorage.setItem("access-token", response.headers["access-token"]);
+      localStorage.setItem("client", response.headers.client);
+      const uid = localStorage.getItem("uid");
+      const accessToken = localStorage.getItem("access-token");
+      const client = localStorage.getItem("client");
+
+      setStatus("account");
       fetch();
 
-      console.log("localStorage.uid")
-      console.log(uid)
-      console.log("localStorage.access-token")
-      console.log(accessToken)
-      console.log("localStorage.client")
-      console.log(client)
+      console.log("localStorage.uid");
+      console.log(uid);
+      console.log("localStorage.access-token");
+      console.log(accessToken);
+      console.log("localStorage.client");
+      console.log(client);
       console.log("response");
       console.log(response);
       console.log("response.data");
@@ -93,23 +91,43 @@ function App() {
 
   // ログアウト
   const handleLogout = () => {
-    localStorage.setItem('uid', '')
-    localStorage.setItem('access-token', '')
-    localStorage.setItem('client', '')
-    setStatus("session")
-  }
+    localStorage.setItem("uid", "");
+    localStorage.setItem("access-token", "");
+    localStorage.setItem("client", "");
+    setStatus("session");
+  };
 
   // ログイン済みならアカウントページ、未ログインならログインページ
   const handleAccount = () => {
-    if(localStorage.getItem('uid')){
-      setStatus("account")
+    if (localStorage.getItem("uid")) {
+      if (status !== "account") {
+      setStatus("account");
+      }
+      if (form === true ){
+        const newFormValue = false;
+      localStorage.setItem("form", JSON.parse(newFormValue));
+      const storedValue = JSON.parse(localStorage.getItem("form"));
+      setForm(storedValue);
+      }
+      
     } else {
-      setStatus("session")
+      setStatus("session");
     }
-  }
+  };
 
-
-
+  // 設定画面、詳細フォームが開いている場合formをfalseにして表示させる
+  const handleSetting = () => {
+      if (status !== "setting") {
+      setStatus("setting");
+      }
+      if (form === true ){
+        const newFormValue = false;
+      localStorage.setItem("form", JSON.parse(newFormValue));
+      const storedValue = JSON.parse(localStorage.getItem("form"));
+      setForm(storedValue);
+      }
+      
+  };
 
   // DateのON/OFF
   const anyTimeValue = JSON.parse(localStorage.getItem("anytime"));
@@ -149,8 +167,8 @@ function App() {
   const fetch = async () => {
     const res = await axios.get("http://localhost:3001/tasks", {
       params: {
-        uid: localStorage.getItem('uid')
-      }
+        uid: localStorage.getItem("uid"),
+      },
     });
     setTodos(res.data);
   };
@@ -160,12 +178,11 @@ function App() {
       setSelectedOption("Shift");
     }
     fetch();
-    const uid = localStorage.getItem('uid')
+    const uid = localStorage.getItem("uid");
     if (uid) {
-      setStatus("account")
+      setStatus("account");
     }
   }, []);
-
 
   // タスクを追加する処理。（送信ボタンorEnterのどちらかで実行される）
   const addTodo = async () => {
@@ -179,8 +196,8 @@ function App() {
       due_date: anyTime ? "2200-12-31" : dateValue,
       due_time: anyTime ? "" : timeValue,
       done_date: "",
-      uid: localStorage.getItem('uid'),
-    })
+      uid: localStorage.getItem("uid"),
+    });
 
     fetch();
     setValue("");
@@ -255,15 +272,24 @@ function App() {
       <div className="mx-auto rounded-md flex justify-center h-screen">
         {/* サイドバー */}
 
-        <SideBar done={done} setDone={setDone} status={status} handleAccount={handleAccount} setStatus={setStatus} />
+        <SideBar
+          done={done}
+          setDone={setDone}
+          handleAccount={handleAccount}
+          handleSetting={handleSetting}
+        />
 
         {/* //余白 */}
-        {activeTask ? <div className="w-14"></div> : <div className="w-14 mx-auto"></div>}
+        {activeTask ? (
+          <div className="w-14"></div>
+        ) : (
+          <div className="w-14 mx-auto"></div>
+        )}
 
         {/* フォーム＆各種メニュー */}
-          <div className="w-[550px] flex-col justify-center pt-10">
-            {/* フォーム入力欄 */}
-            {localStorage.getItem('uid') && (
+        <div className="w-[550px] flex-col justify-center pt-10">
+          {/* フォーム入力欄 */}
+          {localStorage.getItem("uid") && (
             <div className="pt-10 w-full">
               <div className="flex justify-around pb-5">
                 <div className=""></div>
@@ -383,33 +409,25 @@ function App() {
                 </div>
               </div>
             </div>
+          )}
+
+          {/* 各種設定ウィンドウ */}
+          <div className={`${form ? "" : "pt-32"}`}>
+            {form || (
+              <h3 className="text-center pb-4 font-bold font-mono">
+                {status === "session" && <p>Login</p>}
+                {status === "registration" && <p>Registration</p>}
+                {status === "setting" && <p>Setting</p>}
+                {status === "account" && <p>Account</p>}
+              </h3>
             )}
 
-            {/* 各種設定ウィンドウ */}
-            <div className={`${form ? "" : "pt-32"}`}>
-              {form || (
-                <h3 className="text-center pb-4 font-bold font-mono">
-                  {status === "session" && (
-                    <p>Login</p>
-                  )}
-                  {status === "registration" && (
-                    <p>Registration</p>
-                  )}
-                  {status === "setting" && (
-                    <p>Setting</p>
-                  )}
-                  {status === "account" && (
-                    <p>Account</p>
-                  )}
-                </h3>
-              )}
-
-              <div
-                className={`bg-white shadow-md rounded-md text-center overflow-y-hidden transition-all duration-300 ${
-                  form ? "h-0" : "h-96"
-                }`}
-              >
-                {/* <img
+            <div
+              className={`bg-white shadow-md rounded-md text-center overflow-y-hidden transition-all duration-300 ${
+                form ? "h-0" : "h-96"
+              }`}
+            >
+              {/* <img
                   src={settingImage}
                   alt="ゴミ箱の画像"
                   className="w-1/2 mx-auto"
@@ -417,13 +435,12 @@ function App() {
                 <h3 className="text-center font-bold font-mono text-md">
                   Customize your preferences here
                 </h3> */}
-                {/* <h3 className="font-bold font-mono pt-10">
+              {/* <h3 className="font-bold font-mono pt-10">
                   送信キー切り替えのラジオボタン
                 </h3> */}
 
-
-                {status === "setting" && (
-                  <div className="py-40 flex justify-around font-sans font-bold">
+              {status === "setting" && (
+                <div className="py-40 flex justify-around font-sans font-bold">
                   <h3>SubmitKey</h3>
                   <select
                     value={selectedOption}
@@ -437,18 +454,23 @@ function App() {
                     ))}
                   </select>
                 </div>
-                )}
-                {status === "account" && (
-                  <div className="flex-col py-20">
-                    <h3 className="pt-16 pb-10 font-bold font-sans">{localStorage.getItem('uid')}</h3>
-                    <button
+              )}
+              {status === "account" && (
+                <div className="flex-col py-20">
+                  <h3 className="pt-16 pb-10 font-bold font-sans">
+                    {localStorage.getItem("uid")}
+                  </h3>
+                  <button
                     onClick={handleLogout}
-                    className="py-1 w-5/6 font-sans font-bold text-original">Logout</button>
-                  </div>
-                )}
+                    className="py-1 w-5/6 font-sans font-bold text-original"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
 
-                {status === "session" && (
-                  <div className="flex flex-col pt-7">
+              {status === "session" && (
+                <div className="flex flex-col pt-7">
                   {/* <div className="flex">
                   <h3 className="font-bold font-sans px-3 py-1 rounded-ee-md bg-original text-white">LOGIN</h3>
                   </div> */}
@@ -475,15 +497,15 @@ function App() {
                   </button>
 
                   <button
-                  onClick={() => setStatus("registration")}
-                  className="pt-14 font-bold font-sans">
+                    onClick={() => setStatus("registration")}
+                    className="pt-14 font-bold font-sans"
+                  >
                     Create Account
-                    </button>
+                  </button>
                 </div>
-
-                )}
-                {status === "registration" && (
-                  <div className="flex flex-col pt-7">
+              )}
+              {status === "registration" && (
+                <div className="flex flex-col pt-7">
                   <input
                     type="email"
                     className="outline-black rounded ps-1 py-1 mt-2 mb-5 border w-5/6 mx-auto"
@@ -502,9 +524,7 @@ function App() {
                     type="password"
                     className="outline-black rounded ps-1 py-1 mt-2 mb-5 border w-5/6 mx-auto"
                     value={passwordConfirmation}
-                    onChange={(e) =>
-                      setPasswordConfirmation(e.target.value)
-                    }
+                    onChange={(e) => setPasswordConfirmation(e.target.value)}
                     placeholder="Password Confirmation"
                   />
                   <button
@@ -516,56 +536,55 @@ function App() {
                   </button>
 
                   <button
-                  onClick={() => setStatus("session")}
-                  className="pt-10 pb-5 font-bold font-sans">
+                    onClick={() => setStatus("session")}
+                    className="pt-10 pb-5 font-bold font-sans"
+                  >
                     Login to your account
-                    </button>
+                  </button>
                 </div>
-
-                )}
-
-              </div>
+              )}
             </div>
           </div>
+        </div>
 
         <div className={`w-16 ${activeTask && "mx-auto"}`}></div>
 
         {/* タスク一覧 */}
-        {localStorage.getItem('uid') && (
-        <div className="font-sans w-[550px] text-2xl container mt-10 pb-2 mb-5 bg-white shadow-md rounded-md">
-          <div className="flex justify-between py-3">
-            {localStorage.getItem('uid') ? (
-            <h1 className="font-bold text-3xl font-sans ms-3">Tasks</h1>
-            ) : (
-            <h1 className="font-bold text-3xl font-sans ms-3">Sample</h1>
-            )}
-            <p className="text-sm text-gray-500 me-3 self-center">
-              You have {pendingTasks.length} tasks
-            </p>
-          </div>
-          {pendingTasks.length === 0 ? (
-            <>
-              <h1 className="custom-border-red text-xs font-bold text-white shadow custom-bg-black ps-2 py-1 rounded-sm">
-                Today
-              </h1>
-              <img src={writeImage} className="w-1/2 mx-auto pt-32 mt-10" />
-              <h3 className="text-center font-bold font-mono text-md mt-5 ms-5 me-5">
-                Time to add your first task!
-              </h3>
-            </>
-          ) : (
-            <div className="scrollbar overflow-y-auto">
-              <TaskList
-                pendingTasks={pendingTasks}
-                activeTask={activeTask}
-                setActiveTask={setActiveTask}
-                onCheck={onCheck}
-                onDelete={onDelete}
-                done={done}
-              />
+        {localStorage.getItem("uid") && (
+          <div className="font-sans w-[550px] text-2xl container mt-10 pb-2 mb-5 bg-white shadow-md rounded-md">
+            <div className="flex justify-between py-3">
+              {localStorage.getItem("uid") ? (
+                <h1 className="font-bold text-3xl font-sans ms-3">Tasks</h1>
+              ) : (
+                <h1 className="font-bold text-3xl font-sans ms-3">Sample</h1>
+              )}
+              <p className="text-sm text-gray-500 me-3 self-center">
+                You have {pendingTasks.length} tasks
+              </p>
             </div>
-          )}
-        </div>
+            {pendingTasks.length === 0 ? (
+              <>
+                <h1 className="custom-border-red text-xs font-bold text-white shadow custom-bg-black ps-2 py-1 rounded-sm">
+                  Today
+                </h1>
+                <img src={writeImage} className="w-1/2 mx-auto pt-32 mt-10" />
+                <h3 className="text-center font-bold font-mono text-md mt-5 ms-5 me-5">
+                  Time to add your first task!
+                </h3>
+              </>
+            ) : (
+              <div className="scrollbar overflow-y-auto">
+                <TaskList
+                  pendingTasks={pendingTasks}
+                  activeTask={activeTask}
+                  setActiveTask={setActiveTask}
+                  onCheck={onCheck}
+                  onDelete={onDelete}
+                  done={done}
+                />
+              </div>
+            )}
+          </div>
         )}
 
         {activeTask ? (

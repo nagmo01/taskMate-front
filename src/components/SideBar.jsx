@@ -8,7 +8,7 @@ import { IoMdSettings } from "react-icons/io";
 import { RiLoginBoxLine } from "react-icons/ri";
 import { RiLogoutBoxLine } from "react-icons/ri";
 
-export default function SideBar({ done, setDone, status, setStatus, handleAccount }) {
+export default function SideBar({ done, setDone, handleAccount, handleSetting }) {
 
   const handleCompleteList = () => {
     if(localStorage.getItem('uid')){
@@ -45,7 +45,7 @@ export default function SideBar({ done, setDone, status, setStatus, handleAccoun
               <RxCalendar className="self-center" />
             </div>
             <div
-            onClick={() => setStatus("setting")}
+            onClick={handleSetting}
             className="hover:bg-original hover:text-white py-5 flex justify-center rounded-md mb-1">
               <IoMdSettings className="self-center" />
               {/* <p className='self-center'>Setting</p> */}
