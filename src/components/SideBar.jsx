@@ -38,10 +38,10 @@ export default function SideBar({ done, setDone, handleAccount, handleSetting })
               <FaCheck className="self-center" />
               {/* <p className='self-center'>Done</p> */}
             </div>
-            <div className="hover:bg-original hover:text-white  py-5 flex justify-center rounded-md mb-1">
+            <div className="py-5 flex justify-center rounded-md mb-1">
               <FaRegTrashCan className="self-center" />
             </div>
-            <div className="hover:bg-original hover:text-white  py-5 flex justify-center rounded-md mb-1">
+            <div className="py-5 flex justify-center rounded-md mb-1">
               <RxCalendar className="self-center" />
             </div>
             <div

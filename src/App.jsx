@@ -43,10 +43,6 @@ function App() {
 
       setStatus("session");
 
-      console.log("response");
-      console.log(response);
-      console.log("response.data");
-      console.log(response.data);
       alert("Registration successful!");
     } catch (error) {
       alert(error.response.data.errors.full_messages.join(", "));
@@ -73,16 +69,6 @@ function App() {
       setStatus("account");
       fetch();
 
-      console.log("localStorage.uid");
-      console.log(uid);
-      console.log("localStorage.access-token");
-      console.log(accessToken);
-      console.log("localStorage.client");
-      console.log(client);
-      console.log("response");
-      console.log(response);
-      console.log("response.data");
-      console.log(response.data);
       alert("Login successful!");
     } catch (error) {
       alert(error.response.data.errors.full_messages.json(", "));
@@ -160,8 +146,6 @@ function App() {
     localStorage.setItem("submitKey", newSubmitKey);
     const storedSubmitKey = localStorage.getItem("submitKey");
     setSelectedOption(storedSubmitKey);
-    console.log("送信キー切り替えのlocalStorage");
-    console.log(storedSubmitKey);
   };
 
   const fetch = async () => {
@@ -252,8 +236,6 @@ function App() {
     localStorage.setItem("form", JSON.parse(newFormValue));
     const storedValue = JSON.parse(localStorage.getItem("form"));
     setForm(storedValue);
-    console.log("フォーム切り替えのlocalStorage");
-    console.log(storedValue);
   };
 
   //Date切り替え
@@ -262,8 +244,6 @@ function App() {
     localStorage.setItem("anytime", JSON.parse(newDateValue));
     const storedDateValue = JSON.parse(localStorage.getItem("anytime"));
     setAnyTime(storedDateValue);
-    console.log("日時トグル切り替えのlocalStorage");
-    console.log(storedDateValue);
   };
 
   return (
