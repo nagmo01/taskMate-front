@@ -440,7 +440,7 @@ function App() {
                 )}
                 {status === "account" && (
                   <div className="flex-col py-20">
-                    <h3 className="py-20 font-bold font-sans">{localStorage.getItem('uid')}</h3>
+                    <h3 className="pt-16 pb-10 font-bold font-sans">{localStorage.getItem('uid')}</h3>
                     <button
                     onClick={handleLogout}
                     className="py-1 w-5/6 font-sans font-bold text-original">Logout</button>
