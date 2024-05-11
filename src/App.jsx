@@ -73,6 +73,7 @@ function App() {
       const client = localStorage.getItem("client")
       
       setStatus("account")
+      fetch();
 
       console.log("localStorage.uid")
       console.log(uid)
@@ -146,7 +147,11 @@ function App() {
   };
 
   const fetch = async () => {
-    const res = await axios.get("http://localhost:3001/tasks");
+    const res = await axios.get("http://localhost:3001/tasks", {
+      params: {
+        uid: localStorage.getItem('uid')
+      }
+    });
     setTodos(res.data);
   };
 
@@ -174,7 +179,8 @@ function App() {
       due_date: anyTime ? "2200-12-31" : dateValue,
       due_time: anyTime ? "" : timeValue,
       done_date: "",
-    });
+      uid: localStorage.getItem('uid'),
+    })
 
     fetch();
     setValue("");
@@ -434,7 +440,7 @@ function App() {
                 )}
                 {status === "account" && (
                   <div className="flex-col py-20">
-                    <h3 className="py-10 font-bold font-sans">{localStorage.getItem('uid')}</h3>
+                    <h3 className="py-20 font-bold font-sans">{localStorage.getItem('uid')}</h3>
                     <button
                     onClick={handleLogout}
                     className="py-1 w-5/6 font-sans font-bold text-original">Logout</button>
@@ -565,7 +571,7 @@ function App() {
         {activeTask ? (
           <div className="w-16"></div>
         ) : (
-          <div className="w-16 mx-auto"></div>
+          <div className="w-14 mx-auto"></div>
         )}
 
         {done ? (
