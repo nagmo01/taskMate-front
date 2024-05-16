@@ -30,7 +30,7 @@ function App() {
   //サインアップ
   const handleSignUp = async () => {
     try {
-      const response = await axios.post("http://localhost:3001/auth", {
+      const response = await axios.post("https://todo-rails-api.onrender.com/auth", {
         email: email,
         password: password,
         password_confirmation: passwordConfirmation,
@@ -52,7 +52,7 @@ function App() {
   //ログイン
   const handleLogin = async () => {
     try {
-      const response = await axios.post("http://localhost:3001/auth/sign_in", {
+      const response = await axios.post("https://todo-rails-api.onrender.com/auth/sign_in", {
         email: loginEmail,
         password: loginPassword,
       });
@@ -147,8 +147,19 @@ function App() {
     setSelectedOption(storedSubmitKey);
   };
 
+  // 削除時の確認フォームの有無
+  const confirmValue = localStorage.getItem("confirmValue")
+  const [confirmOption, setConfirmOption] = useState(confirmValue);
+  const confirmOptions = ["true", "false"];
+  const handleConfirmChange = (e) => {
+    const newConfirmValue = e.target.value;
+    localStorage.setItem("confirmValue", newConfirmValue)
+    const storedConfirmValue = localStorage.getItem("confirmValue")
+    setConfirmOption(storedConfirmValue)
+  }
+
   const fetch = async () => {
-    const res = await axios.get("http://localhost:3001/tasks", {
+    const res = await axios.get("https://todo-rails-api.onrender.com/tasks", {
       params: {
         uid: localStorage.getItem("uid"),
       },
@@ -160,11 +171,14 @@ function App() {
     if (!submitKeyValue) {
       setSelectedOption("Shift");
     }
-    fetch();
+    if (!confirmOption){
+      setConfirmOption("true")
+    }
     const uid = localStorage.getItem("uid");
     if (uid) {
       setStatus("account");
     }
+    fetch();
   }, []);
 
   // タスクを追加する処理。（送信ボタンorEnterのどちらかで実行される）
@@ -173,7 +187,7 @@ function App() {
       return;
     }
 
-    await axios.post("http://localhost:3001/tasks", {
+    await axios.post("https://todo-rails-api.onrender.com/tasks", {
       title: value,
       body: bodyValue,
       due_date: anyTime ? "2200-12-31" : dateValue,
@@ -205,9 +219,18 @@ function App() {
   };
 
   const onDelete = async (id) => {
-    const result = window.confirm("削除しますか？");
+    if (confirmOption === "true") {
+      const result = window.confirm("削除しますか？");
     if (result === true) {
-      await axios.delete(`http://localhost:3001/tasks/${id}`);
+      await axios.delete(`https://todo-rails-api.onrender.com/tasks/${id}`);
+      if (id === activeTask) {
+        setActiveTask(false);
+      }
+      fetch();
+    }
+    }
+    if (confirmOption === "false") {
+      await axios.delete(`https://todo-rails-api.onrender.com/tasks/${id}`);
       if (id === activeTask) {
         setActiveTask(false);
       }
@@ -216,14 +239,14 @@ function App() {
   };
 
   const onCheck = async (id) => {
-    await axios.put(`http://localhost:3001/tasks/${id}`, {
+    await axios.put(`https://todo-rails-api.onrender.com/tasks/${id}`, {
       done_date: new Date(),
     });
     fetch();
   };
 
   const onReturn = async (id) => {
-    await axios.put(`http://localhost:3001/tasks/${id}`, {
+    await axios.put(`https://todo-rails-api.onrender.com/tasks/${id}`, {
       done_date: "",
     });
     fetch();
@@ -419,12 +442,14 @@ function App() {
                 </h3> */}
 
               {status === "setting" && (
-                <div className="py-40 flex justify-around font-sans font-bold">
-                  <h3>SubmitKey</h3>
+              <>
+                <div className="pt-32 mx-16 flex justify-between font-sans font-bold">
+                  <h3 className="">SubmitKey</h3>
+                  <div className="w-1/4 flex">
                   <select
                     value={selectedOption}
                     onChange={handleOptionChange}
-                    className="form-select text-sm px-4 rounded"
+                    className="form-select text-sm rounded"
                   >
                     {options.map((option) => (
                       <option key={option} value={option}>
@@ -432,7 +457,25 @@ function App() {
                       </option>
                     ))}
                   </select>
+                  </div>
                 </div>
+                <div className="py-14 mx-16 flex justify-between font-sans font-bold">
+                <h3 className="">DeleteConfirmation</h3>
+                <div className="w-1/4 flex">
+                <select
+                  value={confirmOption}
+                  onChange={handleConfirmChange}
+                  className="form-select ps-1 pe-5 text-sm rounded"
+                >
+                  {confirmOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+                </div>
+              </div>
+              </>
               )}
               {status === "account" && (
                 <div className="flex-col py-20">
@@ -579,6 +622,7 @@ function App() {
               onDelete={onDelete}
               onReturn={onReturn}
               setDone={setDone}
+              confirmOption={confirmOption}
             />
             <div className="w-14"></div>
           </>

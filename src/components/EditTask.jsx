@@ -43,7 +43,7 @@ export default function EditTask({
   };
 
   const updateTask = async (id, task) => {
-    await axios.put(`http://localhost:3001/tasks/${id}`, {
+    await axios.put(`https://todo-rails-api.onrender.com/tasks/${id}`, {
       title: task.title,
       body: task.body,
       due_date: task.due_date,
