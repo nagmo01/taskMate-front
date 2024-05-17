@@ -235,9 +235,7 @@ function App() {
         if (id === activeTask) {
           setActiveTask(false);
         }
-        const deletedTasks = todos.filter((task) => {
-          task.id !== id
-        })
+        const deletedTasks = todos.filter(task => task.id !== id)
         setTodos(deletedTasks)
         // fetch();
       }
@@ -247,9 +245,7 @@ function App() {
       if (id === activeTask) {
         setActiveTask(false);
       }
-      const deletedTasks = todos.filter((task) => {
-        task.id !== id
-      })
+      const deletedTasks = todos.filter(task => task.id !== id ) 
       setTodos(deletedTasks)
       // fetch();
     }
