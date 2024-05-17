@@ -30,11 +30,11 @@ function App() {
   //サインアップ
   const handleSignUp = async () => {
     try {
-      const response = await axios.post("https://new-api-0cvq.onrender.com/auth", {
+      const response = await axios.post("https://new-api-1.onrender.com//auth", {
         email: email,
         password: password,
         password_confirmation: passwordConfirmation,
-        confirm_success_url: "https://new-api-0cvq.onrender.com",
+        confirm_success_url: "https://new-api-1.onrender.com/",
       });
 
       setEmail("");
@@ -53,7 +53,7 @@ function App() {
   //ログイン
   const handleLogin = async () => {
     try {
-      const response = await axios.post("https://new-api-0cvq.onrender.com/auth/sign_in", {
+      const response = await axios.post("https://new-api-1.onrender.com//auth/sign_in", {
         email: loginEmail,
         password: loginPassword,
       });
@@ -161,7 +161,7 @@ function App() {
   }
 
   const fetch = async () => {
-    const res = await axios.get("https://new-api-0cvq.onrender.com/tasks", {
+    const res = await axios.get("https://new-api-1.onrender.com//tasks", {
       params: {
         uid: localStorage.getItem("uid"),
       },
@@ -189,7 +189,7 @@ function App() {
       return;
     }
 
-    await axios.post("https://new-api-0cvq.onrender.com/tasks", {
+    await axios.post("https://new-api-1.onrender.com//tasks", {
       title: value,
       body: bodyValue,
       due_date: anyTime ? "2200-12-31" : dateValue,
@@ -224,7 +224,7 @@ function App() {
     if (confirmOption === "true") {
       const result = window.confirm("削除しますか？");
     if (result === true) {
-      await axios.delete(`https://new-api-0cvq.onrender.com/tasks/${id}`);
+      await axios.delete(`https://new-api-1.onrender.com//tasks/${id}`);
       if (id === activeTask) {
         setActiveTask(false);
       }
@@ -232,7 +232,7 @@ function App() {
     }
     }
     if (confirmOption === "false") {
-      await axios.delete(`https://new-api-0cvq.onrender.com/tasks/${id}`);
+      await axios.delete(`https://new-api-1.onrender.com//tasks/${id}`);
       if (id === activeTask) {
         setActiveTask(false);
       }
@@ -241,14 +241,14 @@ function App() {
   };
 
   const onCheck = async (id) => {
-    await axios.put(`https://new-api-0cvq.onrender.com/tasks/${id}`, {
+    await axios.put(`https://new-api-1.onrender.com//tasks/${id}`, {
       done_date: new Date(),
     });
     fetch();
   };
 
   const onReturn = async (id) => {
-    await axios.put(`https://new-api-0cvq.onrender.com/tasks/${id}`, {
+    await axios.put(`https://new-api-1.onrender.com//tasks/${id}`, {
       done_date: "",
     });
     fetch();
