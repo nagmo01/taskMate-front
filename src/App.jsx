@@ -267,7 +267,7 @@ function App() {
     });
     const returnTasks = todos.map((task) => {
       if(task.id === id ) {
-        return {...task, done_date: ""};
+        return {...task, done_date: null};
       }
       return task;
     })
