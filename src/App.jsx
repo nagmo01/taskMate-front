@@ -510,7 +510,9 @@ function App() {
               {status === "session" && (
                 <>
                   {isLoading ? (
-                    <span className="loading loading-ring loading-md"></span>
+                    <div className="flex flex-col items-center">
+                      <span className="loading loading-ring loading-md"></span>
+                    </div>
                   ) : (
                     <div className="flex flex-col pt-7">
                       {/* <div className="flex">
@@ -549,43 +551,53 @@ function App() {
                 </>
               )}
               {status === "registration" && (
-                <div className="flex flex-col pt-7">
-                  <input
-                    type="email"
-                    className="outline-black rounded ps-1 py-1 mt-2 mb-5 border w-5/6 mx-auto"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Email"
-                  />
-                  <input
-                    type="password"
-                    className="outline-black rounded ps-1 py-1 mt-2 mb-5 border w-5/6 mx-auto"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Password"
-                  />
-                  <input
-                    type="password"
-                    className="outline-black rounded ps-1 py-1 mt-2 mb-5 border w-5/6 mx-auto"
-                    value={passwordConfirmation}
-                    onChange={(e) => setPasswordConfirmation(e.target.value)}
-                    placeholder="Password Confirmation"
-                  />
-                  <button
-                    type="submit"
-                    className="py-1 my-5 font-sans font-bold rounded w-5/6 mx-auto bg-original text-white"
-                    onClick={handleSignUp}
-                  >
-                    Create
-                  </button>
+                <>
+                  {isLoading ? (
+                    <div className="flex flex-col items-center">
+                      <span className="loading loading-ring loading-md"></span>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col pt-7">
+                      <input
+                        type="email"
+                        className="outline-black rounded ps-1 py-1 mt-2 mb-5 border w-5/6 mx-auto"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Email"
+                      />
+                      <input
+                        type="password"
+                        className="outline-black rounded ps-1 py-1 mt-2 mb-5 border w-5/6 mx-auto"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Password"
+                      />
+                      <input
+                        type="password"
+                        className="outline-black rounded ps-1 py-1 mt-2 mb-5 border w-5/6 mx-auto"
+                        value={passwordConfirmation}
+                        onChange={(e) =>
+                          setPasswordConfirmation(e.target.value)
+                        }
+                        placeholder="Password Confirmation"
+                      />
+                      <button
+                        type="submit"
+                        className="py-1 my-5 font-sans font-bold rounded w-5/6 mx-auto bg-original text-white"
+                        onClick={handleSignUp}
+                      >
+                        Create
+                      </button>
 
-                  <button
-                    onClick={() => setStatus("session")}
-                    className="pt-10 pb-5 font-bold font-sans"
-                  >
-                    Login to your account
-                  </button>
-                </div>
+                      <button
+                        onClick={() => setStatus("session")}
+                        className="pt-10 pb-5 font-bold font-sans"
+                      >
+                        Login to your account
+                      </button>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>
