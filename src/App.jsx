@@ -53,7 +53,7 @@ function App() {
   //ログイン
   const handleLogin = async () => {
     try {
-      const response = await axios.post("https://new-api-1.onrender.com//auth/sign_in", {
+      const response = await axios.post("https://new-api-1.onrender.com/auth/sign_in", {
         email: loginEmail,
         password: loginPassword,
       });
