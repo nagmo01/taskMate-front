@@ -34,12 +34,13 @@ function App() {
         email: email,
         password: password,
         password_confirmation: passwordConfirmation,
-        confirm_success_url: "http://localhost:5173/",
+        confirm_success_url: "https://new-api-0cvq.onrender.com",
       });
 
       setEmail("");
       setPassword("");
       setPasswordConfirmation("");
+      console.log(response)
 
       setStatus("session");
 
@@ -58,6 +59,7 @@ function App() {
       });
       setLoginEmail("");
       setLoginPassword("");
+      console.log(response)
 
       localStorage.setItem("uid", response.headers.uid);
       localStorage.setItem("access-token", response.headers["access-token"]);
