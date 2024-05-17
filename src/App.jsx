@@ -69,7 +69,7 @@ function App() {
 
       localStorage.setItem("uid", response.data.data["uid"]);
       localStorage.setItem("access-token", response.data.data["access-token"]);
-      localStorage.setItem("client", response.data.data.["client"]);
+      localStorage.setItem("client", response.data.data["client"]);
 
       setStatus("account");
       fetch();
