@@ -510,8 +510,8 @@ function App() {
               {status === "session" && (
                 <>
                   {isLoading ? (
-                    <div className="bg-zinc-400 flex justify-center items-center h-full">
-                      <span className="loading loading-bars loading-lg"></span>
+                    <div className="flex justify-center items-center h-full">
+                      <span className="loading loading-bars loading-md"></span>
                     </div>
                   ) : (
                     <div className="flex flex-col pt-7">
@@ -553,8 +553,8 @@ function App() {
               {status === "registration" && (
                 <>
                   {isLoading ? (
-                    <div className="flex flex-col pt-32">
-                      <span className="loading loading-bars loading-lg"></span>
+                    <div className="flex justify-center items-center h-full">
+                      <span className="loading loading-bars loading-md"></span>
                     </div>
                   ) : (
                     <div className="flex flex-col pt-7">
