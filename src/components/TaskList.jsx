@@ -10,6 +10,8 @@ export default function TaskList({
   onDelete,
   onCheck,
   done,
+  todos,
+  setTodos,
 }) {
 
 

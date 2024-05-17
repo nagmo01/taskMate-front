@@ -248,17 +248,31 @@ function App() {
   };
 
   const onCheck = async (id) => {
-    await axios.put(`https://new-api-1.onrender.com/tasks/${id}`, {
+    axios.put(`https://new-api-1.onrender.com/tasks/${id}`, {
       done_date: new Date(),
     });
-    fetch();
+    const checkTasks = todos.map((task) => {
+      if(task.id === id) {
+        return {...task, done_date: new Date()};
+      }
+      return task;
+    });
+    setTodos(checkTasks)
+    // fetch();
   };
 
   const onReturn = async (id) => {
-    await axios.put(`https://new-api-1.onrender.com/tasks/${id}`, {
+    axios.put(`https://new-api-1.onrender.com/tasks/${id}`, {
       done_date: "",
     });
-    fetch();
+    const returnTasks = todos.map((task) => {
+      if(task.id === id ) {
+        return {...task, done_date: ""};
+      }
+      return task;
+    })
+    setTodos(returnTasks)
+    // fetch();
   };
 
   //form切り替え
@@ -630,6 +644,8 @@ function App() {
                   onCheck={onCheck}
                   onDelete={onDelete}
                   done={done}
+                  todos={todos}
+                  setTodos={setTodos}
                 />
               </div>
             )}
@@ -646,6 +662,7 @@ function App() {
           <>
             <DoneTaskList
               todos={todos}
+              setTodos={setTodos}
               onDelete={onDelete}
               onReturn={onReturn}
               setDone={setDone}

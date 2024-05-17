@@ -6,7 +6,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import { TbArrowBackUp } from "react-icons/tb";
 import writeImage from "../../public/628.jpeg";
 
-export default function DoneTaskList({ todos, onDelete, onReturn, setDone }) {
+export default function DoneTaskList({ todos, setTodos, onDelete, onReturn, setDone }) {
   const doneTasks = todos.filter((todo) => todo.done_date !== null);
   const sortedTasks = [...doneTasks].sort((a, b) => {
     const dateA = new Date(a.done_date);
