@@ -61,9 +61,9 @@ function App() {
       setLoginPassword("");
       console.log(response)
 
-      localStorage.setItem("uid", response.headers.uid);
+      localStorage.setItem("uid", response.data.uid);
       localStorage.setItem("access-token", response.headers["access-token"]);
-      localStorage.setItem("client", response.headers.client);
+      localStorage.setItem("client", response.data.data.client);
 
       setStatus("account");
       fetch();
