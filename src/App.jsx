@@ -59,7 +59,13 @@ function App() {
       });
       setLoginEmail("");
       setLoginPassword("");
+      console.log("response")
       console.log(response)
+      console.log("response.data")
+      console.log(response.data)
+      console.log("response.data.data")
+      console.log(response.data.data)
+
 
       localStorage.setItem("uid", response.data.uid);
       localStorage.setItem("access-token", response.headers["access-token"]);
