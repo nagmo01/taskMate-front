@@ -30,7 +30,7 @@ function App() {
   //サインアップ
   const handleSignUp = async () => {
     try {
-      const response = await axios.post("https://new-api-1.onrender.com//auth", {
+      const response = await axios.post("https://new-api-1.onrender.com/auth", {
         email: email,
         password: password,
         password_confirmation: passwordConfirmation,
@@ -224,7 +224,7 @@ function App() {
     if (confirmOption === "true") {
       const result = window.confirm("削除しますか？");
     if (result === true) {
-      await axios.delete(`https://new-api-1.onrender.com//tasks/${id}`);
+      await axios.delete(`https://new-api-1.onrender.com/tasks/${id}`);
       if (id === activeTask) {
         setActiveTask(false);
       }
@@ -232,7 +232,7 @@ function App() {
     }
     }
     if (confirmOption === "false") {
-      await axios.delete(`https://new-api-1.onrender.com//tasks/${id}`);
+      await axios.delete(`https://new-api-1.onrender.com/tasks/${id}`);
       if (id === activeTask) {
         setActiveTask(false);
       }
