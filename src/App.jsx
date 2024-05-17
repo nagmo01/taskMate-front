@@ -168,7 +168,7 @@ function App() {
   };
 
   const fetch = async () => {
-    const res = await axios.get("https://new-api-1.onrender.com//tasks", {
+    const res = await axios.get("https://new-api-1.onrender.com/tasks", {
       params: {
         uid: localStorage.getItem("uid"),
       },
@@ -196,7 +196,7 @@ function App() {
       return;
     }
 
-    await axios.post("https://new-api-1.onrender.com//tasks", {
+    await axios.post("https://new-api-1.onrender.com/tasks", {
       title: value,
       body: bodyValue,
       due_date: anyTime ? "2200-12-31" : dateValue,
@@ -248,14 +248,14 @@ function App() {
   };
 
   const onCheck = async (id) => {
-    await axios.put(`https://new-api-1.onrender.com//tasks/${id}`, {
+    await axios.put(`https://new-api-1.onrender.com/tasks/${id}`, {
       done_date: new Date(),
     });
     fetch();
   };
 
   const onReturn = async (id) => {
-    await axios.put(`https://new-api-1.onrender.com//tasks/${id}`, {
+    await axios.put(`https://new-api-1.onrender.com/tasks/${id}`, {
       done_date: "",
     });
     fetch();
