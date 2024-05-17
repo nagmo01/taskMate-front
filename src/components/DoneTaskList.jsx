@@ -8,7 +8,6 @@ import writeImage from "../../public/628.jpeg";
 
 export default function DoneTaskList({ todos, onDelete, onReturn, setDone }) {
   const doneTasks = todos.filter((todo) => todo.done_date !== null);
-  console.log(doneTasks);
   const sortedTasks = [...doneTasks].sort((a, b) => {
     const dateA = new Date(a.done_date);
     const dateB = new Date(b.done_date);

@@ -44,7 +44,6 @@ function App() {
       setEmail("");
       setPassword("");
       setPasswordConfirmation("");
-      console.log(response);
 
       setStatus("session");
 
@@ -69,12 +68,6 @@ function App() {
       );
       setLoginEmail("");
       setLoginPassword("");
-      console.log("response");
-      console.log(response);
-      console.log("response.data");
-      console.log(response.data);
-      console.log("response.data.data");
-      console.log(response.data.data);
 
       localStorage.setItem("uid", response.data.data["uid"]);
       localStorage.setItem("access-token", response.data.data["access-token"]);
