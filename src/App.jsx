@@ -510,7 +510,7 @@ function App() {
               {status === "session" && (
                 <>
                   {isLoading ? (
-                    <div className="flex flex-col pt-32">
+                    <div className="bg-zinc-400 flex justify-center items-center">
                       <span className="loading loading-bars loading-lg"></span>
                     </div>
                   ) : (
