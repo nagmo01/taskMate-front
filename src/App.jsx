@@ -27,8 +27,12 @@ function App() {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
+  //ローディングの管理
+  const [isLoading, setIsLoading] = useState(false);
+
   //サインアップ
   const handleSignUp = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.post("https://new-api-1.onrender.com/auth", {
         email: email,
@@ -40,7 +44,7 @@ function App() {
       setEmail("");
       setPassword("");
       setPasswordConfirmation("");
-      console.log(response)
+      console.log(response);
 
       setStatus("session");
 
@@ -48,24 +52,29 @@ function App() {
     } catch (error) {
       alert(error.response.data.errors.full_messages.join(", "));
     }
+
+    setIsLoading(false);
   };
 
   //ログイン
   const handleLogin = async () => {
+    setIsLoading(true);
     try {
-      const response = await axios.post("https://new-api-1.onrender.com/auth/sign_in", {
-        email: loginEmail,
-        password: loginPassword,
-      });
+      const response = await axios.post(
+        "https://new-api-1.onrender.com/auth/sign_in",
+        {
+          email: loginEmail,
+          password: loginPassword,
+        }
+      );
       setLoginEmail("");
       setLoginPassword("");
-      console.log("response")
-      console.log(response)
-      console.log("response.data")
-      console.log(response.data)
-      console.log("response.data.data")
-      console.log(response.data.data)
-
+      console.log("response");
+      console.log(response);
+      console.log("response.data");
+      console.log(response.data);
+      console.log("response.data.data");
+      console.log(response.data.data);
 
       localStorage.setItem("uid", response.data.data["uid"]);
       localStorage.setItem("access-token", response.data.data["access-token"]);
@@ -78,6 +87,7 @@ function App() {
     } catch (error) {
       alert(error.response.data.errors.full_messages.json(", "));
     }
+    setIsLoading(false);
   };
 
   // ログアウト
@@ -94,15 +104,14 @@ function App() {
   const handleAccount = () => {
     if (localStorage.getItem("uid")) {
       if (status !== "account") {
-      setStatus("account");
+        setStatus("account");
       }
-      if (form === true ){
+      if (form === true) {
         const newFormValue = false;
-      localStorage.setItem("form", JSON.parse(newFormValue));
-      const storedValue = JSON.parse(localStorage.getItem("form"));
-      setForm(storedValue);
+        localStorage.setItem("form", JSON.parse(newFormValue));
+        const storedValue = JSON.parse(localStorage.getItem("form"));
+        setForm(storedValue);
       }
-      
     } else {
       setStatus("session");
     }
@@ -110,16 +119,15 @@ function App() {
 
   // 設定画面、詳細フォームが開いている場合formをfalseにして表示させる
   const handleSetting = () => {
-      if (status !== "setting") {
+    if (status !== "setting") {
       setStatus("setting");
-      }
-      if (form === true ){
-        const newFormValue = false;
+    }
+    if (form === true) {
+      const newFormValue = false;
       localStorage.setItem("form", JSON.parse(newFormValue));
       const storedValue = JSON.parse(localStorage.getItem("form"));
       setForm(storedValue);
-      }
-      
+    }
   };
 
   // DateのON/OFF
@@ -156,15 +164,15 @@ function App() {
   };
 
   // 削除時の確認フォームの有無
-  const confirmValue = localStorage.getItem("confirmValue")
+  const confirmValue = localStorage.getItem("confirmValue");
   const [confirmOption, setConfirmOption] = useState(confirmValue);
   const confirmOptions = ["true", "false"];
   const handleConfirmChange = (e) => {
     const newConfirmValue = e.target.value;
-    localStorage.setItem("confirmValue", newConfirmValue)
-    const storedConfirmValue = localStorage.getItem("confirmValue")
-    setConfirmOption(storedConfirmValue)
-  }
+    localStorage.setItem("confirmValue", newConfirmValue);
+    const storedConfirmValue = localStorage.getItem("confirmValue");
+    setConfirmOption(storedConfirmValue);
+  };
 
   const fetch = async () => {
     const res = await axios.get("https://new-api-1.onrender.com//tasks", {
@@ -179,8 +187,8 @@ function App() {
     if (!submitKeyValue) {
       setSelectedOption("Shift");
     }
-    if (!confirmOption){
-      setConfirmOption("true")
+    if (!confirmOption) {
+      setConfirmOption("true");
     }
     const uid = localStorage.getItem("uid");
     if (uid) {
@@ -229,13 +237,13 @@ function App() {
   const onDelete = async (id) => {
     if (confirmOption === "true") {
       const result = window.confirm("削除しますか？");
-    if (result === true) {
-      await axios.delete(`https://new-api-1.onrender.com/tasks/${id}`);
-      if (id === activeTask) {
-        setActiveTask(false);
+      if (result === true) {
+        await axios.delete(`https://new-api-1.onrender.com/tasks/${id}`);
+        if (id === activeTask) {
+          setActiveTask(false);
+        }
+        fetch();
       }
-      fetch();
-    }
     }
     if (confirmOption === "false") {
       await axios.delete(`https://new-api-1.onrender.com/tasks/${id}`);
@@ -450,40 +458,40 @@ function App() {
                 </h3> */}
 
               {status === "setting" && (
-              <>
-                <div className="pt-32 mx-16 flex justify-between font-sans font-bold">
-                  <h3 className="">SubmitKey</h3>
-                  <div className="w-1/4 flex">
-                  <select
-                    value={selectedOption}
-                    onChange={handleOptionChange}
-                    className="form-select text-sm rounded"
-                  >
-                    {options.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
+                <>
+                  <div className="pt-32 mx-16 flex justify-between font-sans font-bold">
+                    <h3 className="">SubmitKey</h3>
+                    <div className="w-1/4 flex">
+                      <select
+                        value={selectedOption}
+                        onChange={handleOptionChange}
+                        className="form-select text-sm rounded"
+                      >
+                        {options.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-                </div>
-                <div className="py-14 mx-16 flex justify-between font-sans font-bold">
-                <h3 className="">DeleteConfirmation</h3>
-                <div className="w-1/4 flex">
-                <select
-                  value={confirmOption}
-                  onChange={handleConfirmChange}
-                  className="form-select ps-1 pe-5 text-sm rounded"
-                >
-                  {confirmOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-                </div>
-              </div>
-              </>
+                  <div className="py-14 mx-16 flex justify-between font-sans font-bold">
+                    <h3 className="">DeleteConfirmation</h3>
+                    <div className="w-1/4 flex">
+                      <select
+                        value={confirmOption}
+                        onChange={handleConfirmChange}
+                        className="form-select ps-1 pe-5 text-sm rounded"
+                      >
+                        {confirmOptions.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </>
               )}
               {status === "account" && (
                 <div className="flex-col py-20">
@@ -500,39 +508,45 @@ function App() {
               )}
 
               {status === "session" && (
-                <div className="flex flex-col pt-7">
-                  {/* <div className="flex">
+                <>
+                  {isLoading ? (
+                    <span className="loading loading-ring loading-md"></span>
+                  ) : (
+                    <div className="flex flex-col pt-7">
+                      {/* <div className="flex">
                   <h3 className="font-bold font-sans px-3 py-1 rounded-ee-md bg-original text-white">LOGIN</h3>
                   </div> */}
-                  <input
-                    type="email"
-                    className="outline-black rounded ps-1 py-1 mt-14 mb-5 border w-5/6 mx-auto"
-                    value={loginEmail}
-                    onChange={(e) => setLoginEmail(e.target.value)}
-                    placeholder="Email"
-                  />
-                  <input
-                    type="password"
-                    className="outline-black rounded ps-1 py-1 mt-2 mb-5 border w-5/6 mx-auto"
-                    value={loginPassword}
-                    onChange={(e) => setLoginPassword(e.target.value)}
-                    placeholder="Password"
-                  />
-                  <button
-                    type="submit"
-                    className="py-1 my-5 font-sans font-bold rounded w-5/6 mx-auto bg-original text-white"
-                    onClick={handleLogin}
-                  >
-                    Login
-                  </button>
+                      <input
+                        type="email"
+                        className="outline-black rounded ps-1 py-1 mt-14 mb-5 border w-5/6 mx-auto"
+                        value={loginEmail}
+                        onChange={(e) => setLoginEmail(e.target.value)}
+                        placeholder="Email"
+                      />
+                      <input
+                        type="password"
+                        className="outline-black rounded ps-1 py-1 mt-2 mb-5 border w-5/6 mx-auto"
+                        value={loginPassword}
+                        onChange={(e) => setLoginPassword(e.target.value)}
+                        placeholder="Password"
+                      />
+                      <button
+                        type="submit"
+                        className="py-1 my-5 font-sans font-bold rounded w-5/6 mx-auto bg-original text-white"
+                        onClick={handleLogin}
+                      >
+                        Login
+                      </button>
 
-                  <button
-                    onClick={() => setStatus("registration")}
-                    className="pt-14 font-bold font-sans"
-                  >
-                    Create Account
-                  </button>
-                </div>
+                      <button
+                        onClick={() => setStatus("registration")}
+                        className="pt-14 font-bold font-sans"
+                      >
+                        Create Account
+                      </button>
+                    </div>
+                  )}
+                </>
               )}
               {status === "registration" && (
                 <div className="flex flex-col pt-7">
