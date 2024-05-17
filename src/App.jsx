@@ -83,7 +83,7 @@ function App() {
       setStatus("account");
       fetch();
 
-      alert("Login successful!");
+      // alert("Login successful!");
     } catch (error) {
       alert(error.response.data.errors.full_messages.json(", "));
     }
@@ -510,8 +510,8 @@ function App() {
               {status === "session" && (
                 <>
                   {isLoading ? (
-                    <div className="flex flex-col items-center">
-                      <span className="loading loading-ring loading-md"></span>
+                    <div className="flex flex-col pt-32">
+                      <span className="loading loading-bars loading-lg"></span>
                     </div>
                   ) : (
                     <div className="flex flex-col pt-7">
@@ -553,8 +553,8 @@ function App() {
               {status === "registration" && (
                 <>
                   {isLoading ? (
-                    <div className="flex flex-col items-center">
-                      <span className="loading loading-ring loading-md"></span>
+                    <div className="flex flex-col pt-32">
+                      <span className="loading loading-bars loading-lg"></span>
                     </div>
                   ) : (
                     <div className="flex flex-col pt-7">
