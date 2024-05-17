@@ -511,7 +511,7 @@ function App() {
                 <>
                   {isLoading ? (
                     <div className="flex justify-center items-center h-full">
-                      <span className="loading loading-bars loading-md"></span>
+                      <span className="loading loading-spinner loading-lg"></span>
                     </div>
                   ) : (
                     <div className="flex flex-col pt-7">
@@ -554,7 +554,7 @@ function App() {
                 <>
                   {isLoading ? (
                     <div className="flex justify-center items-center h-full">
-                      <span className="loading loading-bars loading-md"></span>
+                      <span className="loading loading-spinner loading-lg"></span>
                     </div>
                   ) : (
                     <div className="flex flex-col pt-7">
