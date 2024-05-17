@@ -231,19 +231,27 @@ function App() {
     if (confirmOption === "true") {
       const result = window.confirm("削除しますか？");
       if (result === true) {
-        await axios.delete(`https://new-api-1.onrender.com/tasks/${id}`);
+        axios.delete(`https://new-api-1.onrender.com/tasks/${id}`);
         if (id === activeTask) {
           setActiveTask(false);
         }
-        fetch();
+        const deletedTasks = todos.filter((task) => {
+          task.id !== id
+        })
+        setTodos(deletedTasks)
+        // fetch();
       }
     }
     if (confirmOption === "false") {
-      await axios.delete(`https://new-api-1.onrender.com/tasks/${id}`);
+      axios.delete(`https://new-api-1.onrender.com/tasks/${id}`);
       if (id === activeTask) {
         setActiveTask(false);
       }
-      fetch();
+      const deletedTasks = todos.filter((task) => {
+        task.id !== id
+      })
+      setTodos(deletedTasks)
+      // fetch();
     }
   };
 
