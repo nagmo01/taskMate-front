@@ -43,7 +43,7 @@ export default function EditTask({
   };
 
   const updateTask = async (uuid, task) => {
-    await axios.put(`https://new-api-1.onrender.com/tasks/${uuid}`, {
+    await axios.put(`https://new-api-2.onrender.com/tasks/${uuid}`, {
       title: task.title,
       body: task.body,
       due_date: task.due_date,
