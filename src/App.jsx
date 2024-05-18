@@ -656,10 +656,10 @@ function App() {
           </div>
         )}
 
-        {activeTask ? (
+        {( activeTask || done) ? (
           <div className="w-16"></div>
         ) : (
-          <div className="w-14"></div>
+          <div className="w-14 mx-auto"></div>
         )}
 
         {done ? (
