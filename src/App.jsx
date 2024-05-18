@@ -79,7 +79,8 @@ function App() {
 
       // alert("Login successful!");
     } catch (error) {
-      alert(error.response.data.errors.full_messages.json(", "));
+      // alert(error.response.data.errors.full_messages.json(", "));
+      alert("ログインに失敗しました")
     }
     setIsLoading(false);
   };
