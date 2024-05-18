@@ -15,7 +15,8 @@ export default function TaskList({
 }) {
 
   const demoDelete = () => {
-    window.confirm("デモ画面のため削除はできません。")
+    const result = window.confirm("デモ画面のため削除はできません");
+    console.log(result)
   }
 
 
