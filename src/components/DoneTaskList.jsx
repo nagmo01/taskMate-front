@@ -41,20 +41,20 @@ export default function DoneTaskList({ todos, setTodos, onDelete, onReturn, setD
       ) : (
         <div className="scrollbar overflow-scroll">
       {sortedTasks.map((todo) => (
-        <React.Fragment key={todo.id}>
+        <React.Fragment key={todo.uuid}>
           <div className="mx-1 my-2 flex justify-between border shadow rounded">
             <p className="text-sm pt-1">・{todo.title}</p>
             <div className="me-3">
               <button
                 className="py-2 ps-3 text-original"
-                onClick={() => onReturn(todo.id)}
+                onClick={() => onReturn(todo.uuid)}
               >
                 <TbArrowBackUp style={{ fontSize: "16px" }} />
               </button>
 
               <button
                 className="py-2 ps-3 text-original"
-                onClick={() => onDelete(todo.id)}
+                onClick={() => onDelete(todo.uuid)}
               >
                 <FaTrashAlt style={{ fontSize: "16px" }} />
               </button>

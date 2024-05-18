@@ -112,20 +112,20 @@ export default function TaskList({
           {tasks.map((todo) => (
             // <p key={todo.id}>{todo.title}</p>
             <div
-              key={todo.id}
+              key={todo.uuid}
               className={`mx-1 my-2 flex justify-between border shadow rounded ${
-                activeTask === todo.id ? "border border-original bg-zinc-50" : ""
+                activeTask === todo.uuid ? "border border-original bg-zinc-50" : ""
               }`}
             >
               <div
                 className="flex justify-start items-center w-full cursor-default"
-                onClick={() => (done || setActiveTask(todo.id))}
+                onClick={() => (done || setActiveTask(todo.uuid))}
               >
                 <button
                   className="ms-2 me-1 rounded-full border border-gray-300 p-2 cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
-                  onCheck(todo.id)
+                  onCheck(todo.uuid)
                 }}
                 />
                 <p className="text-sm">{todo.title}</p>
@@ -206,7 +206,7 @@ export default function TaskList({
 
                 <button
                   className="py-2 ps-3 text-original"
-                  onClick={() => onDelete(todo.id)}
+                  onClick={() => onDelete(todo.uuid)}
                 >
                   <FaTrashAlt style={{ fontSize: "14px" }} />
                 </button>

@@ -16,14 +16,14 @@ export default function EditTask({
 
 
   const task = useMemo(() => {
-    return todos.find((todo) => todo.id === activeTask);
+    return todos.find((todo) => todo.uuid === activeTask);
   }, [todos, activeTask]);
 
 
   const inputHandleChange = (e) => {
     setTodos((prevTodos) => {
       return prevTodos.map((todo) => {
-        if (todo.id === activeTask) {
+        if (todo.uuid === activeTask) {
           return { ...todo, title: e.target.value };
         }
         return todo;
@@ -34,7 +34,7 @@ export default function EditTask({
   const bodyHandleChange = (e) => {
     setTodos((prevTodos) => {
       return prevTodos.map((todo) => {
-        if (todo.id === activeTask) {
+        if (todo.uuid === activeTask) {
           return { ...todo, body: e.target.value };
         }
         return todo;
@@ -42,8 +42,8 @@ export default function EditTask({
     });
   };
 
-  const updateTask = async (id, task) => {
-    await axios.put(`https://new-api-1.onrender.com/tasks/${id}`, {
+  const updateTask = async (uuid, task) => {
+    await axios.put(`https://new-api-1.onrender.com/tasks/${uuid}`, {
       title: task.title,
       body: task.body,
       due_date: task.due_date,

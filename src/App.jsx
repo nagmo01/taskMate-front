@@ -197,7 +197,10 @@ function App() {
       return;
     }
 
-    await axios.post("https://new-api-1.onrender.com/tasks", {
+    const uuid = uuidv4();
+
+    axios.post("https://new-api-1.onrender.com/tasks", {
+      uuid: uuid,
       title: value,
       body: bodyValue,
       due_date: anyTime ? "2200-12-31" : dateValue,
@@ -206,7 +209,9 @@ function App() {
       uid: localStorage.getItem("uid"),
     });
 
-    fetch();
+    setTodos([...todos, {uuid: uuid, title: value, body: bodyValue, due_date: anyTime ? "2200-12-31" : dateValue, due_time: anyTime ? "" : timeValue, done_date: "", uid: localStorage.getItem("uid")}])
+
+    // fetch();
     setValue("");
     setBodyValue("");
     setDateValue(today);
@@ -228,36 +233,36 @@ function App() {
     }
   };
 
-  const onDelete = async (id) => {
+  const onDelete = async (uuid) => {
     if (confirmOption === "true") {
       const result = window.confirm("削除しますか？");
       if (result === true) {
-        axios.delete(`https://new-api-1.onrender.com/tasks/${id}`);
-        if (id === activeTask) {
+        axios.delete(`https://new-api-1.onrender.com/tasks/${uuid}`);
+        if (uuid === activeTask) {
           setActiveTask(false);
         }
-        const deletedTasks = todos.filter(task => task.id !== id)
+        const deletedTasks = todos.filter(task => task.uuid !== uuid)
         setTodos(deletedTasks)
         // fetch();
       }
     }
     if (confirmOption === "false") {
-      axios.delete(`https://new-api-1.onrender.com/tasks/${id}`);
-      if (id === activeTask) {
+      axios.delete(`https://new-api-1.onrender.com/tasks/${uuid}`);
+      if (uuid === activeTask) {
         setActiveTask(false);
       }
-      const deletedTasks = todos.filter(task => task.id !== id ) 
+      const deletedTasks = todos.filter(task => task.uuid !== uuid ) 
       setTodos(deletedTasks)
       // fetch();
     }
   };
 
-  const onCheck = async (id) => {
-    axios.put(`https://new-api-1.onrender.com/tasks/${id}`, {
+  const onCheck = async (uuid) => {
+    axios.put(`https://new-api-1.onrender.com/tasks/${uuid}`, {
       done_date: new Date(),
     });
     const checkTasks = todos.map((task) => {
-      if(task.id === id) {
+      if(task.uuid === uuid) {
         return {...task, done_date: new Date()};
       }
       return task;
@@ -266,12 +271,12 @@ function App() {
     // fetch();
   };
 
-  const onReturn = async (id) => {
-    axios.put(`https://new-api-1.onrender.com/tasks/${id}`, {
+  const onReturn = async (uuid) => {
+    axios.put(`https://new-api-1.onrender.com/tasks/${uuid}`, {
       done_date: "",
     });
     const returnTasks = todos.map((task) => {
-      if(task.id === id ) {
+      if(task.uuid === uuid ) {
         return {...task, done_date: null};
       }
       return task;
