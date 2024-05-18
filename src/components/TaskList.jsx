@@ -173,7 +173,7 @@ export default function TaskList({
                     </>
                   )}
 
-                  {(todo.due_date > today ) && (todo.due_date <= oneWeekLater ) && (
+                  {(todo.due_date > today ) && (todo.due_date < oneWeekLater ) && (
                     // 今日以降で1週間以内のタスク
                     <>
                     {todo.due_time ? (
@@ -189,7 +189,7 @@ export default function TaskList({
                     </>
                   )}
 
-                  {(todo.due_date > oneWeekLater) && (todo.due_date !== "2200-12-31" ) && (
+                  {(todo.due_date >= oneWeekLater) && (todo.due_date !== "2200-12-31" ) && (
                     // 1週間以上先のタスク
                     <>
                     <h3 className="font-mono text-sm font-bold">
