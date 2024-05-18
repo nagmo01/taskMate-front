@@ -659,7 +659,7 @@ function App() {
         {activeTask ? (
           <div className="w-16"></div>
         ) : (
-          <div className="w-14 mx-auto"></div>
+          <div className="w-14"></div>
         )}
 
         {done ? (
