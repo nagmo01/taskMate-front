@@ -628,10 +628,10 @@ function App() {
         {localStorage.getItem("uid") && (
           <div className="font-sans w-[550px] text-2xl container mt-10 pb-2 mb-5 bg-white shadow-md rounded-md">
             <div className="flex justify-between py-3">
-              {localStorage.getItem("uid") ? (
+              {(localStorage.getItem("uid") !== "guest@example.com") ? (
                 <h1 className="font-bold text-3xl font-sans ms-3">Tasks</h1>
               ) : (
-                <h1 className="font-bold text-3xl font-sans ms-3">Sample</h1>
+                <h1 className="font-bold text-3xl font-sans ms-3">Demo</h1>
               )}
               <p className="text-sm text-gray-500 me-3 self-center">
                 You have {pendingTasks.length} tasks
