@@ -309,7 +309,7 @@ function App() {
         />
 
         {/* //余白 */}
-        {activeTask ? (
+        {(activeTask || done) ? (
           <div className="w-14"></div>
         ) : (
           <div className="w-14 mx-auto"></div>
@@ -614,7 +614,7 @@ function App() {
           </div>
         </div>
 
-        <div className={`w-16 ${activeTask && "mx-auto"}`}></div>
+        <div className={`w-16`}></div>
 
         {/* タスク一覧 */}
         {localStorage.getItem("uid") && (
@@ -703,7 +703,7 @@ function App() {
           </div>
         )}
 
-        {activeTask && <div className="w-14 mx-auto"></div>}
+        {(activeTask || done) && <div className="w-14 mx-auto"></div>}
       </div>
     </>
   );
