@@ -16,7 +16,7 @@ function App() {
   const [bodyValue, setBodyValue] = useState("");
   const today = new Date().toISOString().split("T")[0];
   const [dateValue, setDateValue] = useState(today);
-  const [timeValue, setTimeValue] = useState();
+  const [timeValue, setTimeValue] = useState("");
   const [done, setDone] = useState(false);
 
   //サインアップ関連

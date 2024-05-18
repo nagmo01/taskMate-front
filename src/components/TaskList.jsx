@@ -144,6 +144,8 @@ export default function TaskList({
                             ?.split(":")
                             .slice(0, 2)
                             .join(":")}
+                        {todo.due_time}
+
                         </h3>
                       )}
                     </>
@@ -178,6 +180,7 @@ export default function TaskList({
                         ?.split(":")
                         .slice(0, 2)
                         .join(":")}
+                        {todo.due_time}
                     </h3>
                     )}
                     </>
