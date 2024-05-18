@@ -209,7 +209,7 @@ function App() {
       uid: localStorage.getItem("uid"),
     });
 
-    setTodos([...todos, {uuid: uuid, title: value, body: bodyValue, due_date: anyTime ? "2200-12-31" : dateValue, due_time: anyTime ? "" : timeValue, done_date: "", uid: localStorage.getItem("uid")}])
+    setTodos([...todos, {uuid: uuid, title: value, body: bodyValue, due_date: anyTime ? "2200-12-31" : dateValue, due_time: anyTime ? null : timeValue, done_date: null, uid: localStorage.getItem("uid")}])
 
     // fetch();
     setValue("");
