@@ -14,6 +14,10 @@ export default function TaskList({
   setTodos,
 }) {
 
+  const demoDelete = () => {
+    window.confirm("デモ画面のため削除はできません。")
+  }
+
 
 
   // タスク一覧を時系列順に並び変えておく
@@ -206,12 +210,23 @@ export default function TaskList({
                   <FaCheck style={{ fontSize: "14px" }} />
                 </button> */}
 
-                <button
+                { (localStorage.getItem('uid') !== "guest@example.com") ? (
+                  <button
                   className="py-2 ps-3 text-original"
                   onClick={() => onDelete(todo.uuid)}
                 >
                   <FaTrashAlt style={{ fontSize: "14px" }} />
                 </button>
+                ) : (
+                  <button
+                  className="py-2 ps-3 text-original"
+                  onClick={() => demoDelete}
+                >
+                  <FaTrashAlt style={{ fontSize: "14px" }} />
+                </button>
+                )}
+
+                
 
               </div>
 
