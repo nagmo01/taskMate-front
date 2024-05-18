@@ -79,8 +79,7 @@ function App() {
 
       // alert("Login successful!");
     } catch (error) {
-      // alert(error.response.data.errors.full_messages.json(", "));
-      alert("ログインに失敗しました")
+      alert(error.response.data.errors.full_messages.json(", "));
     }
     setIsLoading(false);
   };
@@ -189,7 +188,9 @@ function App() {
     if (uid) {
       setStatus("account");
     }
+    if (localStorage.getItem('uid')){
     fetch();
+    }
   }, []);
 
   // タスクを追加する処理。（送信ボタンorEnterのどちらかで実行される）
