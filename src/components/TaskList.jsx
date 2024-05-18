@@ -137,16 +137,15 @@ export default function TaskList({
                   {todo.due_date === today && (
                     // todayのタスク
                     <>
-                      {todo.due_time && (
+                      {todo.due_time ? (
                         <h3 className="font-mono text-sm font-bold">
-                          {todo.due_time
-                            .split("T")[1]
-                            ?.split(":")
-                            .slice(0, 2)
-                            .join(":")}
-                        {todo.due_time}
-
+                          {todo.due_time.includes("T")
+                          ? todo.due_time.split("T")[1]?.split(":").slice(0, 2).join(":")
+                          : todo.due_time
+                          }
                         </h3>
+                      ) : (
+                        <h3></h3>
                       )}
                     </>
                   )}
@@ -173,16 +172,16 @@ export default function TaskList({
                   {(todo.due_date > today ) && (todo.due_date <= oneWeekLater ) && (
                     // 今日以降で1週間以内のタスク
                     <>
-                    {todo.due_time && (
-                      <h3 className="font-mono text-sm font-bold">
-                      {todo.due_time
-                        .split("T")[1]
-                        ?.split(":")
-                        .slice(0, 2)
-                        .join(":")}
-                        {todo.due_time}
-                    </h3>
-                    )}
+                    {todo.due_time ? (
+                        <h3 className="font-mono text-sm font-bold">
+                          {todo.due_time.includes("T")
+                          ? todo.due_time.split("T")[1]?.split(":").slice(0, 2).join(":")
+                          : todo.due_time
+                          }
+                        </h3>
+                      ) : (
+                        <h3></h3>
+                      )}
                     </>
                   )}
 
