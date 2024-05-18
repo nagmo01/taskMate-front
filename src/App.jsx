@@ -310,7 +310,7 @@ function App() {
 
         {/* //余白 */}
         {(activeTask || done) ? (
-          <div className="w-14"></div>
+          <div className="w-14 mx-auto"></div>
         ) : (
           <div className="w-14 mx-auto"></div>
         )}
