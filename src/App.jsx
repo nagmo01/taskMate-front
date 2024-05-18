@@ -137,10 +137,12 @@ function App() {
 
   const handleDateChange = (e) => {
     setDateValue(e.target.value);
+    console.log(e.target.value)
   };
 
   const handleTimeChange = (e) => {
     setTimeValue(e.target.value);
+    console.log(e.target.value)
   };
 
   // タスクを選択すると詳細フォームを開くようにするときの状態管理
