@@ -221,7 +221,7 @@ export default function TaskList({
                 ) : (
                   <button
                   className="py-2 ps-3 text-original"
-                  onClick={() => demoDelete}
+                  onClick={demoDelete}
                 >
                   <FaTrashAlt style={{ fontSize: "14px" }} />
                 </button>
