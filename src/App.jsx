@@ -8,6 +8,7 @@ import EditTask from "./components/EditTask";
 import TaskList from "./components/TaskList";
 import SideBar from "./components/SideBar";
 import DoneTaskList from "./components/DoneTaskList";
+import { v4 as uuidv4 } from 'uuid';
 
 function App() {
   const [todos, setTodos] = useState([]);
