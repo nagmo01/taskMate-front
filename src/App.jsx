@@ -589,7 +589,7 @@ function App() {
 
                       <button
                         type="submit"
-                        className="py-1 font-sans font-bold rounded w-5/6 mx-auto bg-red-400 text-white"
+                        className="py-1 font-sans font-bold rounded w-5/6 mx-auto bg-violet-600 text-white"
                         onClick={handleGuestLogin}
                       >
                         Guest
