@@ -589,7 +589,7 @@ function App() {
 
                       <button
                         type="submit"
-                        className="py-1 my-5 font-sans font-bold rounded w-5/6 mx-auto bg-violet-500 text-white"
+                        className="py-1 font-sans font-bold rounded w-5/6 mx-auto bg-violet-500 text-white"
                         onClick={handleGuestLogin}
                       >
                         Guest Login
@@ -597,7 +597,7 @@ function App() {
 
                       <button
                         onClick={() => setStatus("registration")}
-                        className="pt-14 font-bold font-sans"
+                        className="pt-10 font-bold font-sans"
                       >
                         Create Account
                       </button>
