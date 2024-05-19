@@ -421,7 +421,7 @@ function App() {
                     <div className="pt-4">
                       <textarea
                         className="outline-inherit ps-1 pt-1 h-64 w-5/6 text-black bg-white  border rounded resize-none"
-                        placeholder="## markdown"
+                        placeholder="memo"
                         value={bodyValue}
                         onChange={(e) => setBodyValue(e.target.value)}
                       />
