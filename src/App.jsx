@@ -84,6 +84,34 @@ function App() {
     setIsLoading(false);
   };
 
+  //ゲストログイン
+  const handleGuestLogin = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.post(
+        "https://new-api-2.onrender.com/auth/sign_in",
+        {
+          email: "guest@example.com",
+          password: "password1234",
+        }
+      );
+      setLoginEmail("");
+      setLoginPassword("");
+
+      localStorage.setItem("uid", response.data.data["uid"]);
+      localStorage.setItem("access-token", response.data.data["access-token"]);
+      localStorage.setItem("client", response.data.data["client"]);
+
+      setStatus("account");
+      fetch();
+
+      // alert("Login successful!");
+    } catch (error) {
+      alert(error.response.data.errors.full_messages.json(", "));
+    }
+    setIsLoading(false);
+  };
+
   // ログアウト
   const handleLogout = () => {
     localStorage.setItem("uid", "");
@@ -557,6 +585,14 @@ function App() {
                         onClick={handleLogin}
                       >
                         Login
+                      </button>
+
+                      <button
+                        type="submit"
+                        className="py-1 my-5 font-sans font-bold rounded w-5/6 mx-auto bg-violet-500 text-white"
+                        onClick={handleGuestLogin}
+                      >
+                        Guest Login
                       </button>
 
                       <button
