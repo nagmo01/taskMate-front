@@ -88,7 +88,7 @@ export default function EditTask({
         </form>
       ) : (
         <div
-          className="ps-3 py-3 w-full font-sans font-bold"
+          className="ps-3 py-3 w-full font-sans font-bold outline-black"
           onClick={() => setIsInputClick(true)}
         >
           {task.title}
@@ -111,7 +111,7 @@ export default function EditTask({
       ) : (
         <div
           onClick={() => setIsBodyClick(true)}
-          className="w-full text-left text-lg px-3 mt-7 mb-10 whitespace-pre-wrap"
+          className="w-full text-left text-lg px-3 mt-7 mb-10 whitespace-pre-wrap outline-black"
           style={{ height: '500px' }} 
         >
           {task.body}
