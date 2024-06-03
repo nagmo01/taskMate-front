@@ -83,12 +83,12 @@ export default function EditTask({
             onChange={inputHandleChange}
             autoFocus
             onBlur={handleBlur}
-            className="ps-3 py-3 w-full font-sans font-bold bg-zinc-400"
+            className="ps-3 py-3 w-full font-sans font-bold"
           />
         </form>
       ) : (
         <div
-          className="ps-3 py-3 w-full font-sans font-bold bg-zinc-300"
+          className="ps-3 py-3 w-full font-sans font-bold"
           onClick={() => setIsInputClick(true)}
         >
           {task.title}
@@ -103,7 +103,7 @@ export default function EditTask({
             autoFocus
             onBlur={handleBlur}
             style={{ height: '500px' }} 
-            className="resize-none w-full text-left text-lg px-3 mt-7 mb-8 bg-zinc-400"
+            className="resize-none w-full text-left text-lg px-3 mt-7 mb-8"
           >
             {task.body}
           </textarea>
@@ -111,7 +111,7 @@ export default function EditTask({
       ) : (
         <div
           onClick={() => setIsBodyClick(true)}
-          className="w-full text-left text-lg px-3 mt-7 mb-10 whitespace-pre-wrap bg-zinc-300"
+          className="w-full text-left text-lg px-3 mt-7 mb-10 whitespace-pre-wrap"
           style={{ height: '500px' }} 
         >
           {task.body}
