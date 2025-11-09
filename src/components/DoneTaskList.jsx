@@ -13,9 +13,6 @@ export default function DoneTaskList({ todos, setTodos, onDelete, onReturn, setD
     const dateB = new Date(b.done_date);
     return dateB - dateA;
   });
-  const demoDelete = () => {
-    const result = window.confirm("デモ画面のため削除はできません\n(※作成したタスクを消したい場合は編集でお願いいたします)");
-  }
 
   return (
     <div className="w-[500px] mt-10 mb-5 bg-white shadow-md rounded-md">
@@ -54,21 +51,12 @@ export default function DoneTaskList({ todos, setTodos, onDelete, onReturn, setD
               >
                 <TbArrowBackUp style={{ fontSize: "16px" }} />
               </button>
-              {(localStorage.getItem('uid') !== "guest@example.com") ? (
-                <button
+              <button
                 className="py-2 ps-3 text-original"
                 onClick={() => onDelete(todo.uuid)}
               >
                 <FaTrashAlt style={{ fontSize: "16px" }} />
               </button>
-              ) : (
-                <button
-                className="py-2 ps-3 text-original"
-                onClick={demoDelete}
-              >
-                <FaTrashAlt style={{ fontSize: "16px" }} />
-              </button>
-              )}
               
             </div>
           </div>

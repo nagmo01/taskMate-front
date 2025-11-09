@@ -8,27 +8,17 @@ import { IoMdSettings } from "react-icons/io";
 import { RiLoginBoxLine } from "react-icons/ri";
 import { RiLogoutBoxLine } from "react-icons/ri";
 
-export default function SideBar({ done, setDone, handleAccount, handleSetting }) {
+export default function SideBar({ done, setDone, handleSetting }) {
 
   const handleCompleteList = () => {
-    if(localStorage.getItem('uid')){
-      setDone(!done)
-    }
+    setDone(!done);
   }
   return (
-    <div className="bg-white text-original shadow-md">
+    <div className="bg-white text-original shadow-md px-4">
       <h3 className="text-center font-bold font-sans text-lg pt-28 pb-10"></h3>
       <div className="flex justify-center text-lg font-sans font-bold">
         <div className="flex-col pt-20 px-1">
           <IconContext.Provider value={{ size: "23px" }}>
-            <div
-            onClick={handleAccount}
-              className={`hover:bg-original hover:text-white py-5 flex justify-center px-5 rounded-md mb-1`}
-            >
-              <CgProfile
-              className="self-center" />
-              {/* <p className='self-center'>Account</p> */}
-            </div>
             <div
               className={`${
                 done && "bg-original text-white"
@@ -38,12 +28,12 @@ export default function SideBar({ done, setDone, handleAccount, handleSetting })
               <FaCheck className="self-center" />
               {/* <p className='self-center'>Done</p> */}
             </div>
-            <div className="py-5 flex justify-center rounded-md mb-1">
+            {/* <div className="py-5 flex justify-center rounded-md mb-1">
               <FaRegTrashCan className="self-center" />
-            </div>
-            <div className="py-5 flex justify-center rounded-md mb-1">
+            </div> */}
+            {/* <div className="py-5 flex justify-center rounded-md mb-1">
               <RxCalendar className="self-center" />
-            </div>
+            </div> */}
             <div
             onClick={handleSetting}
             className="hover:bg-original hover:text-white py-5 flex justify-center rounded-md mb-1">

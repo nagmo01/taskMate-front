@@ -14,9 +14,6 @@ export default function TaskList({
   setTodos,
 }) {
 
-  const demoDelete = () => {
-    const result = window.confirm("デモ画面のため削除はできません\n(※作成したタスクを消したい場合は編集でお願いいたします)");
-  }
 
 
 
@@ -210,21 +207,12 @@ export default function TaskList({
                   <FaCheck style={{ fontSize: "14px" }} />
                 </button> */}
 
-                { (localStorage.getItem('uid') !== "guest@example.com") ? (
-                  <button
+                <button
                   className="py-2 ps-3 text-original"
                   onClick={() => onDelete(todo.uuid)}
                 >
                   <FaTrashAlt style={{ fontSize: "14px" }} />
                 </button>
-                ) : (
-                  <button
-                  className="py-2 ps-3 text-original"
-                  onClick={demoDelete}
-                >
-                  <FaTrashAlt style={{ fontSize: "14px" }} />
-                </button>
-                )}
 
                 
 

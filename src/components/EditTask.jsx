@@ -1,8 +1,6 @@
-import { fromJSON } from "postcss";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useMemo } from "react";
-import axios from "axios"
 
 export default function EditTask({
   todos,
@@ -13,12 +11,9 @@ export default function EditTask({
   const [isInputClick, setIsInputClick] = useState(false);
   const [isBodyClick, setIsBodyClick] = useState(false);
 
-
-
   const task = useMemo(() => {
     return todos.find((todo) => todo.uuid === activeTask);
   }, [todos, activeTask]);
-
 
   const inputHandleChange = (e) => {
     setTodos((prevTodos) => {
@@ -42,30 +37,25 @@ export default function EditTask({
     });
   };
 
-  const updateTask = async (uuid, task) => {
-    await axios.put(`https://new-api-2.onrender.com/tasks/${uuid}`, {
-      title: task.title,
-      body: task.body,
-      due_date: task.due_date,
-    });
-  }
+  // localStorageに保存する関数
+  const saveTodosToStorage = () => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  };
 
   const handleBlur = () => {
     setIsInputClick(false);
     setIsBodyClick(false);
-    updateTask(activeTask, task)
+    saveTodosToStorage();
   };
 
   const handleClose = () => {
-    updateTask(activeTask, task)
+    saveTodosToStorage();
     setActiveTask(false);
   }
 
   const handleUpdate = () => {
-    updateTask(activeTask, task)
+    saveTodosToStorage();
   }
-
-  
 
   return (
     <div className="pt-3">
@@ -74,7 +64,7 @@ export default function EditTask({
           onSubmit={(e) => {
             e.preventDefault();
             setIsInputClick(false);
-            updateTask(activeTask, task)
+            saveTodosToStorage();
           }}
         >
           <input
@@ -102,7 +92,7 @@ export default function EditTask({
             onChange={bodyHandleChange}
             autoFocus
             onBlur={handleBlur}
-            style={{ height: '500px' }} 
+            style={{ height: '500px' }}
             className="resize-none w-full text-left text-lg px-3 mt-7 mb-8"
           >
             {task.body}
@@ -112,7 +102,7 @@ export default function EditTask({
         <div
           onClick={() => setIsBodyClick(true)}
           className="w-full text-left text-lg px-3 mt-7 mb-10 whitespace-pre-wrap"
-          style={{ height: '500px' }} 
+          style={{ height: '500px' }}
         >
           {task.body}
         </div>
